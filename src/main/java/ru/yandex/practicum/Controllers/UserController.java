@@ -21,7 +21,7 @@ public class UserController {
 
     @GetMapping
     public Collection<User> findAll() {
-        log.info("Количество пользователей на текущий момент {}", users.size());
+        log.info("Количество пользователей на данный момент {}", users.size());
         return users.values();
     }
 
@@ -63,6 +63,7 @@ public class UserController {
 
     @PutMapping
     public User change(@Valid @RequestBody User user) {
+
         if (user.getName() == null || !user.getEmail().contains("@") || user.getEmail().isBlank()) {
             throw new ValidationException("Адрес электронной почты не может быть пустым.");
         }
