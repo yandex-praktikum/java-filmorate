@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User create(@Valid @RequestBody User user) {
+    public User create(@RequestBody User user) {
         if (user.getEmail() == null || !user.getEmail().contains("@") || user.getEmail().isBlank()) {
             log.info("Не валидный адрес электронной почты.");
             throw new ValidationException("Не валидный адрес электронной почты.");
