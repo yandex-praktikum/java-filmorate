@@ -1,6 +1,7 @@
 package ru.yandex.practicum.controllers;
 
 import lombok.Data;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import ru.yandex.practicum.exceptions.ValidationException;
 import ru.yandex.practicum.model.Film;
 import org.slf4j.Logger;
@@ -29,25 +30,25 @@ public class FilmController {
     @PostMapping(value = "/films")
     public void create(@Valid @RequestBody Film film) {
 
-        if (film.getName().isBlank() || film.getName() == null) {
-            log.info("Название фильма не может быть пустым");
-            throw new ValidationException("Название фильма не может быть пустым");
-        }
+    if (film.getName().isBlank() || film.getName() == null) {
+        log.info("Название фильма не может быть пустым");
+        throw new ValidationException("Название фильма не может быть пустым");
+    }
 
-        if (film.getDescription().length() > 200) {
-            log.info("Максимальная длина описания - 200 символов.");
-            throw new ValidationException("Максимальная длина описания - 200 символов.");
-        }
+    if (film.getDescription().length() > 200) {
+        log.info("Максимальная длина описания - 200 символов.");
+        throw new ValidationException("Максимальная длина описания - 200 символов.");
+    }
 
-        if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-            log.info("Дата релиза не может быть раньше 28 декабря 1895 года.");
-            throw new ValidationException("Дата релиза не может быть раньше 28 декабря 1895 года.");
-        }
+    if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
+        log.info("Дата релиза не может быть раньше 28 декабря 1895 года.");
+        throw new ValidationException("Дата релиза не может быть раньше 28 декабря 1895 года.");
+    }
 
-        if (film.getDuration().toMinutes() < 0) {
-            log.info("Продолжительность фильма должна быть положительной.");
-            throw new ValidationException("Продолжительность фильма должна быть положительной.");
-        }
+    if (film.getDuration().toMinutes() < 0) {
+        log.info("Продолжительность фильма должна быть положительной.");
+        throw new ValidationException("Продолжительность фильма должна быть положительной.");
+    }
 
         // преобразую переданное значение в минуты
         film.setDuration(Duration.ofMinutes(film.getDuration().toSeconds()));

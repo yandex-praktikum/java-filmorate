@@ -2,6 +2,7 @@ package ru.yandex.practicum.model;
 
 import lombok.Data;
 import lombok.Getter;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
