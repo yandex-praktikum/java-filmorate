@@ -1,14 +1,11 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.Controllers.FilmController;
-import ru.yandex.practicum.Controllers.UserController;
+import ru.yandex.practicum.controllers.FilmController;
 import ru.yandex.practicum.exceptions.ValidationException;
 import ru.yandex.practicum.model.Film;
-import ru.yandex.practicum.model.User;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.Period;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

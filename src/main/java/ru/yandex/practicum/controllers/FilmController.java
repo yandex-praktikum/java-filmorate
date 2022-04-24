@@ -1,4 +1,4 @@
-package ru.yandex.practicum.Controllers;
+package ru.yandex.practicum.controllers;
 
 import lombok.Data;
 import ru.yandex.practicum.exceptions.ValidationException;
@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,12 +23,11 @@ public class FilmController {
 
     @GetMapping("/films")
     public List<Film> findAll() {
-        log.debug("Текущее количество фильмов {}", films.size());
         return films;
     }
 
     @PostMapping(value = "/films")
-    public void create(@RequestBody Film film) {
+    public void create(@Valid @RequestBody Film film) {
 
         if (film.getName().isBlank() || film.getName() == null) {
             log.info("Название фильма не может быть пустым");

@@ -1,4 +1,4 @@
-package ru.yandex.practicum.Controllers;
+package ru.yandex.practicum.controllers;
 
 import lombok.Data;
 import ru.yandex.practicum.exceptions.ValidationException;
@@ -21,12 +21,11 @@ public class UserController {
 
     @GetMapping
     public Collection<User> findAll() {
-        log.info("Количество пользователей на данный момент {}", users.size());
         return users.values();
     }
 
     @PostMapping
-    public User create(@RequestBody User user) {
+    public User create(@Valid @RequestBody User user) {
         if (user.getEmail() == null || !user.getEmail().contains("@") || user.getEmail().isBlank()) {
             log.info("Не валидный адрес электронной почты.");
             throw new ValidationException("Не валидный адрес электронной почты.");
