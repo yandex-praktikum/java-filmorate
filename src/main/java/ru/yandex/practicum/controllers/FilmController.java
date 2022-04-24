@@ -59,8 +59,10 @@ public class FilmController {
 
     @PutMapping(value = "/films")
     public void edit(@RequestBody Film film) {
-        Film delFilm = films.stream().filter(s -> s.getId() == film.getId()).collect(Collectors.toList()).get(0);
-        films.remove(delFilm);
+        if (films.size() > 0) {
+            Film delFilm = films.stream().filter(s -> s.getId() == film.getId()).collect(Collectors.toList()).get(0);
+            films.remove(delFilm);
+        }
         films.add(film);
         log.info("Обновлен фильм {}", film.toString());
     }
