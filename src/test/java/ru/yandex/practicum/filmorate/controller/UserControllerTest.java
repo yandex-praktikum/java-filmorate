@@ -105,7 +105,7 @@ class UserControllerTest {
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content("{\"email\": \"mail@mail.ru\"," +
+                        .content("{\"id\": 1,\"email\": \"mail@mail.ru\"," +
                                 "\"login\": \"John1\", \"name\": \"Ivan\"" +
                                 ", \"birthday\": \"2000-02-02\"}"))
                 .andExpect(status().isOk());
@@ -113,7 +113,7 @@ class UserControllerTest {
         mockMvc.perform(put("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content("{\"id\": 1,\"email\": \"mail@yandex.ru\"," +
+                        .content("{\"id\": 400,\"email\": \"mail@yandex.ru\"," +
                                 "\"login\": \"John\", \"name\": \"Ivan\"" +
                                 ", \"birthday\": \"2000-02-02\"}"))
                 .andExpect(status().is4xxClientError());
@@ -121,7 +121,7 @@ class UserControllerTest {
         mockMvc.perform(put("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content("{\"id\": 0,\"email\": \"mail@yandex.ru\"," +
+                        .content("{\"id\": 1,\"email\": \"mail@yandex.ru\"," +
                                 "\"login\": \"John\", \"name\": \"Ivan\"" +
                                 ", \"birthday\": \"2001-02-02\"}"))
                 .andExpect(status().isOk());

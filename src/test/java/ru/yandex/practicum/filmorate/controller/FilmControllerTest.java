@@ -76,14 +76,14 @@ class FilmControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content("{\"name\": \"once upon a time\",\"description\": \"film description\","
-                                + "\"releaseDate\": \"1895-12-28\", \"duration\": 100}"))
+                                + "\"releaseDate\": \"1985-12-28\", \"duration\": 100}"))
                 .andExpect(status().isOk());
 
         mockMvc.perform(post("/films")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content("{\"name\": \"once upon a time\", \"description\": \"film description\","
-                                + "\"releaseDate\": \"1895-12-28\", \"duration\": 90}"))
+                                + "\"releaseDate\": \"1985-12-28\", \"duration\": 90}"))
                 .andExpect(status().is4xxClientError());
 
         mockMvc.perform(post("/films")
