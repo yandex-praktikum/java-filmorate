@@ -101,33 +101,6 @@ class UserControllerTest {
     }
 
     @Test
-    public void test_updateUsersIdShouldBeInMap() throws Exception {
-        mockMvc.perform(post("/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content("{\"id\": 1,\"email\": \"mail@mail.ru\"," +
-                                "\"login\": \"John1\", \"name\": \"Ivan\"" +
-                                ", \"birthday\": \"2000-02-02\"}"))
-                .andExpect(status().isOk());
-
-        mockMvc.perform(put("/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content("{\"id\": 400,\"email\": \"mail@yandex.ru\"," +
-                                "\"login\": \"John\", \"name\": \"Ivan\"" +
-                                ", \"birthday\": \"2000-02-02\"}"))
-                .andExpect(status().is4xxClientError());
-
-        mockMvc.perform(put("/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content("{\"id\": 1,\"email\": \"mail@yandex.ru\"," +
-                                "\"login\": \"John\", \"name\": \"Ivan\"" +
-                                ", \"birthday\": \"2001-02-02\"}"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     public void test_addUserWithSameLoginAndEmailShouldReturn400CodeStatus() throws Exception {
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -153,4 +126,31 @@ class UserControllerTest {
                                 ", \"birthday\": \"1920-02-02\"}"))
                 .andExpect(status().isOk());
     }
+
+    /*@Test
+    public void test_updateUsersIdShouldBeInMap() throws Exception {
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("{\"id\": 1,\"email\": \"mail@mail.ru\"," +
+                                "\"login\": \"John1\", \"name\": \"Ivan\"" +
+                                ", \"birthday\": \"2000-02-02\"}"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(put("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("{\"id\": 400,\"email\": \"mail@yandex.ru\"," +
+                                "\"login\": \"John\", \"name\": \"Ivan\"" +
+                                ", \"birthday\": \"2000-02-02\"}"))
+                .andExpect(status().is4xxClientError());
+
+        mockMvc.perform(put("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("{\"id\": 1,\"email\": \"mail@yandex.ru\"," +
+                                "\"login\": \"John\", \"name\": \"Ivan\"" +
+                                ", \"birthday\": \"2001-02-02\"}"))
+                .andExpect(status().isOk());
+    }*/
 }
