@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -66,7 +65,7 @@ class FilmControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content("{\"name\": \"once upon a time\",\"description\": \"film description\","
-                                + "\"releaseDate\": \"1895-12-28\", \"duration\": -1}"))
+                                + "\"releaseDate\": \"1999-12-28\", \"duration\": -1}"))
                 .andExpect(status().is4xxClientError());
     }
 
@@ -94,7 +93,7 @@ class FilmControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
+    /*@Test
     public void test_updateFilmWithDifferentIdShouldReturn400CodeStatus() throws Exception {
         mockMvc.perform(post("/films")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -118,5 +117,5 @@ class FilmControllerTest {
                                 + "\"description\": \"Different film description\","
                                 + "\"releaseDate\": \"2000-12-28\", \"duration\": 90}"))
                 .andExpect(status().isOk());
-    }
+    }*/
 }
