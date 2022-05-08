@@ -8,7 +8,6 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 @RestController
 @Slf4j
@@ -22,10 +21,10 @@ public class FilmController {
         films = new HashMap<>();
     }
 
-    private static long createID()
-    {
+    private static long createID() {
         return idCounter++;
     }
+
     @PostMapping("/films")
     public Film addFilm(@RequestBody Film film) throws ValidationException {
         if (films.values().stream()
@@ -37,8 +36,7 @@ public class FilmController {
                     film.getReleaseDate()
             );
             throw new ValidationException("This film already exists");
-        }
-        if (isValidate(film)) {
+        } else if (isValidate(film)) {
             film.setId(createID());
             films.put(film.getId(), film);
             log.info("Добавлен фильм: {}", film.getName());
@@ -48,10 +46,10 @@ public class FilmController {
 
     @PutMapping("/films")
     public Film updateFilm(@RequestBody Film film) throws ValidationException {
-        if (!films.containsKey(film.getId())) {
+        /*if (!films.containsKey(film.getId())) {
             log.error("Фильм '{}' с id '{}' не найден в списке!", film.getName(), film.getId());
             throw new ValidationException("The film not found in the map!");
-        }
+        } */
         if (isValidate(film)) {
             films.put(film.getId(), film);
             log.info("Отредактирован фильм '{}'", film.getName());
