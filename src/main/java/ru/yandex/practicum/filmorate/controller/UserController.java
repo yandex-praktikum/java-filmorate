@@ -32,6 +32,7 @@ public class UserController {
             throw new ValidationException("This user already exists");
         }
         if (isValidate(user)) {
+            user.setId(createID());
             users.put(user.getId(), user);
         }
         return user;
@@ -44,7 +45,6 @@ public class UserController {
             throw new ValidationException("User not found in the map");
         }
         if (isValidate(user)) {
-            user.setId(createID());
             users.put(user.getId(), user);
             log.info("Данные пользователя '{}' обновлены", user.getLogin());
         }
