@@ -18,15 +18,16 @@ public class UserController {
     public UserController() {
         users = new HashMap<>();
     }
-    private static long createID()
-    {
+
+    private static long createID() {
         return idCounter++;
     }
+
     @PostMapping("/users")
     public User addUser(@RequestBody User user) throws ValidationException {
-        if(users.values().stream()
-                .filter(x->x.getLogin().equalsIgnoreCase(user.getLogin()))
-                .anyMatch(x->x.getEmail().equalsIgnoreCase(user.getEmail()))){
+        if (users.values().stream()
+                .filter(x -> x.getLogin().equalsIgnoreCase(user.getLogin()))
+                .anyMatch(x -> x.getEmail().equalsIgnoreCase(user.getEmail()))) {
             log.error("Пользователь '{}' с элетронной почтой '{}' уже существует.",
                     user.getLogin(), user.getEmail());
             throw new ValidationException("This user already exists");
@@ -40,10 +41,10 @@ public class UserController {
 
     @PutMapping("/users")
     public User updateUser(@RequestBody User user) throws ValidationException {
-        if (!users.containsKey(user.getId())){
+        /*if (!users.containsKey(user.getId())){
             log.error("Пользователь '{}' c id '{}' не найден", user.getLogin(), user.getId());
             throw new ValidationException("User not found in the map");
-        }
+        }*/
         if (isValidate(user)) {
             users.put(user.getId(), user);
             log.info("Данные пользователя '{}' обновлены", user.getLogin());
