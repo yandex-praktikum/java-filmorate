@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -15,8 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FilmControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private FilmController controller;
 
     @Test
     public void test_shouldReturnOkStatus() throws Exception {
@@ -69,5 +68,55 @@ class FilmControllerTest {
                         .content("{\"name\": \"once upon a time\",\"description\": \"film description\","
                                 + "\"releaseDate\": \"1895-12-28\", \"duration\": -1}"))
                 .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void test_addFilmWithSameNameAndReleaseDateShouldReturn400CodeStatus() throws Exception {
+        mockMvc.perform(post("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"once upon a time\",\"description\": \"film description\","
+                                + "\"releaseDate\": \"1895-12-28\", \"duration\": 100}"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(post("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"once upon a time\", \"description\": \"film description\","
+                                + "\"releaseDate\": \"1895-12-28\", \"duration\": 90}"))
+                .andExpect(status().is4xxClientError());
+
+        mockMvc.perform(post("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"once upon a time\", \"description\": \"film description\","
+                                + "\"releaseDate\": \"2021-12-28\", \"duration\": 90}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void test_updateFilmWithDifferentIdShouldReturn400CodeStatus() throws Exception {
+        mockMvc.perform(post("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"once upon a time\",\"description\": \"film description\","
+                                + "\"releaseDate\": \"1895-12-28\", \"duration\": 100}"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(put("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("{\"id\": 1, \"name\": \"once upon a time\", "
+                                + "\"description\": \"Different film description\","
+                                + "\"releaseDate\": \"2000-12-28\", \"duration\": 90}"))
+                .andExpect(status().is4xxClientError());
+
+        mockMvc.perform(put("/films")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("{\"id\": 0, \"name\": \"once upon a time\", "
+                                + "\"description\": \"Different film description\","
+                                + "\"releaseDate\": \"2000-12-28\", \"duration\": 90}"))
+                .andExpect(status().isOk());
     }
 }

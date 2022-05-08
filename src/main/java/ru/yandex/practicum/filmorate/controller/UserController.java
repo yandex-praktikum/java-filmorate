@@ -12,14 +12,25 @@ import java.util.Map;
 @RestController
 @Slf4j
 public class UserController {
-    private final Map<Integer, User> users;
+    private final Map<Long, User> users;
+    private static long idCounter = 0;
 
     public UserController() {
         users = new HashMap<>();
     }
-
+    private static long createID()
+    {
+        return idCounter++;
+    }
     @PostMapping("/users")
     public User addUser(@RequestBody User user) throws ValidationException {
+        if(users.values().stream()
+                .filter(x->x.getLogin().equalsIgnoreCase(user.getLogin()))
+                .anyMatch(x->x.getEmail().equalsIgnoreCase(user.getEmail()))){
+            log.error("Пользователь '{}' с элетронной почтой '{}' уже существует.",
+                    user.getLogin(), user.getEmail());
+            throw new ValidationException("This user already exists");
+        }
         if (isValidate(user)) {
             users.put(user.getId(), user);
         }
@@ -28,7 +39,12 @@ public class UserController {
 
     @PutMapping("/users")
     public User updateUser(@RequestBody User user) throws ValidationException {
+        if (!users.containsKey(user.getId())){
+            log.error("Пользователь '{}' c id '{}' не найден", user.getLogin(), user.getId());
+            throw new ValidationException("User not found in the map");
+        }
         if (isValidate(user)) {
+            user.setId(createID());
             users.put(user.getId(), user);
             log.info("Данные пользователя '{}' обновлены", user.getLogin());
         }
@@ -36,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public Map<Integer, User> getAllUsers() {
+    public Map<Long, User> getAllUsers() {
         return users;
     }
 
