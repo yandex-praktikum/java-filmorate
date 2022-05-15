@@ -42,8 +42,6 @@ public class FilmController {
         return film;
     }
 
-
-
     @PutMapping
     public Film update(@Validated @RequestBody Film film) {
         if (film.getId() == 0) {
