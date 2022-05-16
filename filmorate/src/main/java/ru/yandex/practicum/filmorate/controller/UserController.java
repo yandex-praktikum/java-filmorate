@@ -39,7 +39,6 @@ public class UserController {
 
     @PutMapping
     public User update(@Validated @RequestBody User user){
-        System.out.println("привет");
         if(user.getId() == 0){
             throw new ValidationException("Введите id пользователя, которого необходимо обновить");
         }
