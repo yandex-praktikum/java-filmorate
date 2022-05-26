@@ -107,7 +107,7 @@ class UserControllerTests {
 
     @Test
     void test6_createValidUserResponseShouldBeOk() throws Exception {
-        User user = new User(6, "mail@mail.ru", "Login", " "
+        User user = new User(6, "mail@mail.ru", "Login", null
                                  , LocalDate.of(1967, 3, 25));
         String body = mapper.writeValueAsString(user);
         mockMvc.perform(post("/users")
@@ -164,10 +164,25 @@ class UserControllerTests {
                     .content(body)
                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk());
+    }
+
+    @Test
+    void test2_updateValidUserResponseShouldBeOk() throws Exception {
         this.mockMvc.perform(put("/users")
-                    .content(" ")
+                        .content(" ")
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(result -> assertTrue(result.getResolvedException() instanceof RuntimeException));
+    }
+
+    @Test
+    void test3_updateValidUserResponseShouldBeOk() throws Exception {
+        User user = new User(9, "mail@mail.ru", "login", "name"
+                , LocalDate.of(1967, 3, 25));
+        String body = mapper.writeValueAsString(user);
+        this.mockMvc.perform(put("/users")
+                    .content(body)
                     .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(result -> assertTrue(result.getResolvedException() instanceof RuntimeException));
+                    .andExpect(status().isOk());
     }
 
     @Test

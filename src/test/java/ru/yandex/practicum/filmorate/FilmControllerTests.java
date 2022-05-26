@@ -149,10 +149,26 @@ public class FilmControllerTests {
                     .content(body)
                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk());
+
+    }
+
+    @Test
+    void test2_updateValidFilmResponseShouldBeOk() throws Exception {
+        Film film = new Film(7, "nisi eiusmod", "nisi eiusmod"
+                , LocalDate.of(1967, 3, 25), 1000);
+        String body = mapper.writeValueAsString(film);
         this.mockMvc.perform(put("/films")
-                    .content(" ")
+                    .content(body)
                     .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(result -> assertTrue(result.getResolvedException() instanceof RuntimeException));
+                    .andExpect(status().isOk());
+    }
+
+    @Test
+    void test3_updateValidFilmResponseShouldBeOk() throws Exception {
+        this.mockMvc.perform(put("/films")
+                        .content(" ")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof RuntimeException));
     }
 
     @Test
