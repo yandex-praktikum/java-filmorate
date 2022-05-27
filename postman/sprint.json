@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "5bc299c1-f2a4-4e89-8ae7-26e06579ca77",
-		"name": "sprint10/add-friends-likes",
+		"_postman_id": "3e285987-d223-42cb-95b6-34f7b9ca053e",
+		"name": "sprint12/add-database",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "2036415"
 	},
@@ -480,7 +480,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"login\": \"doloreUpdate\",\n  \"name\": \"est adipisicing\",\n  \"id\": -1,\n  \"email\": \"mail@yandex.ru\",\n  \"birthday\": \"1976-09-20\"\n}",
+							"raw": "{\n  \"login\": \"doloreUpdate\",\n  \"name\": \"est adipisicing\",\n  \"id\": 9999,\n  \"email\": \"mail@yandex.ru\",\n  \"birthday\": \"1976-09-20\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1033,7 +1033,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "-1",
+									"value": "9999",
 									"description": "(Required) "
 								}
 							]
@@ -2229,12 +2229,7 @@
 									"});\r",
 									"pm.test(\"Test user friends\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(1);\r",
-									"    pm.expect(jsonData[0].id).to.eql(1);\r",
-									"    pm.expect(jsonData[0].email).to.eql('mail@yandex.ru');\r",
-									"    pm.expect(jsonData[0].name).to.eql('est adipisicing');\r",
-									"    pm.expect(jsonData[0].login).to.eql('doloreUpdate');    \r",
-									"    pm.expect(jsonData[0].birthday).to.eql('1976-09-20');\r",
+									"    pm.expect(jsonData.length).to.eql(0);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -3247,7 +3242,7 @@
 					]
 				},
 				{
-					"name": "Friend get 2 friends",
+					"name": "Friend get 1 friends",
 					"event": [
 						{
 							"listen": "test",
@@ -3258,7 +3253,12 @@
 									"});\r",
 									"pm.test(\"Test friend friends\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(2);\r",
+									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"    pm.expect(jsonData[0].id).to.eql(3);\r",
+									"    pm.expect(jsonData[0].email).to.eql('friend@common.ru');\r",
+									"    pm.expect(jsonData[0].name).to.eql('common');\r",
+									"    pm.expect(jsonData[0].login).to.eql('common');    \r",
+									"    pm.expect(jsonData[0].birthday).to.eql('2000-08-20');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -3452,6 +3452,11 @@
 									"pm.test(\"Test get common friend\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"    pm.expect(jsonData[0].id).to.eql(3);\r",
+									"    pm.expect(jsonData[0].email).to.eql('friend@common.ru');\r",
+									"    pm.expect(jsonData[0].name).to.eql('common');\r",
+									"    pm.expect(jsonData[0].login).to.eql('common');    \r",
+									"    pm.expect(jsonData[0].birthday).to.eql('2000-08-20');\r",
 									"});\r",
 									""
 								],
@@ -4267,6 +4272,204 @@
 							"body": ""
 						}
 					]
+				},
+				{
+					"name": "User get 1 friends",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test user 2 friends\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"    pm.expect(jsonData[0].id).to.eql(3);\r",
+									"    pm.expect(jsonData[0].email).to.eql('friend@common.ru');\r",
+									"    pm.expect(jsonData[0].name).to.eql('common');\r",
+									"    pm.expect(jsonData[0].login).to.eql('common');    \r",
+									"    pm.expect(jsonData[0].birthday).to.eql('2000-08-20');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/:id/friends",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								":id",
+								"friends"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id/friends",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id",
+										"friends"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id/friends",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id",
+										"friends"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id/friends",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id",
+										"friends"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id/friends",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id",
+										"friends"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
 				}
 			]
 		},
@@ -4438,6 +4641,10 @@
 									"    pm.expect(jsonData.description).to.eql('Duis in consequat esse');    \r",
 									"    pm.expect(jsonData.releaseDate).to.eql('1979-04-17');\r",
 									"    pm.expect(jsonData.duration).to.eql(100);\r",
+									"    pm.expect(jsonData.mpa.id).to.eql(1);\r",
+									"    if (jsonData.genres != null) {\r",
+									"        pm.expect(jsonData.genres.length).to.eql(0);\r",
+									"    }\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -4458,7 +4665,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 100,\n  \"rate\": 4\n}",
+							"raw": "{\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 100,\n  \"rate\": 4,\n  \"mpa\": { \"id\": 1}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -4963,6 +5170,91 @@
 					]
 				},
 				{
+					"name": "Film create Fail MPA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500 or 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,400]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Name\",\n  \"description\": \"Descrition\",\n  \"releaseDate\": \"1980-03-25\",\n  \"duration\": 200,\n  \"mpa\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"id\": -7113753,\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 33722088\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
 					"name": "Film update",
 					"event": [
 						{
@@ -4979,6 +5271,10 @@
 									"    pm.expect(jsonData.description).to.eql('New film update decription');    \r",
 									"    pm.expect(jsonData.releaseDate).to.eql('1989-04-17');\r",
 									"    pm.expect(jsonData.duration).to.eql(190);\r",
+									"    pm.expect(jsonData.mpa.id).to.eql(5);\r",
+									"    if (jsonData.genres != null) {\r",
+									"        pm.expect(jsonData.genres.length).to.eql(0);\r",
+									"    }\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -4999,7 +5295,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": 1,\n  \"name\": \"Film Updated\",\n  \"releaseDate\": \"1989-04-17\",\n  \"description\": \"New film update decription\",\n  \"duration\": 190,\n  \"rate\": 4\n}",
+							"raw": "{\n  \"id\": 1,\n  \"name\": \"Film Updated\",\n  \"releaseDate\": \"1989-04-17\",\n  \"description\": \"New film update decription\",\n  \"duration\": 190,\n  \"rate\": 4,\n  \"mpa\": { \"id\": 5}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -5193,7 +5489,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": -1,\n  \"name\": \"Film Updated\",\n  \"releaseDate\": \"1989-04-17\",\n  \"description\": \"New film update decription\",\n  \"duration\": 190,\n  \"rate\": 4\n}",
+							"raw": "{\n  \"id\": 9999,\n  \"name\": \"Film Updated\",\n  \"releaseDate\": \"1989-04-17\",\n  \"description\": \"New film update decription\",\n  \"duration\": 190,\n  \"mpa\": { \"id\": 5}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -5412,7 +5708,7 @@
 			"name": "film",
 			"item": [
 				{
-					"name": "Film create Firend",
+					"name": "Film create Friend",
 					"event": [
 						{
 							"listen": "test",
@@ -5427,6 +5723,9 @@
 									"    pm.expect(jsonData.description).to.eql('New film about friends');    \r",
 									"    pm.expect(jsonData.releaseDate).to.eql('1999-04-30');\r",
 									"    pm.expect(jsonData.duration).to.eql(120);\r",
+									"    pm.expect(jsonData.mpa.id).to.eql(3);\r",
+									"    pm.expect(jsonData.genres.length).to.eql(1);\r",
+									"    pm.expect(jsonData.genres[0].id).to.eql(1);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -5447,7 +5746,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"New film\",\n  \"releaseDate\": \"1999-04-30\",\n  \"description\": \"New film about friends\",\n  \"duration\": 120,\n  \"rate\": 4\n}",
+							"raw": "{\n  \"name\": \"New film\",\n  \"releaseDate\": \"1999-04-30\",\n  \"description\": \"New film about friends\",\n  \"duration\": 120,\n  \"rate\": 4,\n  \"mpa\": { \"id\": 3},\n  \"genres\": [{ \"id\": 1}]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -5620,6 +5919,19 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test get film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(1);\r",
+									"    pm.expect(jsonData.name).to.eql('Film Updated');\r",
+									"    pm.expect(jsonData.description).to.eql('New film update decription');    \r",
+									"    pm.expect(jsonData.releaseDate).to.eql('1989-04-17');\r",
+									"    pm.expect(jsonData.duration).to.eql(190);\r",
+									"    pm.expect(jsonData.mpa.id).to.eql(5);\r",
+									"    pm.expect(jsonData.mpa.name).not.null;\r",
+									"    if (jsonData.genres != null) {\r",
+									"        pm.expect(jsonData.genres.length).to.eql(0);\r",
+									"    }\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -5830,7 +6142,204 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "-1",
+									"value": "9999",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Friend  film get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test get film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(2);\r",
+									"    pm.expect(jsonData.name).to.eql('New film');\r",
+									"    pm.expect(jsonData.description).to.eql('New film about friends');    \r",
+									"    pm.expect(jsonData.releaseDate).to.eql('1999-04-30');\r",
+									"    pm.expect(jsonData.duration).to.eql(120);\r",
+									"    pm.expect(jsonData.mpa.id).to.eql(3);\r",
+									"    pm.expect(jsonData.mpa.name).to.eql('PG-13');\r",
+									"    pm.expect(jsonData.genres.length).to.eql(1);\r",
+									"    pm.expect(jsonData.genres[0].id).to.eql(1);\r",
+									"    pm.expect(jsonData.genres[0].name).to.eql('Комедия');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2",
 									"description": "(Required) "
 								}
 							]
@@ -6221,6 +6730,7 @@
 									"    pm.expect(jsonData[0].description).to.eql('New film about friends');    \r",
 									"    pm.expect(jsonData[0].releaseDate).to.eql('1999-04-30');\r",
 									"    pm.expect(jsonData[0].duration).to.eql(120);\r",
+									"    pm.expect(jsonData[0].mpa.id).to.eql(3);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -6959,6 +7469,2725 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "MPA",
+			"item": [
+				{
+					"name": "Mpa get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test get user\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(1);\r",
+									"    pm.expect(jsonData.name).to.eql('G');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/mpa/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mpa",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Mpa get unknown",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/mpa/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mpa",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "-1",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Mpa  All",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Test list user\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(5);\r",
+									"    pm.expect(jsonData[0].id).to.eql(1);\r",
+									"    pm.expect(jsonData[0].name).to.eql('G');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/mpa",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mpa"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Genre",
+			"item": [
+				{
+					"name": "Genre get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test get user\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(1);\r",
+									"    pm.expect(jsonData.name).to.eql('Комедия');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/genres/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"genres",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Genre get unknown",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/genres/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"genres",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "-1",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Genre All",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Test list user\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(6);\r",
+									"    pm.expect(jsonData[0].id).to.eql(1);\r",
+									"    pm.expect(jsonData[0].name).to.eql('Комедия');\r",
+									"    pm.expect(jsonData[1].id).to.eql(2);\r",
+									"    pm.expect(jsonData[1].name).to.eql('Драма');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/genres",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"genres"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Film genre update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test updated film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(1);\r",
+									"    pm.expect(jsonData.name).to.eql('Film Updated');\r",
+									"    pm.expect(jsonData.description).to.eql('New film update decription');    \r",
+									"    pm.expect(jsonData.releaseDate).to.eql('1989-04-17');\r",
+									"    pm.expect(jsonData.duration).to.eql(190);\r",
+									"    pm.expect(jsonData.mpa.id).to.eql(5);\r",
+									"    pm.expect(jsonData.genres.length).to.eql(1);\r",
+									"    pm.expect(jsonData.genres[0].id).to.eql(2);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"name\": \"Film Updated\",\n  \"releaseDate\": \"1989-04-17\",\n  \"description\": \"New film update decription\",\n  \"duration\": 190,\n  \"rate\": 4,\n  \"mpa\": { \"id\": 5},\n  \"genres\": [{ \"id\": 2}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Film get with genre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test get film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(1);\r",
+									"    pm.expect(jsonData.name).to.eql('Film Updated');\r",
+									"    pm.expect(jsonData.description).to.eql('New film update decription');    \r",
+									"    pm.expect(jsonData.releaseDate).to.eql('1989-04-17');\r",
+									"    pm.expect(jsonData.duration).to.eql(190);\r",
+									"    pm.expect(jsonData.mpa.id).to.eql(5);\r",
+									"    pm.expect(jsonData.mpa.name).to.eql('NC-17');\r",
+									"    pm.expect(jsonData.genres.length).to.eql(1);\r",
+									"    pm.expect(jsonData.genres[0].id).to.eql(2);\r",
+									"    pm.expect(jsonData.genres[0].name).to.eql('Драма');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Film All with genre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test get all film with genres\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(2);\r",
+									"    var film = jsonData[0];\r",
+									"    pm.expect(film.id).to.eql(1);\r",
+									"    pm.expect(film.name).to.eql('Film Updated');\r",
+									"    pm.expect(film.description).to.eql('New film update decription');    \r",
+									"    pm.expect(film.releaseDate).to.eql('1989-04-17');\r",
+									"    pm.expect(film.duration).to.eql(190);\r",
+									"    pm.expect(film.mpa.id).to.eql(5);\r",
+									"    pm.expect(film.mpa.name).to.eql('NC-17');\r",
+									"    pm.expect(film.genres.length).to.eql(1);\r",
+									"    pm.expect(film.genres[0].id).to.eql(2);\r",
+									"    pm.expect(film.genres[0].name).to.eql('Драма');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Film update remove  genre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test updated film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(1);\r",
+									"    pm.expect(jsonData.name).to.eql('Film Updated');\r",
+									"    pm.expect(jsonData.description).to.eql('New film update decription');    \r",
+									"    pm.expect(jsonData.releaseDate).to.eql('1989-04-17');\r",
+									"    pm.expect(jsonData.duration).to.eql(190);\r",
+									"    pm.expect(jsonData.mpa.id).to.eql(5);\r",
+									"    pm.expect(jsonData.genres.length).to.eql(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"name\": \"Film Updated\",\n  \"releaseDate\": \"1989-04-17\",\n  \"description\": \"New film update decription\",\n  \"duration\": 190,\n  \"rate\": 4,\n  \"mpa\": { \"id\": 5},\n  \"genres\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Film get without genre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test get film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(1);\r",
+									"    pm.expect(jsonData.name).to.eql('Film Updated');\r",
+									"    pm.expect(jsonData.description).to.eql('New film update decription');    \r",
+									"    pm.expect(jsonData.releaseDate).to.eql('1989-04-17');\r",
+									"    pm.expect(jsonData.duration).to.eql(190);\r",
+									"    pm.expect(jsonData.mpa.id).to.eql(5);\r",
+									"    pm.expect(jsonData.mpa.name).to.eql('NC-17');\r",
+									"    if (jsonData.genres != null) {\r",
+									"        pm.expect(jsonData.genres.length).to.eql(0);\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Friend film genres update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test updated film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(2);\r",
+									"    pm.expect(jsonData.name).to.eql('New film');\r",
+									"    pm.expect(jsonData.description).to.eql('New film about friends');    \r",
+									"    pm.expect(jsonData.releaseDate).to.eql('1999-04-30');\r",
+									"    pm.expect(jsonData.duration).to.eql(120);\r",
+									"    pm.expect(jsonData.mpa.id).to.eql(3);\r",
+									"    pm.expect(jsonData.genres.length).to.eql(3);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 2,\n  \"name\": \"New film\",\n  \"releaseDate\": \"1999-04-30\",\n  \"description\": \"New film about friends\",\n  \"duration\": 120,\n  \"mpa\": { \"id\": 3},\n  \"genres\": [{ \"id\": 1}, { \"id\": 2}, { \"id\": 3}]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Friend  film get with genre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test get film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(2);\r",
+									"    pm.expect(jsonData.name).to.eql('New film');\r",
+									"    pm.expect(jsonData.description).to.eql('New film about friends');    \r",
+									"    pm.expect(jsonData.releaseDate).to.eql('1999-04-30');\r",
+									"    pm.expect(jsonData.duration).to.eql(120);\r",
+									"    pm.expect(jsonData.mpa.id).to.eql(3);\r",
+									"    pm.expect(jsonData.mpa.name).to.eql('PG-13');\r",
+									"    pm.expect(jsonData.genres.length).to.eql(3);\r",
+									"    pm.expect(jsonData.genres[0].id).to.eql(1);\r",
+									"    pm.expect(jsonData.genres[0].name).to.eql('Комедия');\r",
+									"    pm.expect(jsonData.genres[1].id).to.eql(2);\r",
+									"    pm.expect(jsonData.genres[1].name).to.eql('Драма');\r",
+									"    pm.expect(jsonData.genres[2].id).to.eql(3);\r",
+									"    pm.expect(jsonData.genres[2].name).to.eql('Мультфильм');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Friend film genres update with duplicate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test updated film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(2);\r",
+									"    pm.expect(jsonData.name).to.eql('New film');\r",
+									"    pm.expect(jsonData.description).to.eql('New film about friends');    \r",
+									"    pm.expect(jsonData.releaseDate).to.eql('1999-04-30');\r",
+									"    pm.expect(jsonData.duration).to.eql(120);\r",
+									"    pm.expect(jsonData.mpa.id).to.eql(3);\r",
+									"    pm.expect(jsonData.genres.length).to.eql(2);\r",
+									"    pm.expect(jsonData.genres[0].id).to.eql(1);\r",
+									"    pm.expect(jsonData.genres[1].id).to.eql(2);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 2,\n  \"name\": \"New film\",\n  \"releaseDate\": \"1999-04-30\",\n  \"description\": \"New film about friends\",\n  \"duration\": 120,\n  \"mpa\": { \"id\": 3},\n  \"genres\": [{ \"id\": 1}, { \"id\": 2}, { \"id\": 1}]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Friend  film get with genre  without duplicate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test get film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.name).to.eql('New film');\r",
+									"    pm.expect(jsonData.description).to.eql('New film about friends');    \r",
+									"    pm.expect(jsonData.releaseDate).to.eql('1999-04-30');\r",
+									"    pm.expect(jsonData.duration).to.eql(120);\r",
+									"    pm.expect(jsonData.mpa.id).to.eql(3);\r",
+									"    pm.expect(jsonData.mpa.name).to.eql('PG-13');\r",
+									"    pm.expect(jsonData.genres.length).to.eql(2);\r",
+									"    pm.expect(jsonData.genres[0].id).to.eql(1);\r",
+									"    pm.expect(jsonData.genres[0].name).to.eql('Комедия');\r",
+									"    pm.expect(jsonData.genres[1].id).to.eql(2);\r",
+									"    pm.expect(jsonData.genres[1].name).to.eql('Драма');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"variable": [
