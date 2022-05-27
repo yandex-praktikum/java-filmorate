@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class FilmController {
     }
 
     @PostMapping(value = "/films")
-    public Film addFilm(@RequestBody Film film) throws ValidationException {
+    public Film addFilm(@Valid @RequestBody Film film) throws ValidationException {
         if ((film.getName() == null)||(film.getName().equals(""))) {
             throw new ValidationException("нет названия фильма");
         }
@@ -40,7 +41,7 @@ public class FilmController {
     }
 
     @PutMapping(value = "/films")
-    public Film updateFilm(@RequestBody Film film) throws ValidationException {
+    public Film updateFilm(@Valid @RequestBody Film film) throws ValidationException {
         if (film.getId() <= 0) {
             throw new ValidationException("id меньше или равен нулю");
         }

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/users")
-    public User addUser(@RequestBody User user) throws ValidationException {
+    public User addUser(@Valid @RequestBody User user) throws ValidationException {
         if (!((user.getEmail() != null) && (user.getEmail().contains("@")))) {
             throw new ValidationException("Неправильный формат почты");
         }
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/users")
-    public User updateUser(@RequestBody User user) throws ValidationException {
+    public User updateUser(@Valid @RequestBody User user) throws ValidationException {
         if (user.getId()<=0){
             throw new ValidationException("id меньше или равен нулю");
         }
