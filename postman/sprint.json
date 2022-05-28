@@ -1,7 +1,12 @@
 {
 	"info": {
+<<<<<<< HEAD
 		"_postman_id": "5bc299c1-f2a4-4e89-8ae7-26e06579ca77",
 		"name": "API Test Sprint 2",
+=======
+		"_postman_id": "e337606f-5df6-47d0-9784-7fa89c1b51fe",
+		"name": "API Test Sprint 1",
+>>>>>>> main
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -9,14 +14,22 @@
 			"name": "users",
 			"item": [
 				{
+<<<<<<< HEAD
 					"name": "User Create",
+=======
+					"name": "User create",
+>>>>>>> main
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
+<<<<<<< HEAD
 									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+=======
+									"    pm.response.to.have.status(200);\r",
+>>>>>>> main
 									"});\r",
 									"pm.test(\"Test user\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
@@ -271,7 +284,11 @@
 					]
 				},
 				{
+<<<<<<< HEAD
 					"name": "User create Fail birthday",
+=======
+					"name": "User create Fail email",
+>>>>>>> main
 					"event": [
 						{
 							"listen": "test",
@@ -299,7 +316,11 @@
 						],
 						"body": {
 							"mode": "raw",
+<<<<<<< HEAD
 							"raw": "{\n  \"login\": \"dolore\",\n  \"name\": \"\",\n  \"email\": \"test@mail.ru\",\n  \"birthday\": \"2446-08-20\"\n}",
+=======
+							"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"\",\n  \"email\": \"mail.ru\",\n  \"birthday\": \"1980-08-20\"\n}",
+>>>>>>> main
 							"options": {
 								"raw": {
 									"language": "json"
@@ -356,7 +377,11 @@
 					]
 				},
 				{
+<<<<<<< HEAD
 					"name": "User create Fail email",
+=======
+					"name": "User create Fail birthday",
+>>>>>>> main
 					"event": [
 						{
 							"listen": "test",
@@ -384,7 +409,11 @@
 						],
 						"body": {
 							"mode": "raw",
+<<<<<<< HEAD
 							"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"\",\n  \"email\": \"mail.ru\",\n  \"birthday\": \"1980-08-20\"\n}",
+=======
+							"raw": "{\n  \"login\": \"dolore\",\n  \"name\": \"\",\n  \"email\": \"test@mail.ru\",\n  \"birthday\": \"2446-08-20\"\n}",
+>>>>>>> main
 							"options": {
 								"raw": {
 									"language": "json"
@@ -449,6 +478,7 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+<<<<<<< HEAD
 									"});\r",
 									"pm.test(\"Test user\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
@@ -456,6 +486,8 @@
 									"    pm.expect(jsonData.name).to.eql('est adipisicing');\r",
 									"    pm.expect(jsonData.login).to.eql('doloreUpdate');    \r",
 									"    pm.expect(jsonData.birthday).to.eql('1976-09-20');\r",
+=======
+>>>>>>> main
 									"});"
 								],
 								"type": "text/javascript"
@@ -476,7 +508,11 @@
 						],
 						"body": {
 							"mode": "raw",
+<<<<<<< HEAD
 							"raw": "{\n  \"login\": \"doloreUpdate\",\n  \"name\": \"est adipisicing\",\n  \"id\": 1,\n  \"email\": \"mail@yandex.ru\",\n  \"birthday\": \"1976-09-20\"\n}",
+=======
+							"raw": "{\n  \"login\": \"dolore\",\n  \"name\": \"est adipisicing\",\n  \"id\": 1,\n  \"email\": \"mail@yandex.ru\",\n  \"birthday\": \"1946-08-20\"\n}",
+>>>>>>> main
 							"options": {
 								"raw": {
 									"language": "json"
@@ -533,7 +569,11 @@
 					]
 				},
 				{
+<<<<<<< HEAD
 					"name": "User All",
+=======
+					"name": "User get All",
+>>>>>>> main
 					"event": [
 						{
 							"listen": "test",
@@ -541,11 +581,14 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+<<<<<<< HEAD
 									"});\r",
 									"pm.test(\"Test email\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData.length).to.eql(1);\r",
 									"    pm.expect(jsonData[0].email).to.eql('mail@yandex.ru');\r",
+=======
+>>>>>>> main
 									"});"
 								],
 								"type": "text/javascript"
@@ -603,16 +646,24 @@
 			]
 		},
 		{
+<<<<<<< HEAD
 			"name": "user",
 			"item": [
 				{
 					"name": "Friend Create",
+=======
+			"name": "films",
+			"item": [
+				{
+					"name": "Film create",
+>>>>>>> main
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
+<<<<<<< HEAD
 									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
 									"});\r",
 									"pm.test(\"Test friend\", function () {\r",
@@ -621,6 +672,9 @@
 									"    pm.expect(jsonData.name).to.eql('friend adipisicing');\r",
 									"    pm.expect(jsonData.login).to.eql('friend');    \r",
 									"    pm.expect(jsonData.birthday).to.eql('1976-08-20');\r",
+=======
+									"    pm.response.to.have.status(200);\r",
+>>>>>>> main
 									"});"
 								],
 								"type": "text/javascript"
@@ -641,7 +695,11 @@
 						],
 						"body": {
 							"mode": "raw",
+<<<<<<< HEAD
 							"raw": "{\n  \"login\": \"friend\",\n  \"name\": \"friend adipisicing\",\n  \"email\": \"friend@mail.ru\",\n  \"birthday\": \"1976-08-20\"\n}",
+=======
+							"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 100\n}",
+>>>>>>> main
 							"options": {
 								"raw": {
 									"language": "json"
@@ -649,12 +707,20 @@
 							}
 						},
 						"url": {
+<<<<<<< HEAD
 							"raw": "{{baseUrl}}/users",
+=======
+							"raw": "{{baseUrl}}/films",
+>>>>>>> main
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+<<<<<<< HEAD
 								"users"
+=======
+								"films"
+>>>>>>> main
 							]
 						}
 					},
@@ -666,7 +732,11 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
+<<<<<<< HEAD
 									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
+=======
+									"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"id\": -7113753,\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 33722088\n}",
+>>>>>>> main
 									"options": {
 										"raw": {
 											"language": "json"
@@ -674,12 +744,20 @@
 									}
 								},
 								"url": {
+<<<<<<< HEAD
 									"raw": "{{baseUrl}}/users",
+=======
+									"raw": "{{baseUrl}}/films",
+>>>>>>> main
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
+<<<<<<< HEAD
 										"users"
+=======
+										"films"
+>>>>>>> main
 									]
 								}
 							},
@@ -698,14 +776,23 @@
 					]
 				},
 				{
+<<<<<<< HEAD
 					"name": "User get",
+=======
+					"name": "Film create Fail name",
+>>>>>>> main
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
+<<<<<<< HEAD
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+=======
+									"pm.test(\"Status code is 500 or 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,400]);\r",
+>>>>>>> main
 									"});"
 								],
 								"type": "text/javascript"
@@ -713,19 +800,44 @@
 						}
 					],
 					"request": {
+<<<<<<< HEAD
 						"method": "GET",
 						"header": [
 							{
+=======
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+>>>>>>> main
 								"key": "Accept",
 								"value": "*/*"
 							}
 						],
+<<<<<<< HEAD
 						"url": {
 							"raw": "{{baseUrl}}/users/:id",
+=======
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"\",\n  \"description\": \"Description\",\n  \"releaseDate\": \"1900-03-25\",\n  \"duration\": 200\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+>>>>>>> main
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+<<<<<<< HEAD
 								"users",
 								":id"
 							],
@@ -735,6 +847,9 @@
 									"value": "1",
 									"description": "(Required) "
 								}
+=======
+								"films"
+>>>>>>> main
 							]
 						}
 					},
@@ -742,14 +857,31 @@
 						{
 							"name": "OK",
 							"originalRequest": {
+<<<<<<< HEAD
 								"method": "GET",
 								"header": [],
 								"url": {
 									"raw": "{{baseUrl}}/users/:id",
+=======
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"id\": -7113753,\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 33722088\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+>>>>>>> main
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
+<<<<<<< HEAD
 										"users",
 										":id"
 									],
@@ -759,6 +891,9 @@
 											"value": "-29029902",
 											"description": "(Required) "
 										}
+=======
+										"films"
+>>>>>>> main
 									]
 								}
 							},
@@ -773,6 +908,7 @@
 							],
 							"cookie": [],
 							"body": ""
+<<<<<<< HEAD
 						},
 						{
 							"name": "Not Found",
@@ -816,10 +952,79 @@
 								"header": [],
 								"url": {
 									"raw": "{{baseUrl}}/users/:id",
+=======
+						}
+					]
+				},
+				{
+					"name": "Film create Fail description",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500 or 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,400]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Film name\",\n  \"description\": \"\",\n  \"releaseDate\": \"1900-03-25\",\n  \"duration\": 200\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"id\": -7113753,\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 33722088\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+>>>>>>> main
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
+<<<<<<< HEAD
 										"users",
 										":id"
 									],
@@ -834,6 +1039,14 @@
 							},
 							"status": "Conflict",
 							"code": 409,
+=======
+										"films"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+>>>>>>> main
 							"_postman_previewlanguage": "text",
 							"header": [
 								{
@@ -843,6 +1056,7 @@
 							],
 							"cookie": [],
 							"body": ""
+<<<<<<< HEAD
 						},
 						{
 							"name": "Internal Server Error",
@@ -851,10 +1065,79 @@
 								"header": [],
 								"url": {
 									"raw": "{{baseUrl}}/users/:id",
+=======
+						}
+					]
+				},
+				{
+					"name": "Film create Fail releaseDate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500 or 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,400]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Name\",\n  \"description\": \"Description\",\n  \"releaseDate\": \"1890-03-25\",\n  \"duration\": 200\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"id\": -7113753,\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 33722088\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+>>>>>>> main
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
+<<<<<<< HEAD
 										"users",
 										":id"
 									],
@@ -869,6 +1152,14 @@
 							},
 							"status": "Internal Server Error",
 							"code": 500,
+=======
+										"films"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+>>>>>>> main
 							"_postman_previewlanguage": "text",
 							"header": [
 								{
@@ -882,14 +1173,23 @@
 					]
 				},
 				{
+<<<<<<< HEAD
 					"name": "User get unknown",
+=======
+					"name": "Film create Fail duration",
+>>>>>>> main
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
+<<<<<<< HEAD
 									"pm.test(\"Status code is 404\", function () {\r",
 									"    pm.response.to.have.status(404);\r",
+=======
+									"pm.test(\"Status code is 500 or 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,400]);\r",
+>>>>>>> main
 									"});"
 								],
 								"type": "text/javascript"
@@ -897,19 +1197,44 @@
 						}
 					],
 					"request": {
+<<<<<<< HEAD
 						"method": "GET",
 						"header": [
 							{
+=======
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+>>>>>>> main
 								"key": "Accept",
 								"value": "*/*"
 							}
 						],
+<<<<<<< HEAD
 						"url": {
 							"raw": "{{baseUrl}}/users/:id",
+=======
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Name\",\n  \"description\": \"Descrition\",\n  \"releaseDate\": \"1980-03-25\",\n  \"duration\": -200\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+>>>>>>> main
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+<<<<<<< HEAD
 								"users",
 								":id"
 							],
@@ -919,6 +1244,9 @@
 									"value": "-1",
 									"description": "(Required) "
 								}
+=======
+								"films"
+>>>>>>> main
 							]
 						}
 					},
@@ -926,14 +1254,31 @@
 						{
 							"name": "OK",
 							"originalRequest": {
+<<<<<<< HEAD
 								"method": "GET",
 								"header": [],
 								"url": {
 									"raw": "{{baseUrl}}/users/:id",
+=======
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"id\": -7113753,\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 33722088\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+>>>>>>> main
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
+<<<<<<< HEAD
 										"users",
 										":id"
 									],
@@ -4192,6 +4537,9 @@
 											"value": "-29029902",
 											"description": "(Required) "
 										}
+=======
+										"films"
+>>>>>>> main
 									]
 								}
 							},
@@ -4201,6 +4549,7 @@
 							"header": [
 								{
 									"key": "Content-Type",
+<<<<<<< HEAD
 									"value": "text/plain"
 								}
 							],
@@ -4327,6 +4676,8 @@
 							"header": [
 								{
 									"key": "Content-Type",
+=======
+>>>>>>> main
 									"value": "*/*"
 								}
 							],
@@ -4336,7 +4687,11 @@
 					]
 				},
 				{
+<<<<<<< HEAD
 					"name": "Film get Popular count 2",
+=======
+					"name": "Film update",
+>>>>>>> main
 					"event": [
 						{
 							"listen": "test",
@@ -4344,10 +4699,13 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
+<<<<<<< HEAD
 									"});\r",
 									"pm.test(\"Test popular\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData.length).to.eql(2);\r",
+=======
+>>>>>>> main
 									"});"
 								],
 								"type": "text/javascript"
@@ -4355,21 +4713,49 @@
 						}
 					],
 					"request": {
+<<<<<<< HEAD
 						"method": "GET",
 						"header": [
 							{
+=======
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+>>>>>>> main
 								"key": "Accept",
 								"value": "*/*"
 							}
 						],
+<<<<<<< HEAD
 						"url": {
 							"raw": "{{baseUrl}}/films/popular",
+=======
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"id\": 1,\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 120\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+>>>>>>> main
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+<<<<<<< HEAD
 								"films",
 								"popular"
+=======
+								"films"
+>>>>>>> main
 							]
 						}
 					},
@@ -4377,16 +4763,36 @@
 						{
 							"name": "OK",
 							"originalRequest": {
+<<<<<<< HEAD
 								"method": "GET",
 								"header": [],
 								"url": {
 									"raw": "{{baseUrl}}/films/popular",
+=======
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"id\": -7113753,\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 33722088\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/films",
+>>>>>>> main
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
+<<<<<<< HEAD
 										"films",
 										"popular"
+=======
+										"films"
+>>>>>>> main
 									]
 								}
 							},
@@ -4401,6 +4807,7 @@
 							],
 							"cookie": [],
 							"body": ""
+<<<<<<< HEAD
 						},
 						{
 							"name": "Not Found",
@@ -4485,18 +4892,29 @@
 							],
 							"cookie": [],
 							"body": ""
+=======
+>>>>>>> main
 						}
 					]
 				},
 				{
+<<<<<<< HEAD
 					"name": "Film remove Like not found",
+=======
+					"name": "Film get All",
+>>>>>>> main
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
+<<<<<<< HEAD
 									"pm.test(\"Status code is 404\", function () {\r",
 									"    pm.response.to.have.status(404);\r",
+=======
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+>>>>>>> main
 									"});"
 								],
 								"type": "text/javascript"
@@ -4504,7 +4922,11 @@
 						}
 					],
 					"request": {
+<<<<<<< HEAD
 						"method": "DELETE",
+=======
+						"method": "GET",
+>>>>>>> main
 						"header": [
 							{
 								"key": "Accept",
@@ -4512,11 +4934,16 @@
 							}
 						],
 						"url": {
+<<<<<<< HEAD
 							"raw": "{{baseUrl}}/films/:id/like/:userId",
+=======
+							"raw": "{{baseUrl}}/films",
+>>>>>>> main
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+<<<<<<< HEAD
 								"films",
 								":id",
 								"like",
@@ -4533,6 +4960,9 @@
 									"value": "-2",
 									"description": "(Required) "
 								}
+=======
+								"films"
+>>>>>>> main
 							]
 						}
 					},
@@ -4540,14 +4970,22 @@
 						{
 							"name": "OK",
 							"originalRequest": {
+<<<<<<< HEAD
 								"method": "DELETE",
 								"header": [],
 								"url": {
 									"raw": "{{baseUrl}}/films/:id/like/:userId",
+=======
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films",
+>>>>>>> main
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
+<<<<<<< HEAD
 										"films",
 										":id",
 										"like",
@@ -4564,6 +5002,9 @@
 											"value": "-29029902",
 											"description": "(Required) "
 										}
+=======
+										"films"
+>>>>>>> main
 									]
 								}
 							},
@@ -4573,6 +5014,7 @@
 							"header": [
 								{
 									"key": "Content-Type",
+<<<<<<< HEAD
 									"value": "text/plain"
 								}
 							],
@@ -4699,6 +5141,8 @@
 							"header": [
 								{
 									"key": "Content-Type",
+=======
+>>>>>>> main
 									"value": "*/*"
 								}
 							],
@@ -4710,6 +5154,29 @@
 			]
 		}
 	],
+<<<<<<< HEAD
+=======
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+>>>>>>> main
 	"variable": [
 		{
 			"key": "baseUrl",
