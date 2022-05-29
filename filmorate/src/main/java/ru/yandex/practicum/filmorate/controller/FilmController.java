@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.services.FilmService;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
@@ -62,9 +61,7 @@ public class FilmController {
     public List<Film> getListPopularFilms(@RequestParam(required = false) String count) {
         List<Film> filmList = null;
         if (count == null) {
-            System.out.println("Before filmList");
             filmList = filmService.getListPopularFilms(10);
-            System.out.println("FilmList " + filmList);
         } else {
             filmList = filmService.getListPopularFilms(Integer.parseInt(count));
         }

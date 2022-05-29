@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -43,7 +42,6 @@ public class UserService {
                     String.format("Пользователя с id \"%s\" или с не id \"%s\" не существует."
                             , id1, id2));
         }
-
     }
 
     public List<User> getFriendsList(Integer id) {
@@ -61,21 +59,11 @@ public class UserService {
 
     public List<User> getMutualFriends(Integer id1, Integer id2) {
         List<User> userList = null;
-//        if (!userStorage.getUserById(id1).getFriends().isEmpty()
-//                || !userStorage.getUserById(id2).getFriends().isEmpty()) {
-            Set<Integer> setMutualFriends = new HashSet<>(userStorage.getUserById(id1).getFriends());
-            setMutualFriends.retainAll(userStorage.getUserById(id2).getFriends());
-            userList = setMutualFriends.stream()
-                    .map(userStorage::getUserById)
-                    .collect(Collectors.toList());
-//            if(userList.isEmpty()){
-//                throw new ObjectNotFoundException("У пользователей нет общих друзей");
-//            }
-//        } else {
-//            throw new ObjectNotFoundException(
-//                    String.format("Пользователя с id \"%s\" или с не id \"%s\" не существует."
-//                            , id1, id2));
-//        }
+        Set<Integer> setMutualFriends = new HashSet<>(userStorage.getUserById(id1).getFriends());
+        setMutualFriends.retainAll(userStorage.getUserById(id2).getFriends());
+        userList = setMutualFriends.stream()
+                .map(userStorage::getUserById)
+                .collect(Collectors.toList());
         return userList;
     }
 }

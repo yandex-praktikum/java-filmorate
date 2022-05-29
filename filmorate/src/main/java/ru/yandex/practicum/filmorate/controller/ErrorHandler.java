@@ -8,7 +8,6 @@ import ru.yandex.practicum.filmorate.exceptions.ObjectNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.ErrorResponse;
 
-import java.util.Arrays;
 
 @RestControllerAdvice
 public class ErrorHandler {
@@ -28,7 +27,6 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleThrowable(final Throwable e) {
-        System.out.println(e.getClass().getSimpleName());
         return new ErrorResponse("Произошла непредвиденная ошибка");
     }
 }
