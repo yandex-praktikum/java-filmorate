@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "3e285987-d223-42cb-95b6-34f7b9ca053e",
-		"name": "sprint12/add-database",
+		"_postman_id": "3258ac19-b34b-449b-b61a-12d36ab8dbc4",
+		"name": "sprint13/add-most-populars",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "2036415"
 	},
@@ -10150,6 +10150,1164 @@
 											"value": "-29029902",
 											"description": "(Required) "
 										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "most-populars",
+			"item": [
+				{
+					"name": "Film get Popular by genre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test popular film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length, \"Popular film length\").to.eql(1);\r",
+									"    pm.expect(jsonData[0].id, \"Popular film1 id\").to.eql(2);\r",
+									"    pm.expect(jsonData[0].name, \"Popular film1 name\").to.eql('New film');\r",
+									"    pm.expect(jsonData[0].description, \"Popular film1 description\").to.eql('New film about friends');    \r",
+									"    pm.expect(jsonData[0].releaseDate, \"Popular film1 releaseDate\").to.eql('1999-04-30');\r",
+									"    pm.expect(jsonData[0].duration, \"Popular film1 duration\").to.eql(120);\r",
+									"    pm.expect(jsonData[0].mpa.id, \"Popular film1 mpa\").to.eql(3);\r",
+									"    const genre = jsonData[0].genres.find(g => g.id === 1);\r",
+									"    pm.expect(genre, \"Popular film1 genre.id=1\").exist;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/popular?genreId=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								"popular"
+							],
+							"query": [
+								{
+									"key": "genreId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Film get Popular by genre 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test popular film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length, \"Popular film length\").to.eql(1);\r",
+									"    pm.expect(jsonData[0].id, \"Popular film1 id\").to.eql(2);\r",
+									"    pm.expect(jsonData[0].name, \"Popular film1 name\").to.eql('New film');\r",
+									"    pm.expect(jsonData[0].description, \"Popular film1 description\").to.eql('New film about friends');    \r",
+									"    pm.expect(jsonData[0].releaseDate, \"Popular film1 releaseDate\").to.eql('1999-04-30');\r",
+									"    pm.expect(jsonData[0].duration, \"Popular film1 duration\").to.eql(120);\r",
+									"    pm.expect(jsonData[0].mpa.id, \"Popular film1 mpa\").to.eql(3);\r",
+									"    const genre = jsonData[0].genres.find(g => g.id === 2);\r",
+									"    pm.expect(genre, \"Popular film1 genre.id=2\").exist;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/popular?genreId=2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								"popular"
+							],
+							"query": [
+								{
+									"key": "genreId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Film get Popular by genre not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test popular film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length, \"Popular film length\").to.eql(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/popular?genreId=3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								"popular"
+							],
+							"query": [
+								{
+									"key": "genreId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Film get Popular by year 1999",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test popular film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length, \"Popular film length\").to.eql(1);\r",
+									"    pm.expect(jsonData[0].id, \"Popular film1 id\").to.eql(2);\r",
+									"    pm.expect(jsonData[0].name, \"Popular film1 name\").to.eql('New film');\r",
+									"    pm.expect(jsonData[0].description, \"Popular film1 description\").to.eql('New film about friends');    \r",
+									"    pm.expect(jsonData[0].releaseDate, \"Popular film1 releaseDate\").to.eql('1999-04-30');\r",
+									"    pm.expect(jsonData[0].duration, \"Popular film1 duration\").to.eql(120);\r",
+									"    pm.expect(jsonData[0].mpa.id, \"Popular film1 mpa\").to.eql(3);\r",
+									"    const genre = jsonData[0].genres.find(g => g.id === 2);\r",
+									"    pm.expect(genre, \"Popular film1 genre.id=2\").exist;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/popular?year=1999",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								"popular"
+							],
+							"query": [
+								{
+									"key": "year",
+									"value": "1999"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Film get Popular by year not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test popular film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length, \"Popular film length\").to.eql(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/popular?year=2000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								"popular"
+							],
+							"query": [
+								{
+									"key": "year",
+									"value": "2000"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Film get Popular by genre and year 1999",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test popular film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length, \"Popular film length\").to.eql(1);\r",
+									"    pm.expect(jsonData[0].id, \"Popular film1 id\").to.eql(2);\r",
+									"    pm.expect(jsonData[0].name, \"Popular film1 name\").to.eql('New film');\r",
+									"    pm.expect(jsonData[0].description, \"Popular film1 description\").to.eql('New film about friends');    \r",
+									"    pm.expect(jsonData[0].releaseDate, \"Popular film1 releaseDate\").to.eql('1999-04-30');\r",
+									"    pm.expect(jsonData[0].duration, \"Popular film1 duration\").to.eql(120);\r",
+									"    pm.expect(jsonData[0].mpa.id, \"Popular film1 mpa\").to.eql(3);\r",
+									"    const genre = jsonData[0].genres.find(g => g.id === 2);\r",
+									"    pm.expect(genre, \"Popular film1 genre.id=2\").exist;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/popular?year=1999&genreId=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								"popular"
+							],
+							"query": [
+								{
+									"key": "year",
+									"value": "1999"
+								},
+								{
+									"key": "genreId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Film get Popular by genre and year not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test popular film\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length, \"Popular film length\").to.eql(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/popular?year=2000&genreId=2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								"popular"
+							],
+							"query": [
+								{
+									"key": "year",
+									"value": "2000"
+								},
+								{
+									"key": "genreId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/popular",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										"popular"
 									]
 								}
 							},
