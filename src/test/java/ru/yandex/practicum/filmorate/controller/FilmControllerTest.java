@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.ValidationException;
+import ru.yandex.practicum.filmorate.service.IdGeneratorFilm;
 
 import java.time.LocalDate;
 
@@ -10,7 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FilmControllerTest {
 
-    FilmController filmController = new FilmController();
+    IdGeneratorFilm idGeneratorFilm = new IdGeneratorFilm();
+    FilmController filmController = new FilmController(idGeneratorFilm);
 
     @Test
     void findAll() throws ValidationException {

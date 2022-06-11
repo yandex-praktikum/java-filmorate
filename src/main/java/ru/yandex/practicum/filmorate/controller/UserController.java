@@ -1,55 +1,62 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.service.IdGeneratorUser;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.model.ValidationException;
 
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
+@Slf4j
+@Component
 public class UserController {
 
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
-    private final HashMap<Integer,User> users = new HashMap<>();
-    private int i = 0;
+    private final Map<Integer, User> users = new HashMap<>();
+    private final IdGeneratorUser idGeneratorUser;
 
-    public User getUser(int id){
+    @Autowired
+    public UserController(IdGeneratorUser idGeneratorUser) {
+        this.idGeneratorUser = idGeneratorUser;
+    }
+
+    public User getUser(int id) {
         return users.get(id);
     }
 
     @GetMapping
     public Collection<User> findAll() {
+
         log.debug("Текущее количество пользователей: {}", users.size());
         return users.values();
     }
 
     @PostMapping
-    public User create(@RequestBody User user) throws ValidationException {
-        LocalDate currentMoment = LocalDate.now();
+    public User create(@RequestBody User user) {
+
         if (user.getName().isEmpty()) {
             user.setName(user.getLogin());
         }
-        if (!user.getEmail().contains("@") || user.getEmail().isEmpty() || user.getLogin().isEmpty() && user.getLogin().contains(" ") || user.getBirthday().isAfter(currentMoment)) {
-            log.debug("Валидация не пройдена: {}", user);
-            throw new ValidationException();
-        }
-        user.setId(i = i + 1);
+        validation(user);
+        int newId = idGeneratorUser.generate();
+        user.setId(newId);
         log.debug("Сохраняем нового пользователя: {}", user);
-        users.put(i, user);
+        users.put(newId, user);
         return user;
     }
 
     @PutMapping
-    public User saveUser(@RequestBody User user) throws ValidationException {
+    public User saveUser(@RequestBody User user) {
+
         if (user.getId() < 0) {
-            log.debug("Валидация не пройдена: {}", user);
+            log.debug("Id не может быть отрицательным: {}", user.getId());
             throw new ValidationException();
         }
         for (User oldUser : users.values()) {
@@ -64,6 +71,23 @@ public class UserController {
         }
         log.debug("Добовляем пользователя: {}", user);
         return user;
+    }
+
+    private void validation(User user) {
+
+        LocalDate currentMoment = LocalDate.now();
+
+        if (!user.getEmail().contains("@") || user.getEmail().isEmpty()) {
+            log.debug("Электронная почта не может быть пустой и должна содержать символ @: {}", user.getEmail());
+            throw new ValidationException();
+        }
+        if(user.getLogin().isEmpty() && user.getLogin().contains(" ")){
+            log.debug("Логин не может быть пустым и содержать пробелы: {}", user.getLogin());
+            throw new ValidationException();
+        } if (user.getBirthday().isAfter(currentMoment)){
+            log.debug("Дата рождения не может быть в будущем: {}", user.getBirthday());
+            throw new ValidationException();
+        }
     }
 }
 

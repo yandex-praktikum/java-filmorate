@@ -1,9 +1,11 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.IdGeneratorFilm;
 import ru.yandex.practicum.filmorate.model.ValidationException;
 
 import java.time.LocalDate;
@@ -11,11 +13,18 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/films")
+@Slf4j
+@Component
 public class FilmController {
 
-    private static final Logger log = LoggerFactory.getLogger(FilmController.class);
-    private final HashMap<Integer, Film> films = new HashMap<>();
-    private int i = 0;
+    private final LocalDate EARLIEST_RELEASE_DATE = LocalDate.of(1895, 12, 28);
+    private final Map<Integer, Film> films = new HashMap<>();
+    private final IdGeneratorFilm idGeneratorFilm;
+
+    @Autowired
+    public FilmController(IdGeneratorFilm idGeneratorFilm) {
+        this.idGeneratorFilm = idGeneratorFilm;
+    }
 
     public Film getFilm(int id) {
         return films.get(id);
@@ -23,28 +32,27 @@ public class FilmController {
 
     @GetMapping
     public Collection<Film> findAll() {
+
         log.debug("Текущее количество фильмов: {}", films.size());
         return films.values();
     }
 
     @PostMapping
-    public Film create(@RequestBody Film film) throws ValidationException {
-        film.setId(i = i + 1);
-        int len = film.getDescription().length();
-        LocalDate realize = LocalDate.of(1895, 12, 28);
-        if (film.getName().isEmpty() || len > 200 || film.getReleaseDate().isBefore(realize) || film.getDuration() < 0) {
-            log.debug("Валидация не пройдена: {}", film);
-            throw new ValidationException();
-        }
+    public Film create(@RequestBody Film film){
+
+        int newId = idGeneratorFilm.generate();
+        film.setId(newId);
+        validation(film);
         log.debug("Сохраняем новый фильм: {}", film);
-        films.put(i, film);
+        films.put(newId, film);
         return film;
     }
 
     @PutMapping
-    public Film saveFilm(@RequestBody Film film) throws ValidationException {
+    public Film saveFilm(@RequestBody Film film) {
+
         if (film.getId() < 0) {
-            log.debug("Валидация не пройдена: {}", film);
+            log.debug("Id не может быть отрицательным: {}", film.getId());
             throw new ValidationException();
         }
         for (Film oldFilm : films.values()) {
@@ -59,5 +67,26 @@ public class FilmController {
         }
         log.debug("Добовляем новый фильм: {}", film);
         return film;
+    }
+
+    private void validation(Film film){
+
+        int len = film.getDescription().length();
+
+        if (film.getName().isEmpty()){
+            log.debug("Название фильма не может быть пустым: {}", film.getName());
+            throw new ValidationException();
+        }
+        if (len > 200){
+            log.debug("Максимальная длина описания должна быть не больше 200 символов: {}", film.getDescription());
+            throw new ValidationException();
+        }
+        if (film.getReleaseDate().isBefore(EARLIEST_RELEASE_DATE)){
+            log.debug("Дата релиза должна быть не раньше 28 декабря 1895 года: {}", film.getReleaseDate());
+            throw new ValidationException();
+        } if(film.getDuration() < 0) {
+            log.debug("Продолжительность фильма должна быть положительной: {}", film.getDuration());
+            throw new ValidationException();
+        }
     }
 }

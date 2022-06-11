@@ -3,13 +3,16 @@ package ru.yandex.practicum.filmorate.controller;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.model.ValidationException;
+import ru.yandex.practicum.filmorate.service.IdGeneratorUser;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserControllerTest {
-    UserController userController = new UserController();
+
+    IdGeneratorUser idGeneratorUser = new IdGeneratorUser();
+    UserController userController = new UserController(idGeneratorUser);
 
     @Test
     void findAll() throws ValidationException {
