@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.service.IdGeneratorUser;
+import ru.yandex.practicum.filmorate.service.UserIdGenerator;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.model.ValidationException;
 
@@ -13,18 +13,18 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
-@RequestMapping("/users")
 @Slf4j
 @Component
+@RestController
+@RequestMapping("/users")
 public class UserController {
 
     private final Map<Integer, User> users = new HashMap<>();
-    private final IdGeneratorUser idGeneratorUser;
+    private final UserIdGenerator userIdGenerator;
 
     @Autowired
-    public UserController(IdGeneratorUser idGeneratorUser) {
-        this.idGeneratorUser = idGeneratorUser;
+    public UserController(UserIdGenerator userIdGenerator) {
+        this.userIdGenerator = userIdGenerator;
     }
 
     public User getUser(int id) {
@@ -33,30 +33,27 @@ public class UserController {
 
     @GetMapping
     public Collection<User> findAll() {
-
-        log.debug("Текущее количество пользователей: {}", users.size());
+        log.info("Текущее количество пользователей: {}", users.size());
         return users.values();
     }
 
     @PostMapping
     public User create(@RequestBody User user) {
-
         if (user.getName().isEmpty()) {
             user.setName(user.getLogin());
         }
         validation(user);
-        int newId = idGeneratorUser.generate();
+        int newId = userIdGenerator.generate();
         user.setId(newId);
-        log.debug("Сохраняем нового пользователя: {}", user);
+        log.info("Сохраняем нового пользователя: {}", user);
         users.put(newId, user);
         return user;
     }
 
     @PutMapping
     public User saveUser(@RequestBody User user) {
-
         if (user.getId() < 0) {
-            log.debug("Id не может быть отрицательным: {}", user.getId());
+            log.error("Ошибка, валидация не пройдена. Id не может быть отрицательным: {}", user.getId());
             throw new ValidationException();
         }
         for (User oldUser : users.values()) {
@@ -65,29 +62,28 @@ public class UserController {
                 oldUser.setLogin(user.getLogin());
                 oldUser.setName(user.getName());
                 oldUser.setBirthday(user.getBirthday());
-                log.debug("Обновляем данные пользователя: {}", oldUser);
+                log.info("Обновляем данные пользователя: {}", oldUser);
                 return oldUser;
             }
         }
-        log.debug("Добовляем пользователя: {}", user);
+        log.info("Добовляем пользователя: {}", user);
         return user;
     }
 
     private void validation(User user) {
-
         LocalDate currentMoment = LocalDate.now();
 
         if (!user.getEmail().contains("@") || user.getEmail().isEmpty()) {
-            log.debug("Электронная почта не может быть пустой и должна содержать символ @: {}", user.getEmail());
+            log.error("Ошибка, валидация не пройдена. Электронная почта не может быть пустой и должна содержать символ @: {}", user.getEmail());
             throw new ValidationException();
         }
-        if(user.getLogin().isEmpty() && user.getLogin().contains(" ")){
-            log.debug("Логин не может быть пустым и содержать пробелы: {}", user.getLogin());
+        if (user.getLogin().isEmpty() && user.getLogin().contains(" ")) {
+            log.error("Ошибка, валидация не пройдена. Логин не может быть пустым и содержать пробелы: {}", user.getLogin());
             throw new ValidationException();
-        } if (user.getBirthday().isAfter(currentMoment)){
-            log.debug("Дата рождения не может быть в будущем: {}", user.getBirthday());
+        }
+        if (user.getBirthday().isAfter(currentMoment)) {
+            log.error("Ошибка, валидация не пройдена. Дата рождения не может быть в будущем: {}", user.getBirthday());
             throw new ValidationException();
         }
     }
 }
-

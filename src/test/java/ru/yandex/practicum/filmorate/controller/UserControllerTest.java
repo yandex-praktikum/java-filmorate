@@ -2,8 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.model.ValidationException;
-import ru.yandex.practicum.filmorate.service.IdGeneratorUser;
+import ru.yandex.practicum.filmorate.service.UserIdGenerator;
 
 import java.time.LocalDate;
 
@@ -11,18 +10,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UserControllerTest {
 
-    IdGeneratorUser idGeneratorUser = new IdGeneratorUser();
-    UserController userController = new UserController(idGeneratorUser);
+    UserIdGenerator userIdGenerator = new UserIdGenerator();
+    UserController userController = new UserController(userIdGenerator);
 
     @Test
-    void findAll() throws ValidationException {
+    void findAll() {
         User user = new User("mail@mail.ru", "dolore", "Nick Name", LocalDate.of(1946, 8, 20));
         userController.create(user);
         assertEquals(1, userController.findAll().size(), "Коллекция пуста");
     }
 
     @Test
-    void create() throws ValidationException {
+    void create() {
         User user = new User("mail@mail.ru", "dolore", "Nick Name", LocalDate.of(1946, 8, 20));
         userController.create(user);
         User testUser = new User("mail@mail.ru", "dolore", "Nick Name", LocalDate.of(1946, 8, 20));
@@ -31,7 +30,7 @@ class UserControllerTest {
     }
 
     @Test
-    void saveUser() throws ValidationException {
+    void saveUser() {
         User user1 = new User("mail@mail.ru", "dolore", "Nick Name", LocalDate.of(1946, 8, 20));
         userController.create(user1);
         User user2 = new User("yandex@mail.ru", "smozy", "Intel", LocalDate.of(2001, 5, 15));

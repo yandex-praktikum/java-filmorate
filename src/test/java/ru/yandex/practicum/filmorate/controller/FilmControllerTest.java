@@ -2,8 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.ValidationException;
-import ru.yandex.practicum.filmorate.service.IdGeneratorFilm;
+import ru.yandex.practicum.filmorate.service.FilmIdGenerator;
 
 import java.time.LocalDate;
 
@@ -11,18 +10,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FilmControllerTest {
 
-    IdGeneratorFilm idGeneratorFilm = new IdGeneratorFilm();
-    FilmController filmController = new FilmController(idGeneratorFilm);
+    FilmIdGenerator filmIdGenerator = new FilmIdGenerator();
+    FilmController filmController = new FilmController(filmIdGenerator);
 
     @Test
-    void findAll() throws ValidationException {
+    void findAll(){
         Film film = new Film("nisi eiusmod", "adipisicing", LocalDate.of(1967, 03, 25), 100);
         filmController.create(film);
         assertEquals(1, filmController.findAll().size(), "Коллекция пуста");
     }
 
     @Test
-    void create() throws ValidationException {
+    void create(){
         Film film = new Film("nisi eiusmod", "adipisicing", LocalDate.of(1967, 03, 25), 100);
         Film testFilm = new Film("nisi eiusmod", "adipisicing", LocalDate.of(1967, 03, 25), 100);
         filmController.create(film);
@@ -31,7 +30,7 @@ class FilmControllerTest {
     }
 
     @Test
-    void saveFilm() throws ValidationException {
+    void saveFilm(){
         Film film1 = new Film("nisi eiusmod", "adipisicing", LocalDate.of(1967, 03, 25), 100);
         Film film2 = new Film("terminator", "adipisicing", LocalDate.of(1967, 03, 25), 777);
         Film testFilm = new Film("terminator", "adipisicing", LocalDate.of(1967, 03, 25), 777);
