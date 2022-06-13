@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "3e285987-d223-42cb-95b6-34f7b9ca053e",
-		"name": "sprint12/add-database",
+		"_postman_id": "e597a471-0d9e-4a96-bec9-f3326c9e4de3",
+		"name": "sprint13/add-common-films",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "2036415"
 	},
@@ -10147,6 +10147,1334 @@
 									"variable": [
 										{
 											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "add-common-films",
+			"item": [
+				{
+					"name": "Get no common films before",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test popular\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/common?userId=1&friendId=2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								"common"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1"
+								},
+								{
+									"key": "friendId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "User add Like to Film",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/:id/like/:userId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								":id",
+								"like",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) "
+								},
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Friend add Like to Film",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/:id/like/:userId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								":id",
+								"like",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) "
+								},
+								{
+									"key": "userId",
+									"value": "2",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get common film",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test popular\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"    pm.expect(jsonData[0].name).to.eql('Film Updated');\r",
+									"    pm.expect(jsonData[0].description).to.eql('New film update decription');    \r",
+									"    pm.expect(jsonData[0].releaseDate).to.eql('1989-04-17');\r",
+									"    pm.expect(jsonData[0].duration).to.eql(190);\r",
+									"    pm.expect(jsonData[0].mpa.id).to.eql(5);\r",
+									"    pm.expect(jsonData[0].mpa.name).to.eql('NC-17');\r",
+									"    if (jsonData[0].genres != null) {\r",
+									"        pm.expect(jsonData[0].genres.length).to.eql(0);\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/common?userId=1&friendId=2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								"common"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1"
+								},
+								{
+									"key": "friendId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "User remove Like to Film",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/:id/like/:userId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								":id",
+								"like",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "(Required) "
+								},
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get no common films after",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Test popular\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/common?userId=1&friendId=2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								"common"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1"
+								},
+								{
+									"key": "friendId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id/like/:userId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id",
+										"like",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										},
+										{
+											"key": "userId",
 											"value": "-29029902",
 											"description": "(Required) "
 										}
