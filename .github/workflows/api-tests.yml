@@ -19,6 +19,9 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Build application
+        run: mvn package
+
       - name: Install Node
         uses: actions/setup-node@v1
         with:
@@ -44,7 +47,9 @@ jobs:
         run: nohup mvn spring-boot:run &
 
       - name: Waiting for application is up
-        run: /tmp/wait-for-it.sh -t 120 localhost:8080 -- echo "application is up"
+        run: |
+          /tmp/wait-for-it.sh -t 60 localhost:8080
+          echo "Application is up"
 
       - name: Run POSTMAN tests
         run: |
