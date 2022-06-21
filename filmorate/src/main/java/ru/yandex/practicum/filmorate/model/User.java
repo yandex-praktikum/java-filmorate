@@ -8,10 +8,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class User {
     private int id;
+    private String name;
     @NonNull
     @Email
     private String email;
@@ -19,7 +21,7 @@ public class User {
     @NotBlank
     @Pattern(regexp = "\\S*$")
     private String login;
-    private String name;
     @PastOrPresent
     private LocalDate birthday;
+    private List<User> friends;
 }
