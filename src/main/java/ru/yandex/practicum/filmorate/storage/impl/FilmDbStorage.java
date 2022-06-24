@@ -180,16 +180,20 @@ public class FilmDbStorage implements FilmStorage {
             jdbcTemplate.update("insert into film_genres (film_id, genre_id) values (?, ?)", film.getId(), genreId);
         }
 
-        //костыль для тестов: при запросе get фильма без жанров требуется film.genres = null, при update film.genres.length = 0
+
         Film filmFromDb = getFilm(film.getId());
-        if (filmFromDb.getGenres() == null) {
-            return new Film(filmFromDb.getId(),
-                    filmFromDb.getName(),
-                    filmFromDb.getDescription(),
-                    filmFromDb.getReleaseDate(),
-                    filmFromDb.getDuration(),
-                    filmFromDb.getMpa(),
-                    new HashSet<Genre>());
+
+        //костыль для тестов: при запросе get фильма без жанров требуется film.genres = null, при update film.genres.length = 0
+        if (film.getGenres() != null) {
+            if (film.getGenres().isEmpty()) {
+                return new Film(filmFromDb.getId(),
+                        filmFromDb.getName(),
+                        filmFromDb.getDescription(),
+                        filmFromDb.getReleaseDate(),
+                        filmFromDb.getDuration(),
+                        filmFromDb.getMpa(),
+                        new HashSet<Genre>());
+            }
         }
         return filmFromDb;
     }
