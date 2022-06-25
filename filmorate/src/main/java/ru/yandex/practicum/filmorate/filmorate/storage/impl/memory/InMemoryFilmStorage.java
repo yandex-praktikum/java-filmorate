@@ -1,31 +1,43 @@
-package ru.yandex.practicum.filmorate.controller;
+package ru.yandex.practicum.filmorate.filmorate.storage.impl.memory;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.model.Film;
+import lombok.Getter;
+import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.filmorate.exceptions.ObjectNotFoundException;
+import ru.yandex.practicum.filmorate.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.filmorate.storage.interfaces.FilmStorage;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@RestController
-@Slf4j
-@RequestMapping("/films")
-public class FilmController {
+
+@Getter
+@Component
+public class InMemoryFilmStorage implements FilmStorage {
     private final HashMap<Integer, Film> films = new HashMap<>();
     private int id = 1;
-    private final LocalDate FIRST_FILM_DATE = LocalDate.of(1895, 12, 28);
 
-    @GetMapping
-    public List<Film> getFilm() {
-        log.info("Получен GET-запрос к эндпоинту /films");
+
+    @Override
+    public List<Film> getFilms() {
+
         return new ArrayList<>(films.values());
     }
+    @Override
+    public Film getFilmById(int id) {
+        Film film;
+        if(films.containsKey(id)){
+            film = films.get(id);
+        } else {
+            throw new ObjectNotFoundException(
+                    String.format("Фильма с id \"%s\"не существует.", id));
+        }
+        return film;
+    }
 
-    @PostMapping
-    public Film addFilm(@Validated @RequestBody Film film) {
+    @Override
+    public Film create(Film film) {
         if (film.getDescription().length() > 200) {
             throw new ValidationException("Описание фильма должно быть не более 200 символов");
         }
@@ -38,17 +50,19 @@ public class FilmController {
             throw new ValidationException("Фильм должен быть передан без id");
         }
         films.put(film.getId(), film);
-        log.info("Создан объект '{}'", film);
+
         return film;
     }
 
-    @PutMapping
-    public Film update(@Validated @RequestBody Film film) {
+    @Override
+    public Film update(Film film) {
         if (film.getId() == 0) {
             throw new ValidationException("Введите id фильма, которого необходимо обновить");
         }
+        if(!films.containsKey(film.getId())){
+            throw new ObjectNotFoundException("Указанного фильма не существует");
+        }
         films.put(film.getId(), film);
-        log.info("Обновлен объект '{}'", film);
         return film;
     }
 
@@ -56,4 +70,5 @@ public class FilmController {
         film.setId(id);
         id++;
     }
+
 }
