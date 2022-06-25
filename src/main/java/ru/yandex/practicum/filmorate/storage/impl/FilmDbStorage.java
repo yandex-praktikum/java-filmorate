@@ -71,6 +71,7 @@ public class FilmDbStorage implements FilmStorage {
     /**
      * Преобразует данные таблицы film_genres в HashMap<Long, Set<Genre>>, где Long - id фильма,
      * Set<Genre> - сет из жанров фильма с ключем-id для помещения в объект film.
+     *
      * @param genresRowSet
      * @return
      */
@@ -110,11 +111,11 @@ public class FilmDbStorage implements FilmStorage {
         if (filmRowSet.next()) {
             Film film = new Film(
                     filmRowSet.getLong("film_id"),
-                    filmRowSet.getString("fname"),
+                    filmRowSet.getString("FNAME"),
                     filmRowSet.getString("description"),
                     filmRowSet.getDate("releaseDate").toLocalDate(),
                     filmRowSet.getInt("duration"),
-                    new RatingMPA(filmRowSet.getLong("frating_id"), filmRowSet.getString("rmname")),
+                    new RatingMPA(filmRowSet.getLong("FRATING_ID"), filmRowSet.getString("RMNAME")),
                     genreMap.getOrDefault(filmRowSet.getLong("film_id"), null)
             );
 
@@ -164,7 +165,7 @@ public class FilmDbStorage implements FilmStorage {
         Set<Long> oldGenres = new HashSet<>();
         String sqlGenres = "select * from film_genres where film_id = ?";
         SqlRowSet genreRows = jdbcTemplate.queryForRowSet(sqlGenres, film.getId());
-        while (genreRows.next()){
+        while (genreRows.next()) {
             oldGenres.add(genreRows.getLong("genre_id"));
         }
 
@@ -172,11 +173,11 @@ public class FilmDbStorage implements FilmStorage {
         oldGenres.removeAll(newGenres);
         newGenres.removeAll(clone);
 
-        for (Long genreId: oldGenres) {
+        for (Long genreId : oldGenres) {
             jdbcTemplate.update("delete from film_genres where film_id = ? and genre_id = ?", film.getId(), genreId);
         }
 
-        for (Long genreId: newGenres) {
+        for (Long genreId : newGenres) {
             jdbcTemplate.update("insert into film_genres (film_id, genre_id) values (?, ?)", film.getId(), genreId);
         }
 
@@ -198,7 +199,9 @@ public class FilmDbStorage implements FilmStorage {
         return filmFromDb;
     }
 
-    /** Для работы метода SimpleJdbcInsert.executeAndReturnKey
+    /**
+     * Для работы метода SimpleJdbcInsert.executeAndReturnKey
+     *
      * @param film
      * @return
      */
@@ -221,7 +224,7 @@ public class FilmDbStorage implements FilmStorage {
 
         if (mpaRowSet.next()) {
             RatingMPA ratingMPA = new RatingMPA(mpaRowSet.getLong("rating_id"),
-                                                mpaRowSet.getString("name"));
+                    mpaRowSet.getString("name"));
             return ratingMPA;
         } else {
             return null;
@@ -251,7 +254,7 @@ public class FilmDbStorage implements FilmStorage {
 
         if (genreRowSet.next()) {
             return new Genre(genreRowSet.getLong("genre_id"),
-                                    genreRowSet.getString("name"));
+                    genreRowSet.getString("name"));
         } else {
             return null;
         }

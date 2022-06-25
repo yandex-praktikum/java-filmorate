@@ -72,11 +72,11 @@ public class FriendsDbStorage implements FriendsStorage {
 
 
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet("select friendship_status from friends " +
-                                                         "where user_id = ? and friend_id = ?", userId, friendId);
+                "where user_id = ? and friend_id = ?", userId, friendId);
         rowSet.next();
         if (rowSet.getString("friendship_status").equals("confirm"))
-            jdbcTemplate.update("UPDATE friends SET friendship_status = 'request' "+
-                            "WHERE user_id = ? and friend_id = ?", friendId, userId);
+            jdbcTemplate.update("UPDATE friends SET friendship_status = 'request' " +
+                    "WHERE user_id = ? and friend_id = ?", friendId, userId);
 
         String sql = "DELETE FROM friends WHERE user_id = ? and friend_id = ?";
         jdbcTemplate.update(sql, userId, friendId);
@@ -100,6 +100,7 @@ public class FriendsDbStorage implements FriendsStorage {
 
     /**
      * Проверка, существует ли пользователь с таким id
+     *
      * @param id
      * @return
      */

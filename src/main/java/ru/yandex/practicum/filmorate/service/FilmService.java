@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.FilmValidationException;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.RatingMPA;
@@ -19,12 +18,10 @@ public class FilmService {
 
     private final FilmStorage filmStorage;
     private final LikeStorage likeStorage;
-    private final Map<Long, Set<Long>> likesMap;
 
     @Autowired
     public FilmService(FilmStorage filmStorage, LikeStorage likeStorage) {
         this.likeStorage = likeStorage;
-        likesMap = new HashMap<>();
         this.filmStorage = filmStorage;
     }
 

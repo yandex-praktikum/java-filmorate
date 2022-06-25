@@ -47,13 +47,13 @@ public class UserDbStorage implements UserStorage {
     public User getUser(Long id) {
         SqlRowSet userRows = jdbcTemplate.queryForRowSet("select * from users where user_id = ?", id);
 
-        if(userRows.next()) {
+        if (userRows.next()) {
             User user = new User(
-                userRows.getLong("user_id"),
-                userRows.getString("email"),
-                userRows.getString("login"),
-                userRows.getString("name"),
-                userRows.getDate("birthday").toLocalDate()
+                    userRows.getLong("user_id"),
+                    userRows.getString("email"),
+                    userRows.getString("login"),
+                    userRows.getString("name"),
+                    userRows.getDate("birthday").toLocalDate()
             );
 
             return user;
@@ -73,7 +73,9 @@ public class UserDbStorage implements UserStorage {
         return getUser(id);
     }
 
-    /** Для работы метода SimpleJdbcInsert.executeAndReturnKey
+    /**
+     * Для работы метода SimpleJdbcInsert.executeAndReturnKey
+     *
      * @param user
      * @return
      */
@@ -85,7 +87,6 @@ public class UserDbStorage implements UserStorage {
         values.put("birthday", user.getBirthday());
         return values;
     }
-
 
 
     @Override
