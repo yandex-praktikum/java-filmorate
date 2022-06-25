@@ -22,16 +22,6 @@ public class Film {
         this.mpa = mpa;
         this.genres = genre;
     }
-    public Film(String name, String description, LocalDate releaseDate, int duration,
-              List<Genre> genre, Mpa mpa) {
-        this.name = name;
-        this.description = description;
-        this.releaseDate = releaseDate;
-        this.duration = duration;
-        this.mpa = mpa;
-        this.genres = genre;
-    }
-
     private int id;
     @NotBlank
     private String name;
