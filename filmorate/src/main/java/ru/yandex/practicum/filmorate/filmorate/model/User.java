@@ -26,12 +26,6 @@ public class User {
         this.friends = friends;
         this.favoriteFilms = favoriteFilms;
     }
-    public User(String name, @NonNull String email, @NonNull String login, LocalDate birthday) {
-        this.name = name;
-        this.email = email;
-        this.login = login;
-        this.birthday = birthday;
-    }
 
     private int id;
     private String name;
