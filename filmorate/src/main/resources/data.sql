@@ -1,0 +1,16 @@
+INSERT INTO GENRE(GENRE_NAME) values ('Комедия');
+INSERT INTO GENRE(GENRE_NAME) values ('Драма');
+INSERT INTO GENRE(GENRE_NAME) values ('Мультфильм');
+INSERT INTO GENRE(GENRE_NAME) values ('Триллер');
+INSERT INTO GENRE(GENRE_NAME) values ('Документальный');
+INSERT INTO GENRE(GENRE_NAME) values ('Боевик');
+
+INSERT INTO RATING(RATING_NAME) values ( 'G' );
+INSERT INTO RATING(RATING_NAME) values ( 'PG' );
+INSERT INTO RATING(RATING_NAME) values ( 'PG-13' );
+INSERT INTO RATING(RATING_NAME) values ( 'R' );
+INSERT INTO RATING(RATING_NAME) values ( 'NC-17' );
+
+INSERT INTO STATUS(STATUS_NAME) values ( 'not confirmed');
+INSERT INTO STATUS(STATUS_NAME) values ( 'confirmed' );
+
