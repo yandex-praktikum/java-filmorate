@@ -17,7 +17,7 @@ public class FilmController {
     final LocalDate BIRTH_MOVIE=LocalDate.of(1895,12,28);
     ArrayList<Film> films=new ArrayList<>();
     @GetMapping
-    public List<Film> gettingAllFilms() {
+    public List<Film> gettingAllFilms()  {
         log.debug("Получен запрос GET /films.");
         return films;
     }
