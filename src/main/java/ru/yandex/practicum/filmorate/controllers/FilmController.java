@@ -38,6 +38,7 @@ public class FilmController {
         if (isValid(film) && films.containsKey(film.getId())) {
             if (!films.containsValue(film)) {
                 films.replace(film.getId(), film);
+                log.debug("Фильм обновлен");
             } else {
                 log.debug("Фильм уже загружен.");
             }
