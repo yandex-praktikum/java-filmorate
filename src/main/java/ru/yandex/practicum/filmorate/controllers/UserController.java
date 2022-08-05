@@ -8,52 +8,55 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
 @Slf4j
 @RequestMapping("/users")
 public class UserController {
-    ArrayList<User> users=new ArrayList<>();
+    HashMap<Integer, User> users = new HashMap<>();
+
     @GetMapping
     public List<User> gettingAllUsers() {
         log.debug("Получен запрос GET /users");
-        return users;
+        return new ArrayList<>(users.values());
     }
+
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
-        if(isValid(user)) {
-            if (user.getName().isBlank()){
+        if (isValid(user)) {
+            if (user.getName().isBlank()) {
                 user.setName(user.getLogin());
             }
-            log.debug("Получен запрос POST. Передан обьект {}",user);
-            users.add(user);
+            log.debug("Получен запрос POST. Передан обьект {}", user);
+            users.put(user.getId(), user);
             return user;
-        }else{
+        } else {
             log.error("Передан запрос POST с некорректным данными.");
             throw new ValidationException("Ошибка валидации пользователя!");
         }
     }
+
     @PutMapping
-    public User updateUser(@Valid @RequestBody User user ) {
-        if(isValid(user)) {
-            for(User user1:users){
-                if(user1.getId()== user.getId()){
-                    users.set(users.indexOf(user1),user);
-                    return user;
-                }else{
-                    log.error("Передан запрос PUT с некорректным id.");
-                    throw new ValidationException("Отсутствует пользователь с данным id");
-                }
+    public User updateUser(@Valid @RequestBody User user) {
+        if (isValid(user) && users.containsKey(user.getId())) {
+            if (!users.containsValue(user)) {
+                    users.replace(user.getId(), user);
+            } else {
+                log.debug("Пользователь уже создан");
             }
-        }else{
-            log.error("Передан запрос POST с некорректным данными.");
+            return user;
+        } else {
+            log.error("Передан запрос POST с некорректным данными пользователя.");
             throw new ValidationException("Ошибка валидации пользователя!");
         }
-        return user;
+
     }
-    private boolean isValid(User user){
+
+    private boolean isValid(User user) {
         return !user.getLogin().contains(" ");
     }
+
 
 }
