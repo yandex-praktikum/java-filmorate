@@ -25,10 +25,10 @@ public class UserController {
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
-        if (isValid(user)) {
-            //if (user.getName().isBlank()) {
-            //    user.setName(user.getLogin());
-            //}
+        if (isValid(user) && !users.containsKey(user.getId())) {
+            if (user.getName().isBlank()) {
+                user.setName(user.getLogin());
+            }
             log.debug("Получен запрос POST. Передан обьект {}", user);
             users.put(user.getId(), user);
             return user;
