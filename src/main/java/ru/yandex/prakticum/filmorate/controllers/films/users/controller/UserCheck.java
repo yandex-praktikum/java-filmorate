@@ -14,6 +14,7 @@ import ru.yandex.prakticum.filmorate.controllers.films.users.controller.exceptio
 import ru.yandex.prakticum.filmorate.controllers.films.users.model.User;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -50,14 +51,14 @@ public class UserCheck {
     }
 
     private static void nicknameCheck(User user){
-        if (user.getNickname().isBlank()){
-            user.setNickname(user.getLogin());
+        if (user.getName().isBlank()){
+            user.setName(user.getLogin());
             log.trace("Ник заменен нап логин");
         }
     }
 
-    private static boolean dayOfBirthCheck(Date birthday){
-        if (birthday.toInstant().isAfter(Instant.now())){
+    private static boolean dayOfBirthCheck(LocalDate birthday){
+        if (birthday.isAfter(LocalDate.now())){
             log.error("Дата рождения не верифицирована");
             throw new ValidationException("Дата рождения не верифицирована");
         }

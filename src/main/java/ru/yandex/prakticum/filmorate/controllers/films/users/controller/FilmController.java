@@ -1,38 +1,36 @@
 package ru.yandex.prakticum.filmorate.controllers.films.users.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.yandex.prakticum.filmorate.controllers.films.users.model.Film;
-
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @Slf4j
 public class FilmController {
-    private Map<Integer,Film> films;
+    private Integer id = 0;
+    private Map<Integer,Film> films = new HashMap<>();
 
-    @GetMapping("/films/")
-    private void addFilm(@RequestBody Film film){
+    @PostMapping("/films")
+    private Film addFilm(@RequestBody Film film){
         if (FilmCheck.filmCheck(film)){
-            if (films.containsKey(film.getId())){
-                log.trace("Добавлен фильм" + film);
-                films.replace(film.getId(), film);
-            }
-            else {
-                log.trace("Изменен фильм" + film);
-                films.put(film.getId(), film);
-            }
+            id++;
+            film.setId(id);
+            log.trace("Добавлен фильм" + film);
+            films.put(film.getId(), film);
         }
+        return film;
+    }
+    @PutMapping("/films")
+    private Film updateFilm(@RequestBody Film film){
+        films.replace(film.getId(),film);
+        return film;
     }
 
     @GetMapping("/films")
     private List getAllFilm(){
-        log.trace("Отправлен список фильмов");
         return List.of(films.values());
     }
 }

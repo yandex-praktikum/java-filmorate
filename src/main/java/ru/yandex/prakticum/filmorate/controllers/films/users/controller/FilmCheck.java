@@ -57,8 +57,8 @@ public class FilmCheck {
         return true;
     }
 
-    private static boolean durationCheck (Time duration){
-        if (duration.getTime() < 0){
+    private static boolean durationCheck (Integer duration){
+        if (duration < 0){
             log.error("Продолжительность фильма меньше 0");
             throw new ValidationException("Продолжительность фильма меньше 0");
         }
