@@ -1,8 +1,8 @@
-package controllers;
+package ru.yandex.practicum.filmorate.controllers;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import model.Film;
+import ru.yandex.practicum.filmorate.model.Film;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class FilmController {
         return film;
     }
 
-    @PatchMapping
+    @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
         films.add(film);
         log.info("update film");

@@ -1,8 +1,8 @@
-package validators;
+package ru.yandex.practicum.filmorate.validators;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import validators.annotations.CorrectFilmDate;
+import ru.yandex.practicum.filmorate.validators.annotations.CorrectFilmDate;
 
 import java.time.LocalDate;
 
@@ -10,6 +10,6 @@ public class FilmDateValidator implements ConstraintValidator<CorrectFilmDate, L
 
     @Override
     public boolean isValid(LocalDate localDate, ConstraintValidatorContext constraintValidatorContext) {
-        return localDate.isBefore(LocalDate.of(1895, 12, 28));
+        return localDate.isAfter(LocalDate.of(1895, 12, 28));
     }
 }
