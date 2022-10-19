@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController{
-    private final List<User> users = new ArrayList<>();
+    private static final List<User> users = new ArrayList<>();
     private int userId = 1;
 
     @GetMapping
@@ -36,13 +36,14 @@ public class UserController{
     }
 
     @PutMapping
-    public User updateUser(@Valid @RequestBody User user){
+    public static User updateUser(@Valid @RequestBody User user){
         log.info("Получен PUT-запрос с объектом User: {}", user);
         userValidate(user);
         int userId = user.getId();
         for (User u : users) {
             if (u.getId() == userId) {
                 users.set(users.indexOf(u), user);
+                log.info("Пользователь c id={} обновлён", userId);
                 return user;
             }
         }

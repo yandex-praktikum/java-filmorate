@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private final List<Film> films = new ArrayList<>();
+    private static final List<Film> films = new ArrayList<>();
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
     private int filmId = 1;
     @GetMapping
@@ -34,7 +34,7 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film film){
+    public static Film updateFilm(@Valid @RequestBody Film film){
         log.info("Получен PUT-запрос с объектом Film: {}", film);
         filmValidate(film);
         int filmId = film.getId();

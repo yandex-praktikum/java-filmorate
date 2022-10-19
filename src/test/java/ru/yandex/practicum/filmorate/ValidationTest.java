@@ -1,28 +1,23 @@
 package ru.yandex.practicum.filmorate;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.bind.annotation.RestController;
+import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import static ru.yandex.practicum.filmorate.constants.Constants.DATE_BEFORE_MIN_ALLOWED;
+import static ru.yandex.practicum.filmorate.constants.Constants.MIN_ALLOWED_DATE;
+import static ru.yandex.practicum.filmorate.validation.Validation.filmValidate;
 import static ru.yandex.practicum.filmorate.validation.Validation.userValidate;
 
-@RestController
-public class UserControllerTest {
+public class ValidationTest {
     private final LocalDate BIRTHDAY_DATE = LocalDate.now();
-    UserController userController;
-
-    @BeforeEach
-    void userController(){
-        userController = new UserController();
-    }
 
     @Test
     public void correctValidationOfUser() {
@@ -31,6 +26,15 @@ public class UserControllerTest {
         assertEquals("login", user.getLogin());
         assertEquals("name", user.getName());
         assertEquals(BIRTHDAY_DATE, user.getBirthday());
+    }
+
+    @Test
+    public void correctValidationOfFilm() {
+        Film film = new Film(0, "name", "d".repeat(200), MIN_ALLOWED_DATE, 1);
+        assertEquals("name", film.getName());
+        assertEquals("d".repeat(200), film.getDescription());
+        assertEquals(MIN_ALLOWED_DATE, film.getReleaseDate());
+        assertEquals(1, film.getDuration());
     }
 
     @Test
@@ -60,10 +64,9 @@ public class UserControllerTest {
         userValidate(user);
         assertEquals("login123", user.getName());
 
-        userController();
-        User user1 = new User(0, "email@e.ru", "login123", null, BIRTHDAY_DATE);
+        User user1 = new User(1, "emaill@e.ru", "login1234", null, BIRTHDAY_DATE);
         userValidate(user1);
-        assertEquals("login123", user1.getName());
+        assertEquals("login1234", user1.getName());
     }
 
     @Test
@@ -78,9 +81,54 @@ public class UserControllerTest {
         User user = new User(9999, "email@e.ru", "login123", "name", BIRTHDAY_DATE);
         final ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> userController.updateUser(user));
+                () -> UserController.updateUser(user));
 
         assertEquals("Пользователь с id=9999 не найден", exception.getMessage());
+    }
+
+    @Test
+    public void releaseDateMustBeEqualOrMoreMinimumAllowedDate() {
+        Film film = new Film(0, "n", "d", DATE_BEFORE_MIN_ALLOWED, 1);
+        checkException(film, "Дата релиза должна быть не раньше 28.12.1895");
+    }
+
+    @Test
+    public void durationOfTheFilmShouldBePositive() {
+        Film film = new Film(0, "film_name", "description", MIN_ALLOWED_DATE, 0);
+        checkException(film, "Продолжительность фильма должна быть положительной");
+    }
+
+    @Test
+    public void nameCanNotBeEmptyOrNull() {
+        Film film = new Film(0, "", "description", MIN_ALLOWED_DATE, 111);
+        checkException(film, "Название не может быть пустым или null");
+
+        Film film1 = new Film(0, null, "description", MIN_ALLOWED_DATE, 111);
+        checkException(film1, "Название не может быть пустым или null");
+    }
+
+    @Test
+    public void descriptionShouldNotBeMoreThan200Characters() {
+        Film film = new Film(0, "film_name", "d".repeat(201), MIN_ALLOWED_DATE, 111);
+        checkException(film, "Описание не должно превышать 200 символов");
+    }
+
+    @Test
+    public void updateFilmWithAnUnknownId() {
+        Film film = new Film(9999, "film_name", "description", MIN_ALLOWED_DATE, 111);
+        final ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> FilmController.updateFilm(film));
+
+        assertEquals("Фильм с id=9999 не найден", exception.getMessage());
+    }
+
+    public void checkException(Film film, String message){
+        final ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> filmValidate(film));
+
+        assertEquals(message, exception.getMessage());
     }
 
     public void checkException(User user, String message){
@@ -90,6 +138,4 @@ public class UserControllerTest {
 
         assertEquals(message, exception.getMessage());
     }
-
 }
-
