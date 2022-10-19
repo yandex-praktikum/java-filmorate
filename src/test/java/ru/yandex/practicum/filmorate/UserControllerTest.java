@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import static ru.yandex.practicum.filmorate.validation.Validation.userValidate;
+
 @RestController
 public class UserControllerTest {
     private final LocalDate BIRTHDAY_DATE = LocalDate.now();
@@ -55,12 +57,12 @@ public class UserControllerTest {
     @Test
     public void emptyOrNullNameShouldBeReplacedWithLogin() {
         User user = new User(0, "email@e.ru", "login123", "", BIRTHDAY_DATE);
-        userController.validate(user);
+        userValidate(user);
         assertEquals("login123", user.getName());
 
         userController();
         User user1 = new User(0, "email@e.ru", "login123", null, BIRTHDAY_DATE);
-        userController.validate(user1);
+        userValidate(user1);
         assertEquals("login123", user1.getName());
     }
 
@@ -84,7 +86,7 @@ public class UserControllerTest {
     public void checkException(User user, String message){
         final ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> userController.validate(user));
+                () -> userValidate(user));
 
         assertEquals(message, exception.getMessage());
     }

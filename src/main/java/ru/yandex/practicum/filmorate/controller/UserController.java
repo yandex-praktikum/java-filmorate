@@ -1,14 +1,13 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import org.springframework.util.StringUtils;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import static ru.yandex.practicum.filmorate.validation.Validation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +17,6 @@ import java.util.List;
 public class UserController{
     private final List<User> users = new ArrayList<>();
     private int userId = 1;
-
-    private void increaseUserId(){
-        userId++;
-    }
 
     @GetMapping
     public List<User> allUsers(){
@@ -33,7 +28,7 @@ public class UserController{
     public User createUser(@Valid @RequestBody User user){
         log.info("Получен POST-запрос с объектом User: {}", user);
         user.setId(userId);
-        validate(user);
+        userValidate(user);
         users.add(user);
         log.info("Пользователь {} c id={} добавлен", user.getName(), userId);
         increaseUserId();
@@ -43,7 +38,7 @@ public class UserController{
     @PutMapping
     public User updateUser(@Valid @RequestBody User user){
         log.info("Получен PUT-запрос с объектом User: {}", user);
-        validate(user);
+        userValidate(user);
         int userId = user.getId();
         for (User u : users) {
             if (u.getId() == userId) {
@@ -54,13 +49,7 @@ public class UserController{
         throw new ValidationException("Пользователь с id=" + userId + " не найден");
     }
 
-    public void validate(User user) throws ValidationException {
-        if (StringUtils.hasLength(user.getEmail()) && user.getEmail().contains("@")){
-            if (StringUtils.hasLength(user.getLogin()) && !user.getLogin().contains(" ")){
-                if (user.getBirthday().isBefore(LocalDate.now().plusDays(1))){
-                    if (!StringUtils.hasLength(user.getName())) user.setName(user.getLogin());
-                } else throw new ValidationException("Дата рождения не может быть в будущем");
-            } else throw new ValidationException("Логин не может быть пустым и содержать пробелы");
-        } else throw new ValidationException("Почта не может быть пустой и должна содержать символ @");
+    private void increaseUserId(){
+        userId++;
     }
 }
