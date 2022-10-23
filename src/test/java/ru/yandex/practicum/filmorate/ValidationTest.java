@@ -1,20 +1,21 @@
 package ru.yandex.practicum.filmorate;
 
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.filmorate.controller.FilmController;
-import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static ru.yandex.practicum.filmorate.constants.Constants.DATE_BEFORE_MIN_ALLOWED;
 import static ru.yandex.practicum.filmorate.constants.Constants.MIN_ALLOWED_DATE;
-import static ru.yandex.practicum.filmorate.validation.Validation.filmValidate;
-import static ru.yandex.practicum.filmorate.validation.Validation.userValidate;
+import static ru.yandex.practicum.filmorate.validation.Validation.validateFilm;
+import static ru.yandex.practicum.filmorate.validation.Validation.validateUser;
 
 public class ValidationTest {
     private final LocalDate BIRTHDAY_DATE = LocalDate.now();
@@ -61,11 +62,11 @@ public class ValidationTest {
     @Test
     public void emptyOrNullNameShouldBeReplacedWithLogin() {
         User user = new User(0, "email@e.ru", "login123", "", BIRTHDAY_DATE);
-        userValidate(user);
+        validateUser(user);
         assertEquals("login123", user.getName());
 
         User user1 = new User(1, "emaill@e.ru", "login1234", null, BIRTHDAY_DATE);
-        userValidate(user1);
+        validateUser(user1);
         assertEquals("login1234", user1.getName());
     }
 
@@ -81,7 +82,7 @@ public class ValidationTest {
         User user = new User(9999, "email@e.ru", "login123", "name", BIRTHDAY_DATE);
         final ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> UserController.updateUser(user));
+                () -> new InMemoryUserStorage(List.of()).updateUser(user));
 
         assertEquals("Пользователь с id=9999 не найден", exception.getMessage());
     }
@@ -118,7 +119,7 @@ public class ValidationTest {
         Film film = new Film(9999, "film_name", "description", MIN_ALLOWED_DATE, 111);
         final ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> FilmController.updateFilm(film));
+                () -> new InMemoryFilmStorage(List.of()).updateFilm(film));
 
         assertEquals("Фильм с id=9999 не найден", exception.getMessage());
     }
@@ -126,7 +127,7 @@ public class ValidationTest {
     public void checkException(Film film, String message){
         final ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> filmValidate(film));
+                () -> validateFilm(film));
 
         assertEquals(message, exception.getMessage());
     }
@@ -134,7 +135,7 @@ public class ValidationTest {
     public void checkException(User user, String message){
         final ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> userValidate(user));
+                () -> validateUser(user));
 
         assertEquals(message, exception.getMessage());
     }
