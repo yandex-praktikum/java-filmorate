@@ -10,22 +10,43 @@
 			"name": "users",
 			"item": [
 				{
-					"name": "User Create",
+					"name": "User create",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
 									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
 									"});\r",
-									"pm.test(\"Test create user\", function () {\r",
+									"pm.test(\"Has user create response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test user 'id' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.id).to.eql(1);\r",
-									"    pm.expect(jsonData.email).to.eql('mail@mail.ru');\r",
-									"    pm.expect(jsonData.name).to.eql('Nick Name');\r",
-									"    pm.expect(jsonData.login).to.eql('dolore');    \r",
-									"    pm.expect(jsonData.birthday).to.eql('1946-08-20');\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test user 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('email');\r",
+									"    pm.expect(jsonData.email, '\"email\" must be \"mail@mail.ru\"').to.eql('mail@mail.ru');\r",
+									"});\r",
+									"pm.test(\"Test user 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, '\"name\" must be \"Nick Name\"').to.eql('Nick Name');\r",
+									"});\r",
+									"pm.test(\"Test user 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('login');\r",
+									"    pm.expect(jsonData.login, '\"login\" field must be \"dolore\"').to.eql('dolore');    \r",
+									"});\r",
+									"pm.test(\"Test user 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('birthday');\r",
+									"    pm.expect(jsonData.birthday, '\"birthday\" field must be \"1946-08-20\"').to.eql('1946-08-20');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -63,44 +84,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "User create Fail login",
@@ -111,7 +95,12 @@
 								"exec": [
 									"pm.test(\"Status code is 500 or 400\", function () {\r",
 									"     pm.expect(pm.response.code).to.be.oneOf([500,400]);\r",
-									"});"
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -148,129 +137,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
-				},
-				{
-					"name": "User create Fail birthday",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 500 or 400\", function () {\r",
-									"     pm.expect(pm.response.code).to.be.oneOf([500,400]);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"login\": \"dolore\",\n  \"name\": \"\",\n  \"email\": \"test@mail.ru\",\n  \"birthday\": \"2446-08-20\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/users",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "User create Fail email",
@@ -281,6 +148,10 @@
 								"exec": [
 									"pm.test(\"Status code is 500 or 400\", function () {\r",
 									"     pm.expect(pm.response.code).to.be.oneOf([500,400]);\r",
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -318,44 +189,59 @@
 							]
 						}
 					},
-					"response": [
+					"response": []
+				},
+				{
+					"name": "User create Fail birthday",
+					"event": [
 						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500 or 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,400]);\r",
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
-					]
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"dolore\",\n  \"name\": \"\",\n  \"email\": \"test@mail.ru\",\n  \"birthday\": \"2446-08-20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
 				},
 				{
 					"name": "User update",
@@ -365,15 +251,36 @@
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test update user\", function () {\r",
+									"pm.test(\"Has user update response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test user 'id' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.id).to.eql(1);\r",
-									"    pm.expect(jsonData.email).to.eql('mail@yandex.ru');\r",
-									"    pm.expect(jsonData.name).to.eql('est adipisicing');\r",
-									"    pm.expect(jsonData.login).to.eql('doloreUpdate');    \r",
-									"    pm.expect(jsonData.birthday).to.eql('1976-09-20');\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test user 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('email');\r",
+									"    pm.expect(jsonData.email, '\"email\" must be \"mail@yandex.ru\"').to.eql('mail@yandex.ru');\r",
+									"});\r",
+									"pm.test(\"Test user 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, '\"name\" must be \"est adipisicing\"').to.eql('est adipisicing');\r",
+									"});\r",
+									"pm.test(\"Test user 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('login');\r",
+									"    pm.expect(jsonData.login, '\"login\" field must be \"doloreUpdate\"').to.eql('doloreUpdate');    \r",
+									"});\r",
+									"pm.test(\"Test user 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('birthday');\r",
+									"    pm.expect(jsonData.birthday, '\"birthday\" field must be \"1976-09-20\"').to.eql('1976-09-20');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -411,44 +318,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "User update unknown",
@@ -457,10 +327,13 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 404\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
+									"pm.test(\"Status code is 500\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([500, 404]);\r",
 									"});\r",
-									""
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -497,65 +370,50 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "User All",
+					"name": "User get All",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"pm.test(\"Test list user response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test user[0] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test user[0] 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('email');\r",
+									"    pm.expect(jsonData[0].email, '\"email\" must be \"mail@yandex.ru\"').to.eql('mail@yandex.ru');\r",
+									"});\r",
+									"pm.test(\"Test user[0] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('name');\r",
+									"    pm.expect(jsonData[0].name, '\"name\" must be \"est adipisicing\"').to.eql('est adipisicing');\r",
+									"});\r",
+									"pm.test(\"Test user[0] 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('login');\r",
+									"    pm.expect(jsonData[0].login, '\"login\" field must be \"doloreUpdate\"').to.eql('doloreUpdate');    \r",
+									"});\r",
+									"pm.test(\"Test user[0] 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
+									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"1976-09-20\"').to.eql('1976-09-20');\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Test list user\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(1);\r",
-									"    pm.expect(jsonData[0].id).to.eql(1);\r",
-									"    pm.expect(jsonData[0].email).to.eql('mail@yandex.ru');\r",
-									"    pm.expect(jsonData[0].name).to.eql('est adipisicing');\r",
-									"    pm.expect(jsonData[0].login).to.eql('doloreUpdate');    \r",
-									"    pm.expect(jsonData[0].birthday).to.eql('1976-09-20');\r",
-									"});\r",
 									""
 								],
 								"type": "text/javascript"
@@ -580,35 +438,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				}
 			]
 		},
@@ -622,16 +452,37 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
 									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
 									"});\r",
-									"pm.test(\"Test create friend\", function () {\r",
+									"pm.test(\"Has user create response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test user 'id' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.id).to.eql(2);\r",
-									"    pm.expect(jsonData.email).to.eql('friend@mail.ru');\r",
-									"    pm.expect(jsonData.name).to.eql('friend adipisicing');\r",
-									"    pm.expect(jsonData.login).to.eql('friend');    \r",
-									"    pm.expect(jsonData.birthday).to.eql('1976-08-20');\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(2);\r",
+									"});\r",
+									"pm.test(\"Test user 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('email');\r",
+									"    pm.expect(jsonData.email, '\"email\" must be \"friend@mail.ru\"').to.eql('friend@mail.ru');\r",
+									"});\r",
+									"pm.test(\"Test user 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, '\"name\" must be \"friend adipisicing\"').to.eql('friend adipisicing');\r",
+									"});\r",
+									"pm.test(\"Test user 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('login');\r",
+									"    pm.expect(jsonData.login, '\"login\" field must be \"friend\"').to.eql('friend');    \r",
+									"});\r",
+									"pm.test(\"Test user 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('birthday');\r",
+									"    pm.expect(jsonData.birthday, '\"birthday\" field must be \"1976-08-20\"').to.eql('1976-08-20');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -669,44 +520,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Common Friend Create",
@@ -715,20 +529,37 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
 									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
 									"});\r",
-									"pm.test(\"Test empty name\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.name).to.eql('common');\r",
+									"pm.test(\"Has user create response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"});\r",
-									"pm.test(\"Test create common friend\", function () {\r",
+									"pm.test(\"Test user 'id' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.id).to.eql(3);\r",
-									"    pm.expect(jsonData.email).to.eql('friend@common.ru');\r",
-									"    pm.expect(jsonData.name).to.eql('common');\r",
-									"    pm.expect(jsonData.login).to.eql('common');    \r",
-									"    pm.expect(jsonData.birthday).to.eql('2000-08-20');\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData.id, '\"id\" must be 3').to.eql(3);\r",
+									"});\r",
+									"pm.test(\"Test user 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('email');\r",
+									"    pm.expect(jsonData.email, '\"email\" must be \"friend@common.ru\"').to.eql('friend@common.ru');\r",
+									"});\r",
+									"pm.test(\"Test user 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, '\"name\" must be \"common\"').to.eql('common');\r",
+									"});\r",
+									"pm.test(\"Test user 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('login');\r",
+									"    pm.expect(jsonData.login, '\"login\" field must be \"common\"').to.eql('common');    \r",
+									"});\r",
+									"pm.test(\"Test user 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('birthday');\r",
+									"    pm.expect(jsonData.birthday, '\"birthday\" field must be \"2000-08-20\"').to.eql('2000-08-20');\r",
 									"});\r",
 									""
 								],
@@ -767,62 +598,46 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "User get",
+					"name": "User get by id=1",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test get user\", function () {\r",
+									"pm.test(\"Has user get response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test user 'id' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.id).to.eql(1);\r",
-									"    pm.expect(jsonData.email).to.eql('mail@yandex.ru');\r",
-									"    pm.expect(jsonData.name).to.eql('est adipisicing');\r",
-									"    pm.expect(jsonData.login).to.eql('doloreUpdate');    \r",
-									"    pm.expect(jsonData.birthday).to.eql('1976-09-20');\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test user 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('email');\r",
+									"    pm.expect(jsonData.email, '\"email\" must be \"mail@yandex.ru\"').to.eql('mail@yandex.ru');\r",
+									"});\r",
+									"pm.test(\"Test user 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, '\"name\" must be \"est adipisicing\"').to.eql('est adipisicing');\r",
+									"});\r",
+									"pm.test(\"Test user 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('login');\r",
+									"    pm.expect(jsonData.login, '\"login\" field must be \"doloreUpdate\"').to.eql('doloreUpdate');    \r",
+									"});\r",
+									"pm.test(\"Test user 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('birthday');\r",
+									"    pm.expect(jsonData.birthday, '\"birthday\" field must be \"1976-09-20\"').to.eql('1976-09-20');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -855,151 +670,10 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "User get unknown",
+					"name": "User get unknown with id=9999",
 					"event": [
 						{
 							"listen": "test",
@@ -1039,168 +713,47 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "Friend get",
+					"name": "Friend get user id=2",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test get friend\", function () {\r",
+									"pm.test(\"Has user get response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test user 'id' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.id).to.eql(2);\r",
-									"    pm.expect(jsonData.email).to.eql('friend@mail.ru');\r",
-									"    pm.expect(jsonData.name).to.eql('friend adipisicing');\r",
-									"    pm.expect(jsonData.login).to.eql('friend');    \r",
-									"    pm.expect(jsonData.birthday).to.eql('1976-08-20');\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(2);\r",
 									"});\r",
-									""
+									"pm.test(\"Test user 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('email');\r",
+									"    pm.expect(jsonData.email, '\"email\" must be \"friend@mail.ru\"').to.eql('friend@mail.ru');\r",
+									"});\r",
+									"pm.test(\"Test user 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, '\"name\" must be \"friend adipisicing\"').to.eql('friend adipisicing');\r",
+									"});\r",
+									"pm.test(\"Test user 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('login');\r",
+									"    pm.expect(jsonData.login, '\"login\" field must be \"friend\"').to.eql('friend');    \r",
+									"});\r",
+									"pm.test(\"Test user 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('birthday');\r",
+									"    pm.expect(jsonData.birthday, '\"birthday\" field must be \"1976-08-20\"').to.eql('1976-08-20');\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -1232,148 +785,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				}
 			]
 		},
@@ -1388,13 +800,14 @@
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test get common friend\", function () {\r",
+									"pm.test(\"Test list user response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(0);\r",
-									"});\r",
-									""
+									"    pm.expect(jsonData.length, 'List length must be empty').to.eql(0);\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -1433,155 +846,10 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "User add friend",
+					"name": "User id=1 add friend id=2",
 					"event": [
 						{
 							"listen": "test",
@@ -1589,7 +857,8 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
-									"});"
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -1628,179 +897,10 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "User add friend unknown",
+					"name": "User id=1 add friend unknown id=-1",
 					"event": [
 						{
 							"listen": "test",
@@ -1808,6 +908,10 @@
 								"exec": [
 									"pm.test(\"Status code is 404\", function () {\r",
 									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1847,196 +951,50 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "User get friends",
+					"name": "User id=1 get friends",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test user friends\", function () {\r",
+									"pm.test(\"Test list friend response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(1);\r",
-									"    pm.expect(jsonData[0].id).to.eql(2);\r",
-									"    pm.expect(jsonData[0].email).to.eql('friend@mail.ru');\r",
-									"    pm.expect(jsonData[0].name).to.eql('friend adipisicing');\r",
-									"    pm.expect(jsonData[0].login).to.eql('friend');    \r",
-									"    pm.expect(jsonData[0].birthday).to.eql('1976-08-20');\r",
+									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
 									"});\r",
+									"pm.test(\"Test friend[0] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(2);\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('email');\r",
+									"    pm.expect(jsonData[0].email, '\"email\" must be \"friend@mail.ru\"').to.eql('friend@mail.ru');\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('name');\r",
+									"    pm.expect(jsonData[0].name, '\"name\" must be \"friend adipisicing\"').to.eql('friend adipisicing');\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('login');\r",
+									"    pm.expect(jsonData[0].login, '\"login\" field must be \"friend\"').to.eql('friend');    \r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
+									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"1976-08-20\"').to.eql('1976-08-20');\r",
+									"});\r",
+									"\r",
 									""
 								],
 								"type": "text/javascript"
@@ -2070,172 +1028,51 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "Friend get friends",
+					"name": "User id=2 get friends",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test user friends\", function () {\r",
+									"pm.test(\"Test list friend response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(1);\r",
-									"    pm.expect(jsonData[0].id).to.eql(1);\r",
-									"    pm.expect(jsonData[0].email).to.eql('mail@yandex.ru');\r",
-									"    pm.expect(jsonData[0].name).to.eql('est adipisicing');\r",
-									"    pm.expect(jsonData[0].login).to.eql('doloreUpdate');    \r",
-									"    pm.expect(jsonData[0].birthday).to.eql('1976-09-20');\r",
-									"});"
+									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('email');\r",
+									"    pm.expect(jsonData[0].email, '\"email\" must be \"mail@yandex.ru\"').to.eql('mail@yandex.ru');\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('name');\r",
+									"    pm.expect(jsonData[0].name, '\"name\" must be \"est adipisicing\"').to.eql('est adipisicing');\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('login');\r",
+									"    pm.expect(jsonData[0].login, '\"login\" field must be \"doloreUpdate\"').to.eql('doloreUpdate');    \r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
+									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"1976-09-20\"').to.eql('1976-09-20');\r",
+									"});\r",
+									"\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -2268,168 +1105,24 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "User get friends mutual",
+					"name": "Empty Common friends to user id=1 with user id=2",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test user mutual friends\", function () {\r",
+									"pm.test(\"Test list common user response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(0);\r",
-									"});\r",
-									""
+									"    pm.expect(jsonData.length, 'List length must be empty').to.eql(0);\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -2468,155 +1161,10 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "User add common friend",
+					"name": "User id=1 add  friend id=3",
 					"event": [
 						{
 							"listen": "test",
@@ -2663,191 +1211,76 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "User get 2 friends",
+					"name": "User id=1 get 2 friends",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test user 2 friends\", function () {\r",
+									"pm.test(\"Test list friend response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(2);\r",
-									"});"
+									"    pm.expect(jsonData.length, 'List length must be 2').to.eql(2);\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(2);\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('email');\r",
+									"    pm.expect(jsonData[0].email, '\"email\" must be \"friend@mail.ru\"').to.eql('friend@mail.ru');\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('name');\r",
+									"    pm.expect(jsonData[0].name, '\"name\" must be \"friend adipisicing\"').to.eql('friend adipisicing');\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('login');\r",
+									"    pm.expect(jsonData[0].login, '\"login\" field must be \"friend\"').to.eql('friend');    \r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
+									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"1976-08-20\"').to.eql('1976-08-20');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Test friend[1] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('id');\r",
+									"    pm.expect(jsonData[1].id, '\"id\" must be 3').to.eql(3);\r",
+									"});\r",
+									"pm.test(\"Test friend[1] 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('email');\r",
+									"    pm.expect(jsonData[1].email, '\"email\" must be \"friend@common.ru\"').to.eql('friend@common.ru');\r",
+									"});\r",
+									"pm.test(\"Test friend[1] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('name');\r",
+									"    pm.expect(jsonData[1].name, '\"name\" must be \"common\"').to.eql('common');\r",
+									"});\r",
+									"pm.test(\"Test friend[1] 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('login');\r",
+									"    pm.expect(jsonData[1].login, '\"login\" field must be \"common\"').to.eql('common');    \r",
+									"});\r",
+									"pm.test(\"Test friend[1] 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('birthday');\r",
+									"    pm.expect(jsonData[1].birthday, '\"birthday\" field must be \"2000-08-20\"').to.eql('2000-08-20');\r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -2880,155 +1313,10 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "Friend add common friend",
+					"name": "User id=2 add  friend id=3",
 					"event": [
 						{
 							"listen": "test",
@@ -3075,191 +1363,77 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "Friend get 2 friends",
+					"name": "User id=2 get 2 friends",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test friend friends\", function () {\r",
+									"pm.test(\"Test list friend response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(2);\r",
-									"});"
+									"    pm.expect(jsonData.length, 'List length must be 2').to.eql(2);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Test friend[0] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('email');\r",
+									"    pm.expect(jsonData[0].email, '\"email\" must be \"mail@yandex.ru\"').to.eql('mail@yandex.ru');\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('name');\r",
+									"    pm.expect(jsonData[0].name, '\"name\" must be \"est adipisicing\"').to.eql('est adipisicing');\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('login');\r",
+									"    pm.expect(jsonData[0].login, '\"login\" field must be \"doloreUpdate\"').to.eql('doloreUpdate');    \r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
+									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"1976-09-20\"').to.eql('1976-09-20');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Test friend[1] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('id');\r",
+									"    pm.expect(jsonData[1].id, '\"id\" must be 3').to.eql(3);\r",
+									"});\r",
+									"pm.test(\"Test friend[1] 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('email');\r",
+									"    pm.expect(jsonData[1].email, '\"email\" must be \"friend@common.ru\"').to.eql('friend@common.ru');\r",
+									"});\r",
+									"pm.test(\"Test friend[1] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('name');\r",
+									"    pm.expect(jsonData[1].name, '\"name\" must be \"common\"').to.eql('common');\r",
+									"});\r",
+									"pm.test(\"Test friend[1] 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('login');\r",
+									"    pm.expect(jsonData[1].login, '\"login\" field must be \"common\"').to.eql('common');    \r",
+									"});\r",
+									"pm.test(\"Test friend[1] 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('birthday');\r",
+									"    pm.expect(jsonData[1].birthday, '\"birthday\" field must be \"2000-08-20\"').to.eql('2000-08-20');\r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -3292,166 +1466,49 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "User get friends common",
+					"name": "Common friend to user id=1 with user id=2",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test get common friend\", function () {\r",
+									"pm.test(\"Test list common friend response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Test friend[0] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									"    pm.expect(jsonData[0].id, '\"id\" must be 3').to.eql(3);\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('email');\r",
+									"    pm.expect(jsonData[0].email, '\"email\" must be \"friend@common.ru\"').to.eql('friend@common.ru');\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('name');\r",
+									"    pm.expect(jsonData[0].name, '\"name\" must be \"common\"').to.eql('common');\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('login');\r",
+									"    pm.expect(jsonData[0].login, '\"login\" field must be \"common\"').to.eql('common');    \r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
+									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"2000-08-20\"').to.eql('2000-08-20');\r",
 									"});\r",
 									""
 								],
@@ -3492,155 +1549,10 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "User remove friend",
+					"name": "User id=1 remove friend id=2",
 					"event": [
 						{
 							"listen": "test",
@@ -3687,195 +1599,49 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends",
-										":friendId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "friendId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "User get friends common",
+					"name": "User id=1 get common with user id=2",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test get common friend\", function () {\r",
+									"pm.test(\"Test list common friend response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(1);\r",
-									"    pm.expect(jsonData[0].id).to.eql(3);\r",
-									"    pm.expect(jsonData[0].email).to.eql('friend@common.ru');\r",
-									"    pm.expect(jsonData[0].name).to.eql('common');\r",
-									"    pm.expect(jsonData[0].login).to.eql('common');    \r",
-									"    pm.expect(jsonData[0].birthday).to.eql('2000-08-20');\r",
+									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Test friend[0] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									"    pm.expect(jsonData[0].id, '\"id\" must be 3').to.eql(3);\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('email');\r",
+									"    pm.expect(jsonData[0].email, '\"email\" must be \"friend@common.ru\"').to.eql('friend@common.ru');\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('name');\r",
+									"    pm.expect(jsonData[0].name, '\"name\" must be \"common\"').to.eql('common');\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('login');\r",
+									"    pm.expect(jsonData[0].login, '\"login\" field must be \"common\"').to.eql('common');    \r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
+									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"2000-08-20\"').to.eql('2000-08-20');\r",
 									"});\r",
 									""
 								],
@@ -3916,171 +1682,49 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "Friend get friends common",
+					"name": "User id=2 get common with user id=1",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test get common friend\", function () {\r",
+									"pm.test(\"Test list common friend response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(1);\r",
-									"    pm.expect(jsonData[0].id).to.eql(3);\r",
-									"    pm.expect(jsonData[0].email).to.eql('friend@common.ru');\r",
-									"    pm.expect(jsonData[0].name).to.eql('common');\r",
-									"    pm.expect(jsonData[0].login).to.eql('common');    \r",
-									"    pm.expect(jsonData[0].birthday).to.eql('2000-08-20');\r",
+									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Test friend[0] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									"    pm.expect(jsonData[0].id, '\"id\" must be 3').to.eql(3);\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('email');\r",
+									"    pm.expect(jsonData[0].email, '\"email\" must be \"friend@common.ru\"').to.eql('friend@common.ru');\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('name');\r",
+									"    pm.expect(jsonData[0].name, '\"name\" must be \"common\"').to.eql('common');\r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('login');\r",
+									"    pm.expect(jsonData[0].login, '\"login\" field must be \"common\"').to.eql('common');    \r",
+									"});\r",
+									"pm.test(\"Test friend[0] 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
+									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"2000-08-20\"').to.eql('2000-08-20');\r",
 									"});\r",
 									""
 								],
@@ -4121,152 +1765,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id/friends",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id",
-										"friends"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				}
 			]
 		},
@@ -4281,11 +1780,13 @@
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test count films\", function () {\r",
+									"pm.test(\"Test list film response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(0);\r",
+									"    pm.expect(jsonData.length, 'List length must be 0').to.eql(0);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -4310,135 +1811,49 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "Film create",
+					"name": "Film id=1 create",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
 									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
 									"});\r",
-									"pm.test(\"Test created film\", function () {\r",
+									"pm.test(\"Has film create response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test film 'id' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.id).to.eql(1);\r",
-									"    pm.expect(jsonData.name).to.eql('labore nulla');\r",
-									"    pm.expect(jsonData.description).to.eql('Duis in consequat esse');    \r",
-									"    pm.expect(jsonData.releaseDate).to.eql('1979-04-17');\r",
-									"    pm.expect(jsonData.duration).to.eql(100);\r",
-									"});"
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test film 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, '\"name\" must be \"nisi eiusmod\"').to.eql('nisi eiusmod');\r",
+									"});\r",
+									"pm.test(\"Test film 'description' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('description');\r",
+									"    pm.expect(jsonData.description, '\"description\" must be \"adipisicing\"').to.eql('adipisicing');\r",
+									"});\r",
+									"pm.test(\"Test film 'releaseDate' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('releaseDate');\r",
+									"    pm.expect(jsonData.releaseDate, '\"releaseDate\" field must be \"1967-03-25\"').to.eql('1967-03-25');\r",
+									"});\r",
+									"pm.test(\"Test film 'duration' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('duration');\r",
+									"    pm.expect(jsonData.duration, '\"duration\" field must be 100').to.eql(100);    \r",
+									"});\r",
+									"\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -4458,7 +1873,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 100,\n  \"rate\": 4\n}",
+							"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 100\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -4475,152 +1890,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Film create Fail name",
@@ -4631,7 +1901,12 @@
 								"exec": [
 									"pm.test(\"Status code is 500 or 400\", function () {\r",
 									"     pm.expect(pm.response.code).to.be.oneOf([500,400]);\r",
-									"});"
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -4668,44 +1943,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"id\": -7113753,\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 33722088\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Film create Fail description",
@@ -4716,7 +1954,12 @@
 								"exec": [
 									"pm.test(\"Status code is 500 or 400\", function () {\r",
 									"     pm.expect(pm.response.code).to.be.oneOf([500,400]);\r",
-									"});"
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -4736,7 +1979,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Film name\",\n  \"description\": \"Пятеро друзей ( комик-группа «Шарло»), приезжают в город Бризуль. Здесь они хотят разыскать господина Огюста Куглова, который задолжал им деньги, а именно 20 миллионов. о Куглов, который за время «своего отсутствия», стал кандидатом Коломбани.\",\n  \"releaseDate\": \"1900-03-25\",\n  \"duration\": 200\n}",
+							"raw": "{\n  \"name\": \"Film name\",\n  \"description\": \"Пятеро друзей ( комик-группа «Шарло»), приезжают в город Бризуль. Здесь они хотят разыскать господина Огюста Куглова, который задолжал им деньги, а именно 20 миллионов. о Куглов, который за время «своего отсутствия», стал кандидатом Коломбани.\",\n    \"releaseDate\": \"1900-03-25\",\n  \"duration\": 200\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -4753,44 +1996,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"id\": -7113753,\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 33722088\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Film create Fail releaseDate",
@@ -4801,7 +2007,12 @@
 								"exec": [
 									"pm.test(\"Status code is 500 or 400\", function () {\r",
 									"     pm.expect(pm.response.code).to.be.oneOf([500,400]);\r",
-									"});"
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -4838,44 +2049,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"id\": -7113753,\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 33722088\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Film create Fail duration",
@@ -4886,7 +2060,12 @@
 								"exec": [
 									"pm.test(\"Status code is 500 or 400\", function () {\r",
 									"     pm.expect(pm.response.code).to.be.oneOf([500,400]);\r",
-									"});"
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -4923,44 +2102,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"id\": -7113753,\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 33722088\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Film update",
@@ -4970,16 +2112,40 @@
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test updated film\", function () {\r",
+									"pm.test(\"Has film update response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Test film 'id' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.id).to.eql(1);\r",
-									"    pm.expect(jsonData.name).to.eql('Film Updated');\r",
-									"    pm.expect(jsonData.description).to.eql('New film update decription');    \r",
-									"    pm.expect(jsonData.releaseDate).to.eql('1989-04-17');\r",
-									"    pm.expect(jsonData.duration).to.eql(190);\r",
-									"});"
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test film 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, '\"name\" must be \"Film Updated\"').to.eql('Film Updated');\r",
+									"});\r",
+									"pm.test(\"Test film 'description' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('description');\r",
+									"    pm.expect(jsonData.description, '\"description\" must be \"New film update decription\"').to.eql('New film update decription');\r",
+									"});\r",
+									"pm.test(\"Test film 'releaseDate' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('releaseDate');\r",
+									"    pm.expect(jsonData.releaseDate, '\"releaseDate\" field must be \"1989-04-17\"').to.eql('1989-04-17');\r",
+									"});\r",
+									"pm.test(\"Test film 'duration' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('duration');\r",
+									"    pm.expect(jsonData.duration, '\"duration\" field must be 190').to.eql(190);    \r",
+									"});\r",
+									"\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -5016,152 +2182,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Film update unknown",
@@ -5170,8 +2191,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 404\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
+									"pm.test(\"Status code is 500\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([500, 404]);\r",
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"});\r",
 									""
 								],
@@ -5210,44 +2235,74 @@
 							]
 						}
 					},
-					"response": [
+					"response": []
+				},
+				{
+					"name": "Film get All",
+					"event": [
 						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"pm.test(\"Test list film response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('name');\r",
+									"    pm.expect(jsonData[0].name, '\"name\" must be \"Film Updated\"').to.eql('Film Updated');\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'description' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('description');\r",
+									"    pm.expect(jsonData[0].description, '\"description\" must be \"New film update decription\"').to.eql('New film update decription');\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'releaseDate' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('releaseDate');\r",
+									"    pm.expect(jsonData[0].releaseDate, '\"releaseDate\" field must be \"1989-04-17\"').to.eql('1989-04-17');\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'duration' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('duration');\r",
+									"    pm.expect(jsonData[0].duration, '\"duration\" field must be 190').to.eql(190);    \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
 						}
-					]
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": []
 				},
 				{
 					"name": "Film get Popular",
@@ -5257,16 +2312,40 @@
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test popular film\", function () {\r",
+									"pm.test(\"Test list popular film response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(1);\r",
-									"    pm.expect(jsonData[0].name).to.eql('Film Updated');\r",
-									"    pm.expect(jsonData[0].description).to.eql('New film update decription');    \r",
-									"    pm.expect(jsonData[0].releaseDate).to.eql('1989-04-17');\r",
-									"    pm.expect(jsonData[0].duration).to.eql(190);\r",
-									"});"
+									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('name');\r",
+									"    pm.expect(jsonData[0].name, '\"name\" must be \"Film Updated\"').to.eql('Film Updated');\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'description' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('description');\r",
+									"    pm.expect(jsonData[0].description, '\"description\" must be \"New film update decription\"').to.eql('New film update decription');\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'releaseDate' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('releaseDate');\r",
+									"    pm.expect(jsonData[0].releaseDate, '\"releaseDate\" field must be \"1989-04-17\"').to.eql('1989-04-17');\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'duration' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('duration');\r",
+									"    pm.expect(jsonData[0].duration, '\"duration\" field must be 190').to.eql(190);    \r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -5291,120 +2370,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/popular",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										"popular"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/popular",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										"popular"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/popular",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										"popular"
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/popular",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										"popular"
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				}
 			]
 		},
@@ -5412,22 +2378,46 @@
 			"name": "film",
 			"item": [
 				{
-					"name": "Film create Firend",
+					"name": "Film id=2 create",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
 									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
 									"});\r",
-									"pm.test(\"Test email\", function () {\r",
+									"pm.test(\"Has film create response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test film 'id' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.name).to.eql('New film');\r",
-									"    pm.expect(jsonData.description).to.eql('New film about friends');    \r",
-									"    pm.expect(jsonData.releaseDate).to.eql('1999-04-30');\r",
-									"    pm.expect(jsonData.duration).to.eql(120);\r",
-									"});"
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData.id, '\"id\" must be 2').to.eql(2);\r",
+									"});\r",
+									"pm.test(\"Test film 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, '\"name\" must be \"New film\"').to.eql('New film');\r",
+									"});\r",
+									"pm.test(\"Test film 'description' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('description');\r",
+									"    pm.expect(jsonData.description, '\"description\" must be \"New film about friends\"').to.eql('New film about friends');\r",
+									"});\r",
+									"pm.test(\"Test film 'releaseDate' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('releaseDate');\r",
+									"    pm.expect(jsonData.releaseDate, '\"releaseDate\" field must be \"1999-04-30\"').to.eql('1999-04-30');\r",
+									"});\r",
+									"pm.test(\"Test film 'duration' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('duration');\r",
+									"    pm.expect(jsonData.duration, '\"duration\" field must be 100').to.eql(120);    \r",
+									"});\r",
+									"\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -5464,163 +2454,48 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"id\": 76030770,\n  \"name\": \"labore nulla\",\n  \"releaseDate\": \"1979-04-17\",\n  \"description\": \"Duis in consequat esse\",\n  \"duration\": 47277389,\n  \"rate\": 44519530\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/films",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films"
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "Film get",
+					"name": "Film id=1 get",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"pm.test(\"Get film response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test film 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test film 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, '\"name\" must be \"Film Updated\"').to.eql('Film Updated');\r",
+									"});\r",
+									"pm.test(\"Test film 'description' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('description');\r",
+									"    pm.expect(jsonData.description, '\"description\" must be \"New film update decription\"').to.eql('New film update decription');\r",
+									"});\r",
+									"pm.test(\"Test film 'releaseDate' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('releaseDate');\r",
+									"    pm.expect(jsonData.releaseDate, '\"releaseDate\" field must be \"1989-04-17\"').to.eql('1989-04-17');\r",
+									"});\r",
+									"pm.test(\"Test film 'duration' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('duration');\r",
+									"    pm.expect(jsonData.duration, '\"duration\" field must be 190').to.eql(190);    \r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -5652,151 +2527,10 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "Film get unknown",
+					"name": "Film id=9999 get not found",
 					"event": [
 						{
 							"listen": "test",
@@ -5836,148 +2570,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				}
 			]
 		},
@@ -5985,7 +2578,7 @@
 			"name": "like",
 			"item": [
 				{
-					"name": "Film add Like",
+					"name": "Film id=2 add Like from user id=1",
 					"event": [
 						{
 							"listen": "test",
@@ -6032,196 +2625,50 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id/like/:userId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id",
-										"like",
-										":userId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "userId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id/like/:userId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id",
-										"like",
-										":userId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "userId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id/like/:userId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id",
-										"like",
-										":userId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "userId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id/like/:userId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id",
-										"like",
-										":userId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "userId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "Film get Popular count",
+					"name": "Film most popular film",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test popular\", function () {\r",
+									"pm.test(\"Test list popular film response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(1);\r",
-									"    pm.expect(jsonData[0].id).to.eql(2);\r",
-									"    pm.expect(jsonData[0].name).to.eql('New film');\r",
-									"    pm.expect(jsonData[0].description).to.eql('New film about friends');    \r",
-									"    pm.expect(jsonData[0].releaseDate).to.eql('1999-04-30');\r",
-									"    pm.expect(jsonData[0].duration).to.eql(120);\r",
-									"});"
+									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									"    pm.expect(jsonData[0].id, '\"id\" must be 2').to.eql(2);\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('name');\r",
+									"    pm.expect(jsonData[0].name, '\"name\" must be \"New film\"').to.eql('New film');\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'description' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('description');\r",
+									"    pm.expect(jsonData[0].description, '\"description\" must be \"New film about friends\"').to.eql('New film about friends');\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'releaseDate' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('releaseDate');\r",
+									"    pm.expect(jsonData[0].releaseDate, '\"releaseDate\" field must be \"1999-04-30\"').to.eql('1999-04-30');\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'duration' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('duration');\r",
+									"    pm.expect(jsonData[0].duration, '\"duration\" field must be 100').to.eql(120);    \r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -6252,123 +2699,10 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/popular",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										"popular"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/popular",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										"popular"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/popular",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										"popular"
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/popular",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										"popular"
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "Film remove Like",
+					"name": "Film id=2 add Like from user id=1",
 					"event": [
 						{
 							"listen": "test",
@@ -6415,191 +2749,25 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id/like/:userId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id",
-										"like",
-										":userId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "userId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id/like/:userId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id",
-										"like",
-										":userId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "userId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id/like/:userId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id",
-										"like",
-										":userId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "userId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id/like/:userId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id",
-										"like",
-										":userId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "userId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "Film get Popular count 2",
+					"name": "Film get all popular film",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.be.ok;\r",
 									"});\r",
-									"pm.test(\"Test popular\", function () {\r",
+									"pm.test(\"Test list popular film response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length).to.eql(2);\r",
-									"});"
+									"    pm.expect(jsonData.length, 'List length must be 2').to.eql(2);\r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -6624,123 +2792,10 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/popular",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										"popular"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/popular",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										"popular"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/popular",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										"popular"
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/popular",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										"popular"
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				},
 				{
-					"name": "Film remove Like not found",
+					"name": "Film id=2 remove Like from user id=-2  not found",
 					"event": [
 						{
 							"listen": "test",
@@ -6787,176 +2842,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id/like/:userId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id",
-										"like",
-										":userId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "userId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "text/plain"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id/like/:userId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id",
-										"like",
-										":userId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "userId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Conflict",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id/like/:userId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id",
-										"like",
-										":userId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "userId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Conflict",
-							"code": 409,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						},
-						{
-							"name": "Internal Server Error",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/films/:id/like/:userId",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"films",
-										":id",
-										"like",
-										":userId"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "-29029902",
-											"description": "(Required) "
-										},
-										{
-											"key": "userId",
-											"value": "-29029902",
-											"description": "(Required) "
-										}
-									]
-								}
-							},
-							"status": "Internal Server Error",
-							"code": 500,
-							"_postman_previewlanguage": "text",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "*/*"
-								}
-							],
-							"cookie": [],
-							"body": ""
-						}
-					]
+					"response": []
 				}
 			]
 		}
