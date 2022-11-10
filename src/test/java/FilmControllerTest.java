@@ -1,3 +1,4 @@
+import filmorate.IdCreator;
 import filmorate.controller.FilmController;
 import filmorate.exception.ValidationException;
 import filmorate.models.Film;
@@ -8,8 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FilmControllerTest {
 
+    private final IdCreator idCreator = new IdCreator();
     private static final FilmController FILM_CONTROLLER = new FilmController();
-    private final Film film = new Film("Король лев",
+    private final Film film = new Film(idCreator.createId(), "Король лев",
             "Король лев, описание", "1995-01-20", 90);
 
     @Test
@@ -20,7 +22,7 @@ public class FilmControllerTest {
 
     @Test
     public void addFilmTestWithNotCorrectDataTest() {
-        final Film wrongFilm = new Film("Король лев",
+        final Film wrongFilm = new Film(idCreator.createId(), "Король лев",
                 "Король лев, описание", "1995-01-20", -200);
         Assertions.assertThrows(ValidationException.class, () -> FILM_CONTROLLER.addFilm(wrongFilm));
     }

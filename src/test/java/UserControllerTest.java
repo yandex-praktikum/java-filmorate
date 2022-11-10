@@ -1,3 +1,4 @@
+import filmorate.IdCreator;
 import filmorate.controller.UserController;
 import filmorate.exception.ResourceException;
 import filmorate.exception.ValidationException;
@@ -8,8 +9,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserControllerTest {
+
+    private final IdCreator idCreator = new IdCreator();
     private static final UserController USER_CONTROLLER = new UserController();
-    private final User user = new User("fiiinko@mail.ru", "finko",
+    private final User user = new User(idCreator.createId(), "fiiinko@mail.ru", "finko",
             "Sofya", "2000-09-21");
 
     @Test
@@ -20,7 +23,7 @@ public class UserControllerTest {
 
     @Test
     public void addUserWithNotCorrectDataTest() {
-        final User wrongUser = new User("fiiinko@mail.ru", "finko",
+        final User wrongUser = new User(idCreator.createId(), "fiiinko@mail.ru", "finko",
                 "Sofya", "2025-09-21");
         Assertions.assertThrows(ValidationException.class, () -> USER_CONTROLLER.addUser(wrongUser));
     }

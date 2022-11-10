@@ -1,5 +1,6 @@
 package filmorate.controller;
 
+import filmorate.IdCreator;
 import filmorate.exception.ResourceException;
 import filmorate.exception.ValidationException;
 import filmorate.models.User;
@@ -19,7 +20,7 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private int startedId = 1;
+    private final IdCreator idCreator = new IdCreator();
     private final HashMap<Integer, User> users = new HashMap<>();
     private final static Logger log = LoggerFactory.getLogger(UserController.class);
 
@@ -30,7 +31,7 @@ public class UserController {
             log.debug("Переданы некорректные данные.");
             throw new ValidationException("Проверьте данные и сделайте повторный запрос.");
         }
-        user.setId(createId());
+        user.setId(idCreator.createId());
         users.put(user.getId(), user);
         log.debug("Количество пользователей после добавления: {}", users.size());
         return user;
@@ -49,9 +50,5 @@ public class UserController {
     @GetMapping
     public List<User> getAllUsers() {
         return new ArrayList<>(users.values());
-    }
-
-    private int createId() {
-        return startedId++;
     }
 }

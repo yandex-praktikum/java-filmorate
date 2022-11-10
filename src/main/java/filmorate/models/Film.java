@@ -15,13 +15,6 @@ public class Film {
     private LocalDate releaseDate;
     private int duration;
 
-    public Film(String name, String description, String releaseDate, int duration) {
-        this.name = name;
-        this.description = description;
-        this.releaseDate = LocalDate.parse(releaseDate, DateTimeFormatter.ISO_DATE);
-        this.duration = duration;
-    }
-
     public Film(int id, String name, String description, String releaseDate, int duration) {
         this.id = id;
         this.name = name;

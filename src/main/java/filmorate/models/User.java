@@ -21,13 +21,6 @@ public class User {
     private String name;
     private LocalDate birthday;
 
-    public User(String email, String login, String name, String birthday) {
-        this.email = email;
-        this.login = login;
-        this.name = (name == null) ? login : name;
-        this.birthday = LocalDate.parse(birthday, DateTimeFormatter.ISO_DATE);
-    }
-
     public User(int id, String email, String login, String name, String birthday) {
         this.id = id;
         this.email = email;

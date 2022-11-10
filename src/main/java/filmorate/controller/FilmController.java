@@ -1,5 +1,6 @@
 package filmorate.controller;
 
+import filmorate.IdCreator;
 import filmorate.exception.ResourceException;
 import filmorate.exception.ValidationException;
 import filmorate.models.Film;
@@ -18,7 +19,7 @@ import java.util.List;
 @RequestMapping("/films")
 public class FilmController {
 
-    private int startedId = 1;
+    private final IdCreator idCreator = new IdCreator();
     private static final LocalDate MOVIE_BIRTHDAY = LocalDate.parse("1895-12-28");
     private final HashMap<Integer, Film> films = new HashMap<>();
     private final static Logger log = LoggerFactory.getLogger(FilmController.class);
@@ -32,7 +33,7 @@ public class FilmController {
             log.debug("Переданы некорректные данные.");
             throw new ValidationException("Проверьте данные и сделайте повторный запрос.");
         }
-        film.setId(createId());
+        film.setId(idCreator.createId());
         films.put(film.getId(), film);
         log.debug("Количество фильмов после добавления: {}", films.size());
         return film;
@@ -53,7 +54,4 @@ public class FilmController {
         return new ArrayList<>(films.values());
     }
 
-    private int createId() {
-        return startedId++;
-    }
 }
