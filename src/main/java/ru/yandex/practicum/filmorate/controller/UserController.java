@@ -28,14 +28,15 @@ public class UserController {
     @PostMapping(value = "/users") // добавление пользователя
     public User create(@Valid @RequestBody User user) throws ValidationException {
         try {
+            Optional<String> userName = user.getName();
             Set<ConstraintViolation<User>> validate = validator.validate(user);
             if (validate.size() > 0 || user.getLogin() == "" ||
                     user.getBirthday().isAfter(LocalDate.now())) {
                 throw new ValidationException("Error while saving");
             } else {
                 user.setId(idCount++);
-                if (user.getName().isBlank()) {
-                    user.setName(user.getLogin());
+                if (userName==null || userName.isEmpty()) {
+                    user.setName(Optional.of(user.getLogin()));
                 }
                 users.put(user.getId(), user);
             }

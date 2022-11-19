@@ -11,14 +11,14 @@ import java.util.Optional;
 @Data
 public class User {
     int id;
-   String name;
+   Optional<String> name;
     LocalDate birthday;
     @NonNull @Email
     String email;
     @NonNull
     String login;
 
-    public User(int id, String name, @UserValid LocalDate birthday, @NonNull String email, @NonNull String login) {
+    public User(int id, Optional<String> name, @UserValid LocalDate birthday, @NonNull String email, @NonNull String login) {
         this.id = id;
         this.name = name;
         this.birthday = birthday;

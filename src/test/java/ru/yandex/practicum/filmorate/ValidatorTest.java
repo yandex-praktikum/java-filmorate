@@ -11,6 +11,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ValidatorTest {
@@ -21,9 +23,9 @@ public class ValidatorTest {
     Film film1 = new Film(1, "Film1", LocalDate.of(2010, 10, 11),
             60, "Film1");
         FilmController filmController = new FilmController();
-        User user = new User(0, "Name", LocalDate.of(1990, 10, 11),
+        User user = new User(0, Optional.of("Name"), LocalDate.of(1990, 10, 11),
                 "fkg@mail.ru", "Login");
-        User user1 = new User(141, "Name2", LocalDate.of(1990, 10, 11),
+        User user1 = new User(1, Optional.of("Name2"), LocalDate.of(1990, 10, 11),
                 "fkg@mail.ru", "Login2");
         UserController userController = new UserController();
 
@@ -151,12 +153,12 @@ public class ValidatorTest {
 
     @Test
     public void userEmptyWithName() throws ValidationException {
-        user.setName("");
+        user.setName(null);
 
         userController.create(user);
 
-        User user2 = new User(user.getId(), user.getLogin(), user.getBirthday(),
-                user.getEmail(), user.getLogin());
+        User user2 = new User(1, Optional.of("Login"), LocalDate.of(1990, 10, 11),
+                "fkg@mail.ru", "Login");
 
         assertTrue(userController.findAll().contains(user2));
     }
