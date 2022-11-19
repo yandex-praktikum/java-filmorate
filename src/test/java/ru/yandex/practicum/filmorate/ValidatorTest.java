@@ -3,30 +3,37 @@ import org.junit.jupiter.api.Assertions;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.controller.validation.ValidationException;
-
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ValidatorTest {
 
-        Film film = new Film();
+        Film film = new Film(0, "Film", LocalDate.of(2020, 10, 11),
+                60, "Film");
+
+    Film film1 = new Film(1, "Film1", LocalDate.of(2010, 10, 11),
+            60, "Film1");
         FilmController filmController = new FilmController();
-        User user = new User();
+        User user = new User(0, "Name", LocalDate.of(1990, 10, 11),
+                "fkg@mail.ru", "Login");
+        User user1 = new User(141, "Name2", LocalDate.of(1990, 10, 11),
+                "fkg@mail.ru", "Login2");
         UserController userController = new UserController();
 
+    private static final Validator validator;
+    static {
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.usingContext().getValidator();
+    }
     @Test
     public void createFilm() throws ValidationException {
-        film.setName(Optional.of("Film"));
-        film.setDescription("description");
-        film.setReleaseDate(LocalDate.of(2020, 10, 11));
-        film.setDuration(100);
-
         filmController.create(film);
 
         assertEquals(filmController.findAll().size(), 1);
@@ -34,18 +41,8 @@ public class ValidatorTest {
 
     @Test
     public void updateFilm() throws ValidationException {
-        film.setName(Optional.of("Film"));
-        film.setDescription("description");
-        film.setReleaseDate(LocalDate.of(2020, 10, 11));
-        film.setDuration(100);
 
         filmController.create(film);
-        Film film1 = new Film();
-        film1.setName(Optional.of("Film1"));
-        film1.setDescription("description1");
-        film1.setReleaseDate(LocalDate.of(2020, 10, 11));
-        film1.setDuration(100);
-        film1.setId(1);
 
         filmController.update(film1);
 
@@ -54,71 +51,56 @@ public class ValidatorTest {
 
     @Test
     public void EmptyFilmName(){
-        film.setDescription("description");
-        film.setName(Optional.of(""));
-        film.setReleaseDate(LocalDate.of(2020, 10, 11));
-        film.setDuration(100);
+        film.setName("");
 
         final ValidationException exception = Assertions.assertThrows(
                 ValidationException.class,
                 () -> filmController.create(film)
         );
-        assertEquals("The name of the film can't be empty.", exception.getMessage());
+        assertEquals("Error while saving", exception.getMessage());
     }
 
     @Test
     public void filmTooLongDescription(){
 
-            film.setName(Optional.of("Film"));
         film.setDescription("descrikkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk" +
                 "lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll" +
                 "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj" +
                 "pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppption");
-        film.setReleaseDate(LocalDate.of(2020, 10, 11));
-        film.setDuration(100);
 
         final ValidationException exception = Assertions.assertThrows(
                 ValidationException.class,
                 () -> filmController.create(film)
         );
-        assertEquals("The film description is too long.", exception.getMessage());
+        assertEquals("Error while saving", exception.getMessage());
     }
 
     @Test
     public void filmWrongReleaseDate(){
-        film.setDescription("description");
-        film.setName(Optional.of("Film"));
+
         film.setReleaseDate(LocalDate.of(1020, 10, 11));
-        film.setDuration(100);
 
         final ValidationException exception = Assertions.assertThrows(
                 ValidationException.class,
                 () -> filmController.create(film)
         );
-        assertEquals("The release data of the film can't be before 28.12.1895 and after today", exception.getMessage());
+        assertEquals("Error while saving", exception.getMessage());
     }
 
     @Test
     public void filmWrongDuration(){
-        film.setDescription("description");
-        film.setName(Optional.of("Film"));
-        film.setReleaseDate(LocalDate.of(2020, 10, 11));
+
         film.setDuration(-100);
 
         final ValidationException exception = Assertions.assertThrows(
                 ValidationException.class,
                 () -> filmController.create(film)
         );
-        assertEquals("The film duration can't be under 0.", exception.getMessage());
+        assertEquals("Error while saving", exception.getMessage());
     }
 
     @Test
     public void createUser() throws ValidationException {
-        user.setName(Optional.of("Name"));
-        user.setBirthday(LocalDate.of(1990, 10, 11));
-        user.setLogin(Optional.of("Login"));
-        user.setEmail(Optional.of("sdlf@mail.ru"));
-
         userController.create(user);
 
         assertEquals(userController.findAll().size(), 1);
@@ -126,115 +108,58 @@ public class ValidatorTest {
 
     @Test
     public void updateUser() throws ValidationException {
-        user.setName(Optional.of("Name"));
-        user.setBirthday(LocalDate.of(1990, 10, 11));
-        user.setLogin(Optional.of("Login"));
-        user.setEmail(Optional.of("sdlf@mail.ru"));
-        userController.create(user);
 
-        User user1 = new User();
-        user1.setName(Optional.of("Name1"));
-        user1.setBirthday(LocalDate.of(1991, 10, 11));
-        user1.setLogin(Optional.of("Login1"));
-        user1.setEmail(Optional.of("sdlf@mail.ru"));
-        user1.setId(1);
+        userController.create(user);
         userController.update(user1);
 
         assertTrue(userController.findAll().contains(user1));
     }
 
     @Test
-    public void userEmptyEmail(){
-        user.setName(Optional.of("Name"));
-        user.setBirthday(LocalDate.of(1990, 10, 11));
-        user.setLogin(Optional.of("Login"));
-
-        final ValidationException exception = Assertions.assertThrows(
-                ValidationException.class,
-                () -> userController.create(user)
-        );
-        assertEquals("The email is incorrect.", exception.getMessage());
-    }
-
-    @Test
     public void userWrongEmail(){
-        user.setName(Optional.of("Name"));
-        user.setBirthday(LocalDate.of(1990, 10, 11));
-        user.setLogin(Optional.of("Login"));
-        user.setEmail(Optional.of("sdlfmail.ru"));
+
+        user.setEmail("sdlfmail.ru");
 
         final ValidationException exception = Assertions.assertThrows(
                 ValidationException.class,
                 () -> userController.create(user)
         );
-        assertEquals("The email is incorrect.", exception.getMessage());
+        assertEquals("Error while saving", exception.getMessage());
     }
 
     @Test
     public void userEmptyLogin(){
-        user.setName(Optional.of("Name"));
-        user.setBirthday(LocalDate.of(1990, 10, 11));
-
-        user.setEmail(Optional.of("sdlf@mail.ru"));
-
+        user.setLogin("");
 
         final ValidationException exception = Assertions.assertThrows(
                 ValidationException.class,
                 () -> userController.create(user)
         );
-        assertEquals("The login can't be empty and contain spaces", exception.getMessage());
-    }
-
-    @Test
-    public void userLoginWithSpaces(){
-        user.setName(Optional.of("Name"));
-        user.setBirthday(LocalDate.of(1990, 10, 11));
-        user.setLogin(Optional.of("Log  in"));
-        user.setEmail(Optional.of("sdlf@mail.ru"));
-
-
-        final ValidationException exception = Assertions.assertThrows(
-                ValidationException.class,
-                () -> userController.create(user)
-        );
-        assertEquals("The login can't be empty and contain spaces", exception.getMessage());
+        assertEquals("Error while saving", exception.getMessage());
     }
 
     @Test
     public void userWrongBirthday(){
-        user.setName(Optional.of("Name"));
         user.setBirthday(LocalDate.of(2990, 10, 11));
-        user.setLogin(Optional.of("Login"));
-        user.setEmail(Optional.of("sdlf@mail.ru"));
-
 
         final ValidationException exception = Assertions.assertThrows(
                 ValidationException.class,
                 () -> userController.create(user)
         );
-        assertEquals("The user's birthday can't be in the future", exception.getMessage());
+        assertEquals("Error while saving", exception.getMessage());
     }
 
     @Test
     public void userEmptyWithName() throws ValidationException {
-        user.setBirthday(LocalDate.of(1990, 10, 11));
-        user.setLogin(Optional.of("Login"));
-        user.setEmail(Optional.of("sdlf@mail.ru"));
+        user.setName("");
 
         userController.create(user);
 
-        User user1 = new User();
-        user1.setName(Optional.of("Login"));
-        user1.setBirthday(LocalDate.of(1990, 10, 11));
-        user1.setLogin(Optional.of("Login"));
-        user1.setEmail(Optional.of("sdlf@mail.ru"));
-        user1.setId(1);
+        User user2 = new User(user.getId(), user.getLogin(), user.getBirthday(),
+                user.getEmail(), user.getLogin());
 
-        assertTrue(userController.findAll().contains(user1));
+        assertTrue(userController.findAll().contains(user2));
     }
-
-
-
     }
 
 
