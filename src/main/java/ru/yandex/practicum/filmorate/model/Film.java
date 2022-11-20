@@ -5,6 +5,7 @@ import lombok.NonNull;
 import ru.yandex.practicum.filmorate.controller.validation.FilmValid;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
@@ -14,14 +15,14 @@ public class Film {
     int id;
     @Size(max = 200)
     String description;
-  //  @FilmValid
+    @FilmValid
     LocalDate releaseDate;
     @Min(1)
     long duration; //минуты
     @NonNull
     String name;
 
-    public Film(int id, String description,@FilmValid LocalDate releaseDate, long duration, @NonNull String name) {
+    public Film(int id, String description,LocalDate releaseDate, long duration, @NonNull String name) {
         this.id = id;
         this.description = description;
         this.releaseDate = releaseDate;

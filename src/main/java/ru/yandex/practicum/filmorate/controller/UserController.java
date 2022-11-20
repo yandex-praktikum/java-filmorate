@@ -30,8 +30,8 @@ public class UserController {
         try {
             Optional<String> userName = user.getName();
             Set<ConstraintViolation<User>> validate = validator.validate(user);
-            if (validate.size() > 0 || user.getLogin() == "" ||
-                    user.getBirthday().isAfter(LocalDate.now())) {
+            if (validate.size() > 0 || user.getLogin() == "" )
+            {
                 throw new ValidationException("Error while saving");
             } else {
                 user.setId(idCount++);

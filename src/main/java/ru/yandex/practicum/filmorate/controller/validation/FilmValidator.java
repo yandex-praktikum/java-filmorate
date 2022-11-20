@@ -1,17 +1,19 @@
 package ru.yandex.practicum.filmorate.controller.validation;
 
-import ru.yandex.practicum.filmorate.model.Film;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 
-public class FilmValidator implements ConstraintValidator<FilmValid, Film> {
+public class FilmValidator implements ConstraintValidator<FilmValid, LocalDate> {
 
     @Override
-    public boolean isValid(Film film, ConstraintValidatorContext constraintValidatorContext) {
-        return film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))
-                && film.getReleaseDate().isAfter(LocalDate.now());
+    public void initialize(FilmValid releaseDate) {
+    }
+
+    @Override
+    public boolean isValid(LocalDate releaseDate, ConstraintValidatorContext constraintValidatorContext) {
+        return releaseDate.isAfter(LocalDate.of(1895, 12, 28))
+                && releaseDate.isBefore(LocalDate.now());
     }
 }
 

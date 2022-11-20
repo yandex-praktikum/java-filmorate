@@ -7,7 +7,6 @@ import ru.yandex.practicum.filmorate.controller.validation.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import javax.validation.*;
-import java.time.LocalDate;
 import java.util.*;
 
 @Validated
@@ -33,8 +32,7 @@ public class FilmController {
     public Film create (@Valid @RequestBody Film film) throws ValidationException {
        try {
            Set<ConstraintViolation<Film>> validate = validator.validate(film);
-           if (validate.size() > 0 || film.getName()=="" ||
-                   film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
+           if (validate.size() > 0 || film.getName()=="") {
                throw new  ValidationException("Error while saving");
            } else {
                film.setId(idCount++);
@@ -50,8 +48,7 @@ public class FilmController {
     public Film update(@Valid @RequestBody Film film) throws ValidationException {
         try {
             Set<ConstraintViolation<Film>> validate = validator.validate(film);
-            if (validate.size() > 0 || film.getName() == "" ||
-                    film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
+            if (validate.size() > 0 || film.getName() == "") {
                 throw new ValidationException("Error while updating");
             } else {
                 if (films.containsKey(film.getId())) {
