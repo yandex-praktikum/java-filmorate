@@ -13,7 +13,7 @@ import java.util.Optional;
 public class User {
     int id;
    Optional<String> name;
-   @PastOrPresent @UserValid
+   @UserValid
     LocalDate birthday;
     @NonNull @Email
     String email;
