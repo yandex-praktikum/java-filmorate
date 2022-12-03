@@ -2,10 +2,16 @@ package ru.yandex.practicum.filmorate;
 import org.junit.jupiter.api.Assertions;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.controller.UserController;
-import ru.yandex.practicum.filmorate.controller.validation.ValidationException;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.exeptions.ValidationException;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -22,12 +28,19 @@ public class ValidatorTest {
 
     Film film1 = new Film(1, "Film1", LocalDate.of(2010, 10, 11),
             60, "Film1");
-        FilmController filmController = new FilmController();
-        User user = new User(0, Optional.of("Name"), LocalDate.of(1990, 10, 11),
+    FilmStorage filmStorage;
+    InMemoryFilmStorage inMemoryFilmStorage = new InMemoryFilmStorage();
+    FilmService filmService = new FilmService(inMemoryFilmStorage);
+    FilmController filmController = new FilmController(filmService, inMemoryFilmStorage);
+        User user = new User(0, "Name", LocalDate.of(1990, 10, 11),
                 "fkg@mail.ru", "Login");
-        User user1 = new User(1, Optional.of("Name2"), LocalDate.of(1990, 10, 11),
+        User user1 = new User(1, "Name2", LocalDate.of(1990, 10, 11),
                 "fkg@mail.ru", "Login2");
-        UserController userController = new UserController();
+        UserStorage userStorage;
+        InMemoryUserStorage inMemoryUserStorage = new InMemoryUserStorage();
+    UserService userService = new UserService(inMemoryUserStorage);
+
+        UserController userController = new UserController(userService, inMemoryUserStorage);
 
     private static final Validator validator;
     static {
@@ -35,7 +48,7 @@ public class ValidatorTest {
         validator = validatorFactory.usingContext().getValidator();
     }
     @Test
-    public void createFilm() throws ValidationException {
+    public void createFilm() {
         filmController.create(film);
 
         assertEquals(filmController.findAll().size(), 1);
@@ -153,11 +166,11 @@ public class ValidatorTest {
 
     @Test
     public void userEmptyWithName() throws ValidationException {
-        user.setName(null);
+        user.setName("");
 
         userController.create(user);
 
-        User user2 = new User(1, Optional.of("Login"), LocalDate.of(1990, 10, 11),
+        User user2 = new User(1, "Login", LocalDate.of(1990, 10, 11),
                 "fkg@mail.ru", "Login");
 
         assertTrue(userController.findAll().contains(user2));

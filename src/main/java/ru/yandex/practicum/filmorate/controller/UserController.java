@@ -1,69 +1,64 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.controller.validation.ValidationException;
+import ru.yandex.practicum.filmorate.exeptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
-import javax.validation.*;
-import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
 
 @RestController
 public class UserController {
-    private HashMap<Integer, User> users = new HashMap<>();
-    private List<User> usersArrayList = new ArrayList<>();
-    private int idCount = 1;
-    private static Validator validator;
-    static {
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        validator = validatorFactory.usingContext().getValidator();
+    private final UserService userService;
+    private final InMemoryUserStorage inMemoryUserStorage;
+
+    @Autowired
+    public UserController(UserService userService, InMemoryUserStorage inMemoryUserStorage) {
+        this.userService = userService;
+        this.inMemoryUserStorage = inMemoryUserStorage;
     }
 
     @GetMapping("/users") // получение списка пользователей
     public List<User> findAll() {
-        usersArrayList.addAll(users.values());
-        return usersArrayList;
+        return inMemoryUserStorage.findAll();
     }
 
+
     @PostMapping(value = "/users") // добавление пользователя
-    public User create(@Valid @RequestBody User user) throws ValidationException {
-        try {
-            Optional<String> userName = user.getName();
-            Set<ConstraintViolation<User>> validate = validator.validate(user);
-            if (validate.size() > 0 || user.getLogin() == "" )
-            {
-                throw new ValidationException("Error while saving");
-            } else {
-                user.setId(idCount++);
-                if (userName==null || userName.isEmpty()) {
-                    user.setName(Optional.of(user.getLogin()));
-                }
-                users.put(user.getId(), user);
-            }
-        }catch (ValidationException validationException) {
-            throw new ValidationException(validationException.getMessage());
-        }
-        return user;
+    public User create(@RequestBody User user) throws ValidationException {
+        return inMemoryUserStorage.create(user);
     }
 
     @PutMapping(value = "/users") // обновление пользователя
-    public User update(@Valid @RequestBody User user) throws ValidationException {
-        try {
-            Set<ConstraintViolation<User>> validate = validator.validate(user);
-            if (validate.size() > 0 || user.getLogin() == "" ||
-                    user.getBirthday().isAfter(LocalDate.now())) {
-                throw new ValidationException("Error while updating");
-            } else {
-                if(users.containsKey(user.getId())) {
-                    users.remove(user.getId());
-                    users.put(user.getId(), user);
-                } else {
-                    throw new ValidationException("Error while updating");
-                }
-            }
-        } catch (ValidationException exception){
-            throw new ValidationException(exception.getMessage());
-        }
-        return user;
+    public User update(@RequestBody User user) throws ValidationException {
+        return inMemoryUserStorage.update(user);
+    }
+
+    @GetMapping("/users/{id}") // получение пользователя по ID
+    public User findUser(@PathVariable int id) {
+        return userService.findUser(id);
+    }
+
+    @PutMapping(value = "/users/{id}/friends/{friendId}") //добавление в друзья
+    public void addToFriendList(@PathVariable int id, @PathVariable int friendId) {
+        userService.addToFriendList(id, friendId);
+    }
+
+    @DeleteMapping(value = "/users/{id}/friends/{friendId}") //удаление из друзей
+    public void removeFromFriendList(@PathVariable int id, @PathVariable int friendId) {
+        userService.removeFromFriendList(id, friendId);
+    }
+
+    @GetMapping("/users/{id}/friends") // получение друзей указанного пользователя
+    public List<User> getFriendList(@PathVariable int id) {
+
+        return userService.getFriendList(id);
+    }
+
+    @GetMapping("/users/{id}/friends/common/{otherId}") // получение общих друзей
+    public List<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
+        return userService.getCommonFriends(id, otherId);
     }
 }
