@@ -6,8 +6,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
+import javax.validation.Valid;
 import javax.validation.ValidationException;
 import java.util.List;
 
@@ -17,27 +18,27 @@ import java.util.List;
 public class FilmController {
 
     private final FilmService filmService;
-    private final InMemoryFilmStorage inMemoryFilmStorage;
+    private final FilmStorage filmStorage;
 
     @Autowired
-    public FilmController(FilmService filmService, InMemoryFilmStorage inMemoryFilmStorage) {
+    public FilmController(FilmService filmService, FilmStorage filmStorage) {
         this.filmService = filmService;
-        this.inMemoryFilmStorage = inMemoryFilmStorage;
+        this.filmStorage = filmStorage;
     }
 
     @GetMapping("/films") // получение списка фильмов
     public List<Film> findAll() {
-        return inMemoryFilmStorage.findAll();
+        return filmStorage.findAll();
     }
 
     @PostMapping(value = "/films") // добавление фильма
-    public Film create(@RequestBody Film film) throws ValidationException {
-        return inMemoryFilmStorage.create(film);
+    public Film create(@RequestBody @Valid Film film) throws ValidationException {
+        return filmStorage.create(film);
     }
 
     @PutMapping(value = "/films") // обновление фильма/films/{id}/like/{userId}
-    public Film update(@RequestBody Film film) throws ValidationException {
-        return inMemoryFilmStorage.update(film);
+    public Film update(@RequestBody @Valid Film film) throws ValidationException {
+        return filmStorage.update(film);
     }
 
     @GetMapping("/films/{id}") // получение пользователя по ID

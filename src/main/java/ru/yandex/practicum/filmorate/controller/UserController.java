@@ -5,35 +5,36 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exeptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 public class UserController {
     private final UserService userService;
-    private final InMemoryUserStorage inMemoryUserStorage;
+    private final UserStorage userStorage;
 
     @Autowired
-    public UserController(UserService userService, InMemoryUserStorage inMemoryUserStorage) {
+    public UserController(UserService userService, UserStorage userStorage) {
         this.userService = userService;
-        this.inMemoryUserStorage = inMemoryUserStorage;
+        this.userStorage = userStorage;
     }
 
     @GetMapping("/users") // получение списка пользователей
     public List<User> findAll() {
-        return inMemoryUserStorage.findAll();
+        return userStorage.findAll();
     }
 
 
     @PostMapping(value = "/users") // добавление пользователя
-    public User create(@RequestBody User user) throws ValidationException {
-        return inMemoryUserStorage.create(user);
+    public User create(@RequestBody @Valid User user) throws ValidationException {
+        return userStorage.create(user);
     }
 
     @PutMapping(value = "/users") // обновление пользователя
-    public User update(@RequestBody User user) throws ValidationException {
-        return inMemoryUserStorage.update(user);
+    public User update(@RequestBody @Valid User user) throws ValidationException {
+        return userStorage.update(user);
     }
 
     @GetMapping("/users/{id}") // получение пользователя по ID

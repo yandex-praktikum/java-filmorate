@@ -9,12 +9,12 @@ import java.util.*;
 
 @Data
 public class User {
-    int id;
-    String name;
+    private int id;
+    private String name;
     @UserValid
-    LocalDate birthday;
-    @NonNull @Email String email;
-    @NonNull String login;
+    private LocalDate birthday;
+    @NonNull @Email private String email;
+    @NonNull private String login;
 
     public User(int id, String name, LocalDate birthday, @NonNull String email, @NonNull String login) {
         this.id = id;

@@ -13,15 +13,15 @@ import java.util.Set;
 @Data
 public class Film {
 
-    int id;
+    private int id;
     @Size(max = 200)
-    String description;
+    private String description;
     @FilmValid
-    LocalDate releaseDate;
+    private LocalDate releaseDate;
     @Min(1)
-    long duration; //минуты
+    private long duration; //минуты
     @NonNull
-    String name;
+    private String name;
 
     public Film(int id, String description,LocalDate releaseDate, long duration, @NonNull String name) {
         this.id = id;
