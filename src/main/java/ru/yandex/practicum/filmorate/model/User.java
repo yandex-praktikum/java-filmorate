@@ -1,16 +1,38 @@
 package ru.yandex.practicum.filmorate.model;
 
-import java.time.LocalDate;
-
-import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
-@Builder
 public class User {
-    private int id;//целочисленный идентификатор — id;
-    private String email; //электронная почта — email;
-    private String login;//логин пользователя — login;
-    private String name;//имя для отображения — name;
-    private LocalDate birthday;//дата рождения — birthday.
+    private Long id;
+    private String email;
+    private String name;
+    private String login;
+    private LocalDate birthday;
+    private final Set<Long> friends = new HashSet<>();
+
+    public User(Long id, String email, String name, String login, LocalDate birthday) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.login = login;
+        this.birthday = birthday;
+    }
+
+    public void addFriend(Long id) {
+        friends.add(id);
+    }
+
+    public void removeFriend(Long id) {
+        friends.remove(id);
+    }
+
+    public Set<Long> getFriends() {
+        return friends;
+    }
+
 }
