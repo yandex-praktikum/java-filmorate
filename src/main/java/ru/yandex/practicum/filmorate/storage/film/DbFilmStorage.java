@@ -48,28 +48,6 @@ public class DbFilmStorage implements FilmStorage {
     @Override
     public Optional<Film> createFilm(Film film) {
 
-        if (film.getName().isBlank() || film.getName() == null) {
-            throw new ValidateException("пустое наменование фильма");
-        }
-        if (film.getDescription().length() > 200) {
-            throw new ValidateException("размер описания превышает 200 символов");
-        }
-
-        if (film.getDescription().isBlank() || film.getDescription() == null) {
-            throw new ValidateException("пустое описание");
-        }
-
-        if (film.getReleaseDate().isBefore(LOW_RELEASE_DATE)) {
-            throw new ValidateException("дата релиза неверна");
-        }
-        if (film.getDuration() <= 0) {
-            throw new ValidateException("длительность фильма должна быть положительной");
-        }
-        if (film.getMpa() == null) {
-            throw new ValidateException("отсутствует MPA");
-        }
-
-
         Long id = getFilmId();
 
         jdbcTemplate.update(SQL_INS_FILMS, id, film.getName(), film.getDescription(), film.getReleaseDate()
