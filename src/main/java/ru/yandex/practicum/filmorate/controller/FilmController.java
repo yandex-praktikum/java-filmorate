@@ -8,6 +8,9 @@ import ru.yandex.practicum.filmorate.service.FilmServiceImpl;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @RestController
 @RequestMapping("/films")
@@ -17,9 +20,14 @@ public class FilmController {
 
 
     @GetMapping
-    public HashMap<Integer, Film> getAllFIlms() {
+    public List<Film> getAllFIlms() {
+
         log.debug("There is {} films in filmorate", filmServiceImpl.getAllFilms().size());
-        return filmServiceImpl.getAllFilms();
+
+        return  filmServiceImpl.getAllFilms()
+                .values()
+                .stream()
+                .collect(Collectors.toList());
     }
 
     @PostMapping

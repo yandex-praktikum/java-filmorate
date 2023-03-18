@@ -12,33 +12,34 @@ import ru.yandex.practicum.filmorate.model.Film;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+
 @Slf4j
 @Service
 @Validated
-public class FilmServiceImpl {
-    HashMap<Integer, Film> filmHashMap = new HashMap<>();
+public class FilmServiceImpl implements FilmService {
+    public HashMap<Integer, Film> filmHashMap = new HashMap<>();
 
-    public @Valid Film updateFilm(@RequestBody @Valid Film film) {
+    @Override
+    public @Valid Film updateFilm(@Valid Film film) {
         Film filmToUpdate = filmHashMap.get(film.getId());
-        if (filmToUpdate ==null) {
+        if (filmToUpdate == null) {
             log.error("Film don't find");
-            throw new NotFoundException(HttpStatus.NOT_FOUND,"Film don't find");
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "Film don't find");
         } else {
-
             filmHashMap.remove(filmToUpdate);
             filmHashMap.put(film.getId(), film);
             return film;
         }
     }
 
+    @Override
     public @Valid Film addFilms(@Valid Film film) {
-
         filmHashMap.put(film.getId(), film);
         return film;
     }
 
+    @Override
     public HashMap<Integer, Film> getAllFilms() {
-
         return filmHashMap;
     }
 
