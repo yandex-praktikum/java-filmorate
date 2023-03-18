@@ -1,38 +1,38 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmServiceImpl;
 
 import javax.validation.Valid;
 import java.util.HashMap;
-
+@Slf4j
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    HashMap<Integer, Film> filmHashMap = new HashMap<>();
+    @Autowired
+    FilmServiceImpl filmServiceImpl;
+
 
     @GetMapping
     public HashMap<Integer, Film> getAllFIlms() {
-
-        return filmHashMap;
+        log.debug("There is {} films in filmorate", filmServiceImpl.getAllFilms().size());
+        return filmServiceImpl.getAllFilms();
     }
 
     @PostMapping
-    public ResponseEntity<String> saveFilm(@Valid @RequestBody Film film) {
-        filmHashMap.put(film.getId(), film);
-        return ResponseEntity.ok("valid");
+    public Film addFilm(@Valid @RequestBody Film film) {
+        log.debug("Film with id={} added",film.getId());
+        return filmServiceImpl.addFilms(film);
     }
 
     @PutMapping
-    public Film updateFilm(@RequestBody Film film) {
-        Film oldFilm = filmHashMap.get(film.getId());
-        if (oldFilm ==null) {
-            return  null;
-        } else {
-            filmHashMap.remove(oldFilm);
-            filmHashMap.put(film.getId(), film);
-            return film;
-        }
+    public Film updateFilm(@Valid @RequestBody Film film) {
+        log.debug("Film with id={} updated",film.getId());
+        return filmServiceImpl.updateFilm(film);
     }
+
+
 }
