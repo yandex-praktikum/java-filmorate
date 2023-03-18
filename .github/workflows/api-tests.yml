@@ -38,11 +38,21 @@ jobs:
 
       - name: Check branch name
         run: |
-          if [[ "$GITHUB_BASE_REF" != "main" && "$GITHUB_REPOSITORY_OWNER" != "praktikum-java" ]]
-          then
-            echo "Set the pull request to merge branch 'main' (instead of '$GITHUB_BASE_REF')"
-            echo "Задайте в Pull request ветку слияния 'main'  (вместо '$GITHUB_BASE_REF')"
-            exit -2
+          if [[ "$GITHUB_HEAD_REF" == "add-common-films" ]] || [[ "$GITHUB_HEAD_REF" == "add-director" ]] || [[ "$GITHUB_HEAD_REF" == "add-feed" ]] || [[ "$GITHUB_HEAD_REF" == "add-marks" ]]  || [[ "$GITHUB_HEAD_REF" == "add-most-populars" ]]  || [[ "$GITHUB_HEAD_REF" == "add-recommendations" ]]  || [[ "$GITHUB_HEAD_REF" == "add-remove-endpoint" ]]  || [[ "$GITHUB_HEAD_REF" == "add-reviews" ]] || [[ "$GITHUB_HEAD_REF" == "add-search" ]]
+          then          
+            if [[ "$GITHUB_BASE_REF" != "develop" ]] && [[ "$GITHUB_REPOSITORY_OWNER" != "praktikum-java" ]]
+            then
+              echo "Set the pull request to merge branch 'develop' (instead of '$GITHUB_BASE_REF')"
+              echo "Задайте в Pull request ветку слияния 'develop'  (вместо '$GITHUB_BASE_REF')"
+              exit -2
+            fi
+          else
+            if [[ "$GITHUB_BASE_REF" != "main" ]] && [[ "$GITHUB_REPOSITORY_OWNER" != "praktikum-java" ]]
+            then
+              echo "Set the pull request to merge branch 'main' (instead of '$GITHUB_BASE_REF')"
+              echo "Задайте в Pull request ветку слияния 'main'  (вместо '$GITHUB_BASE_REF')"
+              exit -2
+            fi
           fi
           echo "Github target '$GITHUB_BASE_REF' - OK"
 
@@ -83,7 +93,7 @@ jobs:
           fi
           if [[ "$GITHUB_HEAD_REF" == "develop" ]] || [[ "$GITHUB_HEAD_REF" == "add-common-films" ]] || [[ "$GITHUB_HEAD_REF" == "add-director" ]] || [[ "$GITHUB_HEAD_REF" == "add-feed" ]] || [[ "$GITHUB_HEAD_REF" == "add-marks" ]]  || [[ "$GITHUB_HEAD_REF" == "add-most-populars" ]]  || [[ "$GITHUB_HEAD_REF" == "add-recommendations" ]]  || [[ "$GITHUB_HEAD_REF" == "add-remove-endpoint" ]]  || [[ "$GITHUB_HEAD_REF" == "add-reviews" ]] || [[ "$GITHUB_HEAD_REF" == "add-search" ]] 
           then
-            echo "Branch develop - OK"
+            echo "Branch ${GITHUB_HEAD_REF} - OK"
             PULL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28"  /repos/${GITHUB_REPOSITORY}/pulls?head=${GITHUB_REPOSITORY_OWNER}:add-database || true)
             OPEN=$(jq '. | length' <<< "$PULL")
             if [[ "$OPEN" != "0" && "$GITHUB_REPOSITORY_OWNER" != "praktikum-java" ]]
@@ -100,6 +110,34 @@ jobs:
           echo "Исправьте пожалуйста имя ветки '$GITHUB_HEAD_REF' согласно заданию, разрешены: controllers-films-users, add-friends-likes, add-database, develop, add-common-films, add-director, add-feed, add-marks, add-most-populars, add-recommendations, add-remove-endpoint, add-reviews, add-search"
           exit -1
         env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Check files
+        run: |
+          PULL=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28"  /repos/${GITHUB_REPOSITORY}/pulls/${PULL_NUMBER}/files?per_page=100 || true)
+          FILENAMES=$(jq '.[] | .filename' <<< "$PULL")
+          if [[ "$FILENAMES"  =~ "api-tests.yml" ]]
+          then
+            echo "The pull request contains the api-tests.yml file and cannot be modified. Remove it from PR"
+            echo "Pull request содержит файл api-tests.yml, его изменять нельзя. Удалите его из PR"
+            exit -1
+          fi
+          if [[ "$FILENAMES"  =~ "checkstyle.xml" ]]
+          then
+            echo "The pull request contains the checkstyle.xml file and cannot be modified. Remove it from PR"
+            echo "Pull request содержит файл checkstyle.xml, его изменять нельзя. Удалите его из PR"
+            exit -2
+          fi
+          if [[ "$FILENAMES"  =~ ".class" ]] || [[ "$FILENAMES"  =~ ".jar" ]] || [[ "$FILENAMES"  =~ ".mvn" ]] || [[ "$FILENAMES"  =~ ".DS_Store" ]]
+          then
+            echo "The pull request contains the binary files. Remove them (*.class, *.jar, *.DS_Store ...) from PR"
+            echo "Pull request содержит двоичные файлы. Удалите их (*.class, *.jar, *.DS_Store ...) из PR"
+            exit -3
+          fi
+          echo "PR files - OK"
+          exit
+        env:
+          PULL_NUMBER: ${{ github.event.number }}
           GH_TOKEN: ${{ github.token }}
 
   build-filmorate:
