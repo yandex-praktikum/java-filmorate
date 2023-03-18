@@ -1,50 +1,38 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.model.ErrorMessage;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
 
 import javax.validation.Valid;
 import java.util.HashMap;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/films")
 public class FilmController {
-    @Autowired
-    private final FilmService filmService;
-
+    HashMap<Integer, Film> filmHashMap = new HashMap<>();
 
     @GetMapping
-    public HashMap<Integer, Film> getAllFIlm() {
+    public HashMap<Integer, Film> getAllFIlms() {
 
-        return filmService.getAllFilms();
+        return filmHashMap;
     }
 
     @PostMapping
-    public ResponseEntity<String> addFilm(@RequestBody Film film) {
-
-        return filmService.addFilms(film);
+    public ResponseEntity<String> saveFilm(@Valid @RequestBody Film film) {
+        filmHashMap.put(film.getId(), film);
+        return ResponseEntity.ok("valid");
     }
 
     @PutMapping
-    @ExceptionHandler
-    public ResponseEntity<String> updateFilm(@RequestBody Film film) throws NotFoundException {
-                 //return filmService.updateFilms(film);
-                 return filmService.updateFilms(film);
-         }
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorMessage> handleException(NotFoundException exception) {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(new ErrorMessage(exception.getMessage()));
+    public Film updateFilm(@RequestBody Film film) {
+        Film oldFilm = filmHashMap.get(film.getId());
+        if (oldFilm ==null) {
+            return  null;
+        } else {
+            filmHashMap.remove(oldFilm);
+            filmHashMap.put(film.getId(), film);
+            return film;
+        }
     }
-
-
 }

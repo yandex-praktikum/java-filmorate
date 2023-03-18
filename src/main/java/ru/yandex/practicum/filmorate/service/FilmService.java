@@ -28,7 +28,7 @@ public class FilmService {
         Film oldFilm = filmHashMap.get(film.getId());
         if (oldFilm ==null) {
             ResponseEntity.notFound();
-            throw new NotFoundException(HttpStatus.NOT_FOUND,"Film id did not find") ;
+          throw new NotFoundException(HttpStatus.NOT_FOUND,"Film id did not find") ;
 
         } else {
             filmHashMap.remove(oldFilm);
