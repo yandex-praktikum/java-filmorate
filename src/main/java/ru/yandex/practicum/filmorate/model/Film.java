@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import ru.yandex.practicum.filmorate.validator.ValidDate;
 
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 
 public class Film {
@@ -26,6 +28,5 @@ public class Film {
      @Positive
     int duration;
     int rate;
-
 
 }

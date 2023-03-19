@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User addFilm(@Valid @RequestBody User  user) {
+    public User addUser(@Valid @RequestBody User  user) {
         log.debug("User with id={} added",user.getId());
         return userServiceImpl.addUsers(user);
     }
