@@ -18,7 +18,7 @@ import java.util.HashMap;
 @Validated
 public class FilmServiceImpl implements FilmService {
     public HashMap<Integer, Film> filmHashMap = new HashMap<>();
-
+    private static int id = 1;
     @Override
     public @Valid Film updateFilm(@Valid Film film) {
         Film filmToUpdate = filmHashMap.get(film.getId());
@@ -34,6 +34,9 @@ public class FilmServiceImpl implements FilmService {
 
     @Override
     public @Valid Film addFilms(@Valid Film film) {
+        if (film.getId() == 0) {
+            film.setId(id++);
+        }
         filmHashMap.put(film.getId(), film);
         return film;
     }

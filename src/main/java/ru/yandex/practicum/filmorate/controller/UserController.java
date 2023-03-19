@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping
     public List<User> getAllUser() {
-        log.debug("There is {} films in filmorate", userServiceImpl.getAllUsers().size());
+        log.debug("There is {} user in filmorate", userServiceImpl.getAllUsers().size());
         return userServiceImpl.getAllUsers()
                 .values()
                 .stream()

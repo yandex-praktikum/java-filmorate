@@ -17,19 +17,21 @@ import java.util.HashMap;
 @Validated
 public class UserServiceImpl implements UserService {
     public HashMap<Integer, User> userHashMap = new HashMap<>();
+    private static int id = 1;
 
     @Override
     public @Valid User updateUsers(@Valid User user) {
         User userToUpdate = userHashMap.get(user.getId());
         if (userToUpdate == null) {
-            log.error("Film don't find");
-            throw new NotFoundException(HttpStatus.NOT_FOUND, "Film don't find");
-        } else if (userToUpdate.getName() == null) {
-
+            log.error("User don't find");
+            throw new NotFoundException(HttpStatus.NOT_FOUND, "User don't find");
+        }
+        else if (userToUpdate.getName().isEmpty()) {
+            user.setName(user.getLogin());
             userHashMap.put(user.getId(), user);
             return user;
-        } else {
-            userHashMap.remove(userToUpdate);
+        }
+        else {
             userHashMap.put(user.getId(), user);
             return user;
         }
@@ -37,6 +39,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public @Valid User addUsers(@Valid User user) {
+        if (user.getId() == 0) {
+            user.setId(id++);
+        }
         userHashMap.put(user.getId(), user);
         return user;
     }
