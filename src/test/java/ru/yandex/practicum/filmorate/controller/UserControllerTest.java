@@ -77,7 +77,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void shouldGetAllUserTest()  {
+    public void shouldGetAllUserTest() {
         userController.addUser(user);
         User user100 = user;
         user100.setId(100);

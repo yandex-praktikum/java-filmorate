@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -76,7 +75,7 @@ class FilmrControllerTest {
     }
 
     @Test
-    public void shouldGetAllUserTest()  {
+    public void shouldGetAllUserTest() {
         filmController.addFilm(film);
         Film film100 = film;
         film100.setId(100);

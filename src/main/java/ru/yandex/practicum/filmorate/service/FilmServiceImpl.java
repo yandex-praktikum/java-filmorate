@@ -1,12 +1,9 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -19,6 +16,7 @@ import java.util.HashMap;
 public class FilmServiceImpl implements FilmService {
     public HashMap<Integer, Film> filmHashMap = new HashMap<>();
     private static int id = 1;
+
     @Override
     public @Valid Film updateFilm(@Valid Film film) {
         Film filmToUpdate = filmHashMap.get(film.getId());

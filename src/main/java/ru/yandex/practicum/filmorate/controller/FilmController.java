@@ -7,7 +7,6 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmServiceImpl;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +23,7 @@ public class FilmController {
 
         log.debug("There is {} films in filmorate", filmServiceImpl.getAllFilms().size());
 
-        return  filmServiceImpl.getAllFilms()
+        return filmServiceImpl.getAllFilms()
                 .values()
                 .stream()
                 .collect(Collectors.toList());
@@ -32,15 +31,13 @@ public class FilmController {
 
     @PostMapping
     public Film addFilm(@Valid @RequestBody Film film) {
-        log.debug("Film with id={} added",film.getId());
+        log.debug("Film with id={} added", film.getId());
         return filmServiceImpl.addFilms(film);
     }
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
-        log.debug("Film with id={} updated",film.getId());
+        log.debug("Film with id={} updated", film.getId());
         return filmServiceImpl.updateFilm(film);
     }
-
-
 }

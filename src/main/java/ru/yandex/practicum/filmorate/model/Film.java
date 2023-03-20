@@ -6,8 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import ru.yandex.practicum.filmorate.validator.ValidDate;
 
-
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Data
@@ -16,16 +17,14 @@ import java.time.LocalDate;
 @ToString
 
 public class Film {
-
-
-    int id ;
+    int id;
     @NotBlank
     String name;
     @Size(min = 1, max = 200, message = "{максимальная длина описания — 200 символов}")
     String description;
-     @ValidDate
+    @ValidDate
     LocalDate releaseDate;
-     @Positive
+    @Positive
     int duration;
     int rate;
 
