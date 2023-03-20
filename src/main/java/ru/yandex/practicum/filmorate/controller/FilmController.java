@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/films")
 public class FilmController {
     @Autowired
-    FilmServiceImpl filmServiceImpl;
+    FilmServiceImpl filmServiceImpl = new FilmServiceImpl();
 
 
     @GetMapping

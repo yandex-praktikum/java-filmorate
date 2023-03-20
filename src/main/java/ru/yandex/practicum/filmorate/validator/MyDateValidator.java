@@ -11,9 +11,9 @@ public class MyDateValidator implements ConstraintValidator<ValidDate, LocalDate
 
     public boolean isValid(LocalDate value, ConstraintValidatorContext context) {
         // validate the value here.
-        DateTimeFormatter f = DateTimeFormatter.ofPattern( "dd-MM-uuuu" );
-        LocalDate start = LocalDate.parse( "28-12-1895" , f );
-   boolean dateIsValid =  value.isAfter(start) ? true : false;
-   return dateIsValid;
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-uuuu");
+        LocalDate start = LocalDate.parse("28-12-1895", f);
+        boolean dateIsValid = value.isAfter(start) ? true : false;
+        return dateIsValid;
     }
 }

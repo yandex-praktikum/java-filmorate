@@ -2,12 +2,18 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserServiceImpl;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -15,7 +21,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    UserServiceImpl userServiceImpl;
+    UserServiceImpl userServiceImpl = new UserServiceImpl();
 
 
     @GetMapping
@@ -28,14 +34,30 @@ public class UserController {
     }
 
     @PostMapping
-    public User addUser(@Valid @RequestBody User  user) {
+    public ResponseEntity<String> addUser(@Valid @RequestBody User  user)  {
+
+        userServiceImpl.addUsers(user);
         log.debug("User with id={} added",user.getId());
-        return userServiceImpl.addUsers(user);
+        return ResponseEntity.ok("User is valid");
     }
 
     @PutMapping
-    public User updateFilm(@Valid @RequestBody User user) {
+    public ResponseEntity<String> updateUser(@Valid @RequestBody User user) {
+
+        userServiceImpl.updateUsers(user);
         log.debug("User with id={} updated",user.getId());
-        return userServiceImpl.updateUsers(user);
+        return ResponseEntity.ok("Valid user updated");
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }
