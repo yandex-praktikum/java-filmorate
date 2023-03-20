@@ -57,9 +57,7 @@ class FilmrControllerTest {
 
         assertEquals(1, allUsers.size(),
                 "Size Equal Test");
-
     }
-
 
     @Test
     public void shouldThrowExceptionWhenUpdateUnknownUser() {
