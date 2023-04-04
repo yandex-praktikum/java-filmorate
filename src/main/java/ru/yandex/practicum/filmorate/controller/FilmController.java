@@ -20,6 +20,7 @@ public class FilmController {
     private final Map<Integer, Film> films = new HashMap<>();
     private static int currentId = 0;
     private static final LocalDate FIRST_TIME = LocalDate.of(1895, 12, 28);
+
     @GetMapping
     public List<Film> findAll() {
         return new ArrayList<>(films.values());
@@ -29,7 +30,7 @@ public class FilmController {
     public Film create(@RequestBody Film film, HttpServletRequest request) {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
-        if(films.containsKey(film.getId())) {
+        if (films.containsKey(film.getId())) {
             log.info("Фильм  " + film.getId() + " уже есть в базе.");
             throw new ValidationException("Фильм  " + film.getId() + " уже есть в базе.");
         }
@@ -52,6 +53,7 @@ public class FilmController {
         films.put(film.getId(), film);
         return film;
     }
+
     private void validate(Film film) {
         if (film.getName() == null || film.getName().isBlank()) {
             log.info("У фильма нет названия");
