@@ -18,6 +18,7 @@ import java.util.Map;
 public class UserController {
     private final Map<Integer, User> users = new HashMap<>();
     private static int currentId = 0;
+
     @GetMapping
     public List<User> findAll() {
         return new ArrayList<>(users.values());
@@ -27,7 +28,7 @@ public class UserController {
     public User create(@RequestBody User user, HttpServletRequest request) {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
-        if(user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
+        if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
             log.info("Электронная почта не может быть пустой и должна содержать символ @");
             throw new ValidationException("Электронная почта не может быть пустой и должна содержать символ @");
         }
@@ -51,15 +52,16 @@ public class UserController {
         users.put(id, user);
         return user;
     }
+
     private void validate(User user) {
-        if(user.getLogin() == null || user.getLogin().isBlank() || user.getLogin().contains(" ")) {
+        if (user.getLogin() == null || user.getLogin().isBlank() || user.getLogin().contains(" ")) {
             log.info("Логин не может быть пустым и содержать пробелы");
             throw new ValidationException("Логин не может быть пустым и содержать пробелы");
         }
-        if(user.getName() == null || user.getName().isBlank()) {
+        if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
-        if(user.getBirthday().isAfter(LocalDate.now())) {
+        if (user.getBirthday().isAfter(LocalDate.now())) {
             log.info("Дата рождения не может быть в будущем");
             throw new ValidationException("Дата рождения не может быть в будущем");
         }
