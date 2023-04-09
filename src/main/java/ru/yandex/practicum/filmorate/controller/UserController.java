@@ -1,6 +1,8 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -28,14 +30,12 @@ public class UserController {
     public User create(@RequestBody User user, HttpServletRequest request) {
         log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
-        if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
-            log.info("Электронная почта не может быть пустой и должна содержать символ @");
-            throw new ValidationException("Электронная почта не может быть пустой и должна содержать символ @");
-        }
         validate(user);
         int id = ++currentId;
         user.setId(id);
         users.put(id, user);
+        log.info("Вы только что зарегистрировали пользователя с именем " + user.getName()
+                + " и электронной почтой " + user.getEmail());
         return user;
     }
 
@@ -50,10 +50,15 @@ public class UserController {
         validate(user);
         int id = user.getId();
         users.put(id, user);
+        log.info("Данные пользователя с именем " + user.getName() + " обновлены.");
         return user;
     }
 
     private void validate(User user) {
+        if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
+            log.info("Электронная почта не может быть пустой и должна содержать символ @");
+            throw new ValidationException("Электронная почта не может быть пустой и должна содержать символ @");
+        }
         if (user.getLogin() == null || user.getLogin().isBlank() || user.getLogin().contains(" ")) {
             log.info("Логин не может быть пустым и содержать пробелы");
             throw new ValidationException("Логин не может быть пустым и содержать пробелы");
@@ -65,5 +70,10 @@ public class UserController {
             log.info("Дата рождения не может быть в будущем");
             throw new ValidationException("Дата рождения не может быть в будущем");
         }
+    }
+
+    @ExceptionHandler(value = ValidationException.class)
+    public ResponseEntity<String> handleValidationException(ValidationException validationException) {
+        return new ResponseEntity<>(validationException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
