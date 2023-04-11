@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exception.ApiError;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -50,7 +51,7 @@ public class FilmController {
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
         if (!films.containsKey(film.getId())) {
             log.error("Нет такого фильма");
-            throw new ValidationException("Нет такого фильма");
+            throw ValidationException.createNotFoundException("Нет такого фильма");
         }
         validate(film);
         films.put(film.getId(), film);
@@ -86,7 +87,7 @@ public class FilmController {
     }
 
     @ExceptionHandler(value = ValidationException.class)
-    public ResponseEntity<String> handleValidationException(ValidationException validationException) {
-        return new ResponseEntity<>(validationException.getMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ApiError> handleValidationException(ValidationException validationException) {
+        return new ResponseEntity<>(new ApiError(validationException.getMessage()), validationException.getHttpStatus());
     }
 }
