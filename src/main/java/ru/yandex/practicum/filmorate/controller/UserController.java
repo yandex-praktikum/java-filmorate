@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exception.ApiError;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -45,7 +46,7 @@ public class UserController {
                 request.getMethod(), request.getRequestURI(), request.getQueryString());
         if (!users.containsKey(user.getId())) {
             log.error("Нет такого пользователя");
-            throw new ValidationException("Нет такого пользователя");
+            throw new ValidationException("Нет такого пользователя", HttpStatus.NOT_FOUND);
         }
         validate(user);
         int id = user.getId();
@@ -73,7 +74,7 @@ public class UserController {
     }
 
     @ExceptionHandler(value = ValidationException.class)
-    public ResponseEntity<String> handleValidationException(ValidationException validationException) {
-        return new ResponseEntity<>(validationException.getMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ApiError> handleValidationException(ValidationException validationException) {
+        return new ResponseEntity<>(new ApiError(validationException.getMessage()), validationException.getHttpStatus());
     }
 }
