@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.yandex.practicum.filmorate.exception.ApiError;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
@@ -38,7 +39,8 @@ public class FilmControllerTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        assertEquals("У фильма нет названия", responseAsString);
+        ApiError apiErrorResponse = objectMapper.readValue(responseAsString, ApiError.class);
+        assertEquals("У фильма нет названия", apiErrorResponse.getMessage());
 
         film.setName("title");
         film.setDescription("description");
@@ -48,7 +50,8 @@ public class FilmControllerTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        assertEquals("Дата выхода фильма отсутствует", responseAsString);
+        apiErrorResponse = objectMapper.readValue(responseAsString, ApiError.class);
+        assertEquals("Дата выхода фильма отсутствует", apiErrorResponse.getMessage());
 
         film.setReleaseDate(LocalDate.of(2023, 12, 28));
         responseAsString = mockMvc.perform(post("/films")
@@ -57,7 +60,8 @@ public class FilmControllerTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        assertEquals("Продолжительность фильма должна быть больше нуля", responseAsString);
+        apiErrorResponse = objectMapper.readValue(responseAsString, ApiError.class);
+        assertEquals("Продолжительность фильма должна быть больше нуля", apiErrorResponse.getMessage());
 
         film.setDuration(3000);
         mockMvc.perform(post("/films")
@@ -76,11 +80,12 @@ public class FilmControllerTest {
         film.setDuration(3000);
         final String responseAsString = mockMvc.perform(put("/films")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(film))).andExpect(status().isBadRequest())
+                        .content(objectMapper.writeValueAsString(film))).andExpect(status().isNotFound())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        assertEquals("Нет такого фильма", responseAsString);
+        ApiError apiErrorResponse = objectMapper.readValue(responseAsString, ApiError.class);
+        assertEquals("Нет такого фильма", apiErrorResponse.getMessage());
         String newFilmAsString = mockMvc.perform(post("/films")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(film))).andExpect(status().isOk()).andReturn()
