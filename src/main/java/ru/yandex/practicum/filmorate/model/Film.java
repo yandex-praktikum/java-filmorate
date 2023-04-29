@@ -1,7 +1,10 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import java.time.LocalDate;
-import lombok.*;
 
 @Data
 @EqualsAndHashCode

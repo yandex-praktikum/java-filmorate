@@ -51,7 +51,7 @@ public class UserService {
         friends.put(friendId, thisFriendFriends);
     }
 
-    public List<User> showCommonFriends(int id,  int otherId) {
+    public List<User> showCommonFriends(int id, int otherId) {
         Set<Integer> thisUserFriends = friends.get(id);
         Set<Integer> thisFriendFriends = friends.get(otherId);
         if (thisUserFriends == null || thisFriendFriends == null) {
@@ -85,7 +85,7 @@ public class UserService {
 
     public void delete(User user) {
         Integer id = user.getId();
-        for (Integer friendId: friends.get(id)){
+        for (Integer friendId : friends.get(id)) {
             Set<Integer> friendFriends = friends.get(friendId);
             friendFriends.remove(id);
             friends.put(friendId, friendFriends);
