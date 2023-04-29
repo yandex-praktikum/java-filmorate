@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import lombok.*;
 
 @Data
+@EqualsAndHashCode
+@ToString
 public class Film {
     private int id;
     private String name;

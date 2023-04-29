@@ -26,6 +26,4 @@ public class ValidationException extends RuntimeException {
     public static ValidationException createNotFoundException(String message) {
         return new ValidationException(message, HttpStatus.NOT_FOUND);
     }
-
-
 }

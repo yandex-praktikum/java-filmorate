@@ -1,80 +1,65 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.ApiError;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
-@Slf4j
 public class UserController {
-    private final Map<Integer, User> users = new HashMap<>();
-    private static int currentId = 0;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public List<User> findAll() {
-        return new ArrayList<>(users.values());
+        return userService.findAll();
+    }
+
+    @GetMapping("/{userId}")
+    public User findById(@PathVariable int userId) {
+        return userService.getUser(userId);
+    }
+
+    @GetMapping("/{id}/friends")
+    public List<User> showUsersFriends(@PathVariable int id) {
+        return userService.getFriends(id);
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public List<User> commonFriends(@PathVariable int id, @PathVariable int otherId) {
+        return userService.showCommonFriends(id, otherId);
     }
 
     @PostMapping
-    public User create(@RequestBody User user, HttpServletRequest request) {
-        log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
-                request.getMethod(), request.getRequestURI(), request.getQueryString());
-        validate(user);
-        int id = ++currentId;
-        user.setId(id);
-        users.put(id, user);
-        log.info("Вы только что зарегистрировали пользователя с именем " + user.getName()
-                + " и электронной почтой " + user.getEmail());
-        return user;
+    public User create(@RequestBody User user) {
+        return userService.create(user);
     }
 
     @PutMapping
-    public User update(@RequestBody User user, HttpServletRequest request) {
-        log.info("Получен запрос к эндпоинту: '{} {}', Строка параметров запроса: '{}'",
-                request.getMethod(), request.getRequestURI(), request.getQueryString());
-        if (!users.containsKey(user.getId())) {
-            log.error("Нет такого пользователя");
-            throw new ValidationException("Нет такого пользователя", HttpStatus.NOT_FOUND);
-        }
-        validate(user);
-        int id = user.getId();
-        users.put(id, user);
-        log.info("Данные пользователя с именем " + user.getName() + " обновлены.");
-        return user;
+    public User update(@RequestBody User user) {
+        return userService.update(user);
     }
 
-    private void validate(User user) {
-        if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
-            log.info("Электронная почта не может быть пустой и должна содержать символ @");
-            throw new ValidationException("Электронная почта не может быть пустой и должна содержать символ @");
-        }
-        if (user.getLogin() == null || user.getLogin().isBlank() || user.getLogin().contains(" ")) {
-            log.info("Логин не может быть пустым и содержать пробелы");
-            throw new ValidationException("Логин не может быть пустым и содержать пробелы");
-        }
-        if (user.getName() == null || user.getName().isBlank()) {
-            user.setName(user.getLogin());
-        }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            log.info("Дата рождения не может быть в будущем");
-            throw new ValidationException("Дата рождения не может быть в будущем");
-        }
+    @PutMapping("/{id}/friends/{friendId}")
+    public void addFriend(@PathVariable int id, @PathVariable int friendId) {
+        userService.addFriend(id, friendId);
     }
 
-    @ExceptionHandler(value = ValidationException.class)
-    public ResponseEntity<ApiError> handleValidationException(ValidationException validationException) {
-        return new ResponseEntity<>(new ApiError(validationException.getMessage()), validationException.getHttpStatus());
+    @DeleteMapping
+    public void delete(@RequestBody User user) {
+        Integer id = user.getId();
+        for (Integer friendsId : userService.friends.get(id)) {
+            userService.argueFriends(id, friendsId);
+        }
+        userService.delete(user);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void deleteFriend(@PathVariable int id, @PathVariable int friendId) {
+        userService.argueFriends(id, friendId);
     }
 }
