@@ -1,0 +1,824 @@
+{
+	"id": "99773cf1-85ae-4754-a23d-fa32823711c0",
+	"name": "sprint09/controllers-films-users",
+	"timestamp": "2023-05-14T17:27:12.157Z",
+	"collection_id": "20324397-c8e47dea-6910-4f58-91f2-a88e877a8a0c",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 67,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2023-05-14T17:27:10.786Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "e91d8be0-8aa0-401f-a2ad-20dfaac0b3f7",
+			"name": "User create",
+			"url": "http://localhost:8080/users",
+			"time": 265,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200 or 201": true,
+				"Has user create response": true,
+				"Test user 'id' field": true,
+				"Test user 'email' field": true,
+				"Test user 'name' field": true,
+				"Test user 'login' field": true,
+				"Test user 'birthday' field": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200 or 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has user create response": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user 'id' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user 'email' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user 'name' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user 'login' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user 'birthday' field": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				265
+			],
+			"allTests": [
+				{
+					"Status code is 200 or 201": true,
+					"Has user create response": true,
+					"Test user 'id' field": true,
+					"Test user 'email' field": true,
+					"Test user 'name' field": true,
+					"Test user 'login' field": true,
+					"Test user 'birthday' field": true
+				}
+			]
+		},
+		{
+			"id": "eb49d0cb-ab6f-45ef-b5e6-8f22bc967f43",
+			"name": "User create Fail login",
+			"url": "http://localhost:8080/users",
+			"time": 43,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Status code is 500 or 400": true,
+				"Has error response": true
+			},
+			"testPassFailCounts": {
+				"Status code is 500 or 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has error response": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				43
+			],
+			"allTests": [
+				{
+					"Status code is 500 or 400": true,
+					"Has error response": true
+				}
+			]
+		},
+		{
+			"id": "3b3b53ca-d7f6-471e-bbf3-3daea5fd6e66",
+			"name": "User create Fail email",
+			"url": "http://localhost:8080/users",
+			"time": 9,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Status code is 500 or 400": true,
+				"Has error response": true
+			},
+			"testPassFailCounts": {
+				"Status code is 500 or 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has error response": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				9
+			],
+			"allTests": [
+				{
+					"Status code is 500 or 400": true,
+					"Has error response": true
+				}
+			]
+		},
+		{
+			"id": "1dd57b60-0366-4e11-b31f-d294b62d3713",
+			"name": "User create Fail birthday",
+			"url": "http://localhost:8080/users",
+			"time": 12,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Status code is 500 or 400": true,
+				"Has error response": true
+			},
+			"testPassFailCounts": {
+				"Status code is 500 or 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has error response": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				12
+			],
+			"allTests": [
+				{
+					"Status code is 500 or 400": true,
+					"Has error response": true
+				}
+			]
+		},
+		{
+			"id": "d77bc990-63ea-4cbb-b66b-c8400fd9b479",
+			"name": "User update",
+			"url": "http://localhost:8080/users",
+			"time": 12,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Has user update response": true,
+				"Test user 'id' field": true,
+				"Test user 'email' field": true,
+				"Test user 'name' field": true,
+				"Test user 'login' field": true,
+				"Test user 'birthday' field": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has user update response": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user 'id' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user 'email' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user 'name' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user 'login' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user 'birthday' field": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				12
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Has user update response": true,
+					"Test user 'id' field": true,
+					"Test user 'email' field": true,
+					"Test user 'name' field": true,
+					"Test user 'login' field": true,
+					"Test user 'birthday' field": true
+				}
+			]
+		},
+		{
+			"id": "9271f80f-ab62-4130-a164-36ae545c9ddb",
+			"name": "User update unknown",
+			"url": "http://localhost:8080/users",
+			"time": 30,
+			"responseCode": {
+				"code": 500,
+				"name": "Internal Server Error"
+			},
+			"tests": {
+				"Status code is 500": true,
+				"Has error response": true
+			},
+			"testPassFailCounts": {
+				"Status code is 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has error response": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				30
+			],
+			"allTests": [
+				{
+					"Status code is 500": true,
+					"Has error response": true
+				}
+			]
+		},
+		{
+			"id": "f66b17b1-2e2e-4570-845e-e07dd7d0a024",
+			"name": "User get All",
+			"url": "http://localhost:8080/users",
+			"time": 9,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Test list user response": true,
+				"Test user[0] 'id' field": true,
+				"Test user[0] 'email' field": true,
+				"Test user[0] 'name' field": true,
+				"Test user[0] 'login' field": true,
+				"Test user[0] 'birthday' field": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test list user response": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user[0] 'id' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user[0] 'email' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user[0] 'name' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user[0] 'login' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user[0] 'birthday' field": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				9
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Test list user response": true,
+					"Test user[0] 'id' field": true,
+					"Test user[0] 'email' field": true,
+					"Test user[0] 'name' field": true,
+					"Test user[0] 'login' field": true,
+					"Test user[0] 'birthday' field": true
+				}
+			]
+		},
+		{
+			"id": "9170ac9d-17ce-4da5-afc4-18ffb9bbaf3d",
+			"name": "Create user with empty name",
+			"url": "http://localhost:8080/users",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200 or 201": true,
+				"Has user create response": true,
+				"Test user 'id' field": true,
+				"Test user 'email' field": true,
+				"Test user 'name' field": true,
+				"Test user 'login' field": true,
+				"Test user 'birthday' field": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200 or 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has user create response": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user 'id' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user 'email' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user 'name' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user 'login' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test user 'birthday' field": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				7
+			],
+			"allTests": [
+				{
+					"Status code is 200 or 201": true,
+					"Has user create response": true,
+					"Test user 'id' field": true,
+					"Test user 'email' field": true,
+					"Test user 'name' field": true,
+					"Test user 'login' field": true,
+					"Test user 'birthday' field": true
+				}
+			]
+		},
+		{
+			"id": "fe520190-0a82-44bb-ab08-9cd921cdd354",
+			"name": "Film create",
+			"url": "http://localhost:8080/films",
+			"time": 27,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200 or 201": true,
+				"Has film create response": true,
+				"Test film 'id' field": true,
+				"Test film 'name' field": true,
+				"Test film 'description' field": true,
+				"Test film 'releaseDate' field": true,
+				"Test film 'duration' field": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200 or 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has film create response": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test film 'id' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test film 'name' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test film 'description' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test film 'releaseDate' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test film 'duration' field": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				27
+			],
+			"allTests": [
+				{
+					"Status code is 200 or 201": true,
+					"Has film create response": true,
+					"Test film 'id' field": true,
+					"Test film 'name' field": true,
+					"Test film 'description' field": true,
+					"Test film 'releaseDate' field": true,
+					"Test film 'duration' field": true
+				}
+			]
+		},
+		{
+			"id": "d6b0504d-3f48-4be9-afaf-b5e340cdbbbb",
+			"name": "Film create Fail name",
+			"url": "http://localhost:8080/films",
+			"time": 15,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Status code is 500 or 400": true,
+				"Has error response": true
+			},
+			"testPassFailCounts": {
+				"Status code is 500 or 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has error response": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				15
+			],
+			"allTests": [
+				{
+					"Status code is 500 or 400": true,
+					"Has error response": true
+				}
+			]
+		},
+		{
+			"id": "6d605280-a665-4905-b42a-878f077e2af2",
+			"name": "Film create Fail description",
+			"url": "http://localhost:8080/films",
+			"time": 11,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Status code is 500 or 400": true,
+				"Has error response": true
+			},
+			"testPassFailCounts": {
+				"Status code is 500 or 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has error response": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				11
+			],
+			"allTests": [
+				{
+					"Status code is 500 or 400": true,
+					"Has error response": true
+				}
+			]
+		},
+		{
+			"id": "8b44303c-1c99-433c-9075-49126f6a5ace",
+			"name": "Film create Fail releaseDate",
+			"url": "http://localhost:8080/films",
+			"time": 8,
+			"responseCode": {
+				"code": 500,
+				"name": "Internal Server Error"
+			},
+			"tests": {
+				"Status code is 500 or 400": true,
+				"Has error response": true
+			},
+			"testPassFailCounts": {
+				"Status code is 500 or 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has error response": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				8
+			],
+			"allTests": [
+				{
+					"Status code is 500 or 400": true,
+					"Has error response": true
+				}
+			]
+		},
+		{
+			"id": "6499f87a-d6aa-4df9-86c8-154d526336d0",
+			"name": "Film create Fail duration",
+			"url": "http://localhost:8080/films",
+			"time": 7,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Status code is 500 or 400": true,
+				"Has error response": true
+			},
+			"testPassFailCounts": {
+				"Status code is 500 or 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has error response": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				7
+			],
+			"allTests": [
+				{
+					"Status code is 500 or 400": true,
+					"Has error response": true
+				}
+			]
+		},
+		{
+			"id": "83073693-8e7b-4ef6-a1e5-ae50e9c665ad",
+			"name": "Film update",
+			"url": "http://localhost:8080/films",
+			"time": 5,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Has film update response": true,
+				"Test film 'id' field": true,
+				"Test film 'name' field": true,
+				"Test film 'description' field": true,
+				"Test film 'releaseDate' field": true,
+				"Test film 'duration' field": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has film update response": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test film 'id' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test film 'name' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test film 'description' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test film 'releaseDate' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test film 'duration' field": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				5
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Has film update response": true,
+					"Test film 'id' field": true,
+					"Test film 'name' field": true,
+					"Test film 'description' field": true,
+					"Test film 'releaseDate' field": true,
+					"Test film 'duration' field": true
+				}
+			]
+		},
+		{
+			"id": "11c575f9-8aef-48d6-a343-d1377f63c7fa",
+			"name": "Film update unknown",
+			"url": "http://localhost:8080/films",
+			"time": 34,
+			"responseCode": {
+				"code": 500,
+				"name": "Internal Server Error"
+			},
+			"tests": {
+				"Status code is 500": true,
+				"Has error response": true
+			},
+			"testPassFailCounts": {
+				"Status code is 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Has error response": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				34
+			],
+			"allTests": [
+				{
+					"Status code is 500": true,
+					"Has error response": true
+				}
+			]
+		},
+		{
+			"id": "eca06a39-5cfe-4892-a416-6a123f6b6b36",
+			"name": "Film get All",
+			"url": "http://localhost:8080/films",
+			"time": 29,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Test list film response": true,
+				"Test film[0] 'id' field": true,
+				"Test film[0] 'name' field": true,
+				"Test film[0] 'description' field": true,
+				"Test film[0] 'releaseDate' field": true,
+				"Test film[0] 'duration' field": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test list film response": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test film[0] 'id' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test film[0] 'name' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test film[0] 'description' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test film[0] 'releaseDate' field": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Test film[0] 'duration' field": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				29
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Test list film response": true,
+					"Test film[0] 'id' field": true,
+					"Test film[0] 'name' field": true,
+					"Test film[0] 'description' field": true,
+					"Test film[0] 'releaseDate' field": true,
+					"Test film[0] 'duration' field": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 523,
+	"collection": {
+		"requests": [
+			{
+				"id": "e91d8be0-8aa0-401f-a2ad-20dfaac0b3f7",
+				"method": "POST"
+			},
+			{
+				"id": "eb49d0cb-ab6f-45ef-b5e6-8f22bc967f43",
+				"method": "POST"
+			},
+			{
+				"id": "3b3b53ca-d7f6-471e-bbf3-3daea5fd6e66",
+				"method": "POST"
+			},
+			{
+				"id": "1dd57b60-0366-4e11-b31f-d294b62d3713",
+				"method": "POST"
+			},
+			{
+				"id": "d77bc990-63ea-4cbb-b66b-c8400fd9b479",
+				"method": "PUT"
+			},
+			{
+				"id": "9271f80f-ab62-4130-a164-36ae545c9ddb",
+				"method": "PUT"
+			},
+			{
+				"id": "f66b17b1-2e2e-4570-845e-e07dd7d0a024",
+				"method": "GET"
+			},
+			{
+				"id": "9170ac9d-17ce-4da5-afc4-18ffb9bbaf3d",
+				"method": "POST"
+			},
+			{
+				"id": "fe520190-0a82-44bb-ab08-9cd921cdd354",
+				"method": "POST"
+			},
+			{
+				"id": "d6b0504d-3f48-4be9-afaf-b5e340cdbbbb",
+				"method": "POST"
+			},
+			{
+				"id": "6d605280-a665-4905-b42a-878f077e2af2",
+				"method": "POST"
+			},
+			{
+				"id": "8b44303c-1c99-433c-9075-49126f6a5ace",
+				"method": "POST"
+			},
+			{
+				"id": "6499f87a-d6aa-4df9-86c8-154d526336d0",
+				"method": "POST"
+			},
+			{
+				"id": "83073693-8e7b-4ef6-a1e5-ae50e9c665ad",
+				"method": "PUT"
+			},
+			{
+				"id": "11c575f9-8aef-48d6-a343-d1377f63c7fa",
+				"method": "PUT"
+			},
+			{
+				"id": "eca06a39-5cfe-4892-a416-6a123f6b6b36",
+				"method": "GET"
+			}
+		]
+	}
+}

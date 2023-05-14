@@ -10,7 +10,7 @@ import static java.time.format.DateTimeFormatter.ISO_DATE;
 import static ru.yandex.practicum.filmorate.validator.exception.FilmValidatorException.*;
 
 public class FilmValidator {
-    public static final LocalDate MIN_RELEASE_DATE = LocalDate.of(1998, 11, 02);
+    public static final LocalDate MIN_RELEASE_DATE = LocalDate.of(1895, 12, 28);
 
     public static void validate(@NonNull Film film) throws FilmValidatorException {
         String name = film.getName();
