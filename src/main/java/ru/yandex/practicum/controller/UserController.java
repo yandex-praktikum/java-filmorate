@@ -21,12 +21,16 @@ public class UserController {
 
     @PostMapping("/user")
     public User create(@RequestBody User user) throws UserAlreadyExistException, InvalidEmailException {
+
         if (users.containsKey(user.getEmail())) {
             throw new UserAlreadyExistException();
+
         }
+
         else if (user.getEmail() == null || user.getEmail().equals("")) {
             throw new InvalidEmailException();
         }
+
         else {
             users.put(user.getEmail(), user);
             return user;
