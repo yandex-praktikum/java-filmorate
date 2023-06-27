@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class Film {
 
     @NonNull
-    private final int id;
+    private final Integer id;
 
     @NonNull
     private final String name;
