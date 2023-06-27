@@ -22,7 +22,6 @@ public class FilmController {
     public Film create(@RequestBody Film film) throws FilmAlreadyExistException {
         if (films.contains(film)) {
             throw new FilmAlreadyExistException();
-
         }
         else {
             films.add(film);
