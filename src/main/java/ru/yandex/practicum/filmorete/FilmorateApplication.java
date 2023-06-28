@@ -26,7 +26,7 @@ public class FilmorateApplication {
 				.name("Один дома")
 				.description("Комедия")
 				.releaseDate(LocalDate.of(2002, 6, 24))
-				.duration(Duration.ofMinutes(75))
+				.duration(75)
 				.build();
 
 		System.out.println(film);
