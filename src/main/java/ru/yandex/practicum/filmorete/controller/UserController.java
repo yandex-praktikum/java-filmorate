@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorete.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorete.exeptions.ValidationUserException;
 import ru.yandex.practicum.filmorete.model.User;
@@ -9,11 +10,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestController
 public class UserController {
 
     private Map<String, User> users = new HashMap<>();
-
     private Integer lastIdentification = 1;
 
     @GetMapping("/users")
@@ -24,14 +25,18 @@ public class UserController {
     @PostMapping("/user")
     public User create(@RequestBody User user) throws ValidationUserException {
         if (users.containsKey(user.getEmail())) {
-            throw new ValidationUserException();
+            String message = String.format("Пользователь {} уже есть в системе!", user.getName());
+            throw new ValidationUserException(message);
 
         }
         else if (user.getEmail() == null || user.getEmail().equals("")) {
-            throw new ValidationUserException();
+            throw new ValidationUserException("Email равен null или отсутствует!");
         }
         else {
+            validatorUser(user);
+            user.setId(getLastIdentification());
             users.put(user.getEmail(), user);
+            log.debug("Добавлен новый пользователь: {}", user.getName());
             return user;
         }
     }
@@ -39,9 +44,11 @@ public class UserController {
     @PutMapping("/user")
     public User update(@RequestBody User user) throws ValidationUserException {
         if (user.getEmail() == null || user.getEmail().equals("")) {
-            throw new ValidationUserException();
+            throw new ValidationUserException("Email равен null или отсутствует!");
         }
+        validatorUser(user);
         users.put(user.getEmail(), user);
+        log.debug("Пользователь {} успешно обновлен!", user.getName());
         return user;
     }
 
