@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorete.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorete.exeptions.InvalidFilmeException;
+import ru.yandex.practicum.filmorete.exeptions.ValidationFilmException;
 import ru.yandex.practicum.filmorete.model.Film;
 
 import java.time.LocalDate;
@@ -23,9 +23,9 @@ public class FilmController {
     }
 
     @PostMapping("/film")
-    public Film create(@RequestBody Film film) throws InvalidFilmeException {
+    public Film create(@RequestBody Film film) throws ValidationFilmException {
         if (films.containsKey(film.getId())) {
-            throw new InvalidFilmeException("Фильм уже есть в коллекции!");
+            throw new ValidationFilmException("Фильм уже есть в коллекции!");
         }
         else {
             validatorFilms(film);
@@ -35,9 +35,9 @@ public class FilmController {
     }
 
     @PutMapping("/film")
-    public Film update(@RequestBody Film film) throws InvalidFilmeException {
+    public Film update(@RequestBody Film film) throws ValidationFilmException {
         if (film.getId() == null || film.getId() < 1) {
-            throw new InvalidFilmeException("Не указан ID фильма!");
+            throw new ValidationFilmException("Не указан ID фильма!");
         }
         else {
             validatorFilms(film);
@@ -46,18 +46,18 @@ public class FilmController {
         }
     }
 
-    private void validatorFilms(Film film) throws InvalidFilmeException {
+    private void validatorFilms(Film film) throws ValidationFilmException {
         if (film.getName().isEmpty()) {
-            throw new InvalidFilmeException("Название фильма не может быть пустым!");
+            throw new ValidationFilmException("Название фильма не может быть пустым!");
         }
         if (film.getDescription().length() > 200) {
-            throw new InvalidFilmeException("Длинна описания превышает 200 символов!");
+            throw new ValidationFilmException("Длинна описания превышает 200 символов!");
         }
         if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-            throw new InvalidFilmeException("Дата релиза не должна быть раньше 28 декабря 1895 года!");
+            throw new ValidationFilmException("Дата релиза не должна быть раньше 28 декабря 1895 года!");
         }
         if (film.getDuration().getSeconds() < 0) {
-            throw new InvalidFilmeException("Продолжительность фильма должна быть положительной!");
+            throw new ValidationFilmException("Продолжительность фильма должна быть положительной!");
         }
     }
 
