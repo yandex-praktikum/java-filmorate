@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorete.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorete.exeptions.ValidationFilmException;
 import ru.yandex.practicum.filmorete.exeptions.ValidationUserException;
 import ru.yandex.practicum.filmorete.model.User;
 
@@ -45,11 +46,8 @@ public class UserController {
 
     @PutMapping()
     public User update(@RequestBody User user) throws ValidationUserException {
-        if (user.getEmail() == null || user.getEmail().equals("")) {
-            throw new ValidationUserException("Email равен null или отсутствует!");
-        }
-        if (!users.containsKey(user.getId())) {
-            throw new ValidationUserException("Пользователь не найден в системе!");
+        if (user.getId() == null || user.getId() < 1) {
+            throw new ValidationUserException("Не указан ID пользователя!");
         }
         validatorUser(user);
         users.put(user.getId(), user);
@@ -58,6 +56,18 @@ public class UserController {
     }
 
     private void validatorUser(User user) throws ValidationUserException {
+        if (user.getBirthday() == null || user.getBirthday().equals("")) {
+            throw new ValidationUserException("Дата рождения равна null или отсутствует!");
+        }
+        if (user.getLogin() == null || user.getLogin().equals("")) {
+            throw new ValidationUserException("Login равен null или отсутствует!");
+        }
+        if (user.getEmail() == null || user.getEmail().equals("")) {
+            throw new ValidationUserException("Email равен null или отсутствует!");
+        }
+        if (!users.containsKey(user.getId())) {
+            throw new ValidationUserException("Пользователь не найден в системе!");
+        }
         if (emails.contains(user.getEmail())) {
             throw new ValidationUserException("Электронная почта уже зарегестрированна в системе!");
         }
