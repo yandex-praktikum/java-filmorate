@@ -11,18 +11,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
+@RequestMapping("/films")
 @RestController
 public class FilmController {
 
     private Map<Integer, Film> films = new HashMap();
     private Integer lastIdentification = 1;
 
-    @GetMapping("/films")
+    @GetMapping()
     public Collection<Film> findAll() {
+        log.debug("Запрос всех фильмов: {}", films.size());
         return films.values();
     }
 
-    @PostMapping("/film")
+    @PostMapping()
     public Film create(@RequestBody Film film) throws ValidationFilmException {
         if (films.containsKey(film.getId())) {
             throw new ValidationFilmException("Фильм уже есть в коллекции!");
@@ -31,18 +33,23 @@ public class FilmController {
             validatorFilms(film);
             film.setId(getLastIdentification());
             films.put(film.getId(), film);
+            log.debug("Добавление нового фильма: {}", film.getName());
             return film;
         }
     }
 
-    @PutMapping("/film")
+    @PutMapping()
     public Film update(@RequestBody Film film) throws ValidationFilmException {
         if (film.getId() == null || film.getId() < 1) {
             throw new ValidationFilmException("Не указан ID фильма!");
         }
+        else if (!films.containsKey(film.getId())) {
+            throw new ValidationFilmException("Фильм не найден для обновления!");
+        }
         else {
             validatorFilms(film);
             films.put(film.getId(), film);
+            log.debug("Обновление фильма: {}", film.getName());
             return film;
         }
     }
@@ -57,7 +64,7 @@ public class FilmController {
         if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
             throw new ValidationFilmException("Дата релиза не должна быть раньше 28 декабря 1895 года!");
         }
-        if (film.getDuration().getSeconds() < 0) {
+        if (film.getDuration() < 0) {
             throw new ValidationFilmException("Продолжительность фильма должна быть положительной!");
         }
     }
