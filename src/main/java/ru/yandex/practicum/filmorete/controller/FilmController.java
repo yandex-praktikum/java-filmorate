@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorete.controller;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorete.exeptions.ValidationFilmException;
@@ -40,9 +41,12 @@ public class FilmController {
     }
 
     @PutMapping()
-    public Film update(@RequestBody Film film) throws ValidationFilmException {
+    public Film update(@Valid @RequestBody Film film) throws ValidationFilmException {
         if (film.getId() == null || film.getId() < 1) {
             throw new ValidationFilmException("Не указан ID фильма!");
+        }
+        if (!films.containsKey(film.getId())) {
+            throw new ValidationFilmException("Фильм не найден для обновления!");
         }
         validatorFilms(film);
         films.put(film.getId(), film);
@@ -51,9 +55,6 @@ public class FilmController {
     }
 
     private void validatorFilms(Film film) throws ValidationFilmException {
-        if (!films.containsKey(film.getId())) {
-            throw new ValidationFilmException("Фильм не найден для обновления!");
-        }
         if (film.getName() == null || film.getName().isEmpty()) {
             throw new ValidationFilmException("Имя фильма равно null или отсутствует!");
         }

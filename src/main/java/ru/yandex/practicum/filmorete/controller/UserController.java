@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorete.controller;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorete.exeptions.ValidationFilmException;
@@ -45,9 +46,12 @@ public class UserController {
     }
 
     @PutMapping()
-    public User update(@RequestBody User user) throws ValidationUserException {
+    public User update(@Valid @RequestBody User user) throws ValidationUserException {
         if (user.getId() == null || user.getId() < 1) {
             throw new ValidationUserException("Не указан ID пользователя!");
+        }
+        if (!users.containsKey(user.getId())) {
+            throw new ValidationUserException("Пользователь не найден в системе!");
         }
         validatorUser(user);
         users.put(user.getId(), user);
@@ -64,9 +68,6 @@ public class UserController {
         }
         if (user.getEmail() == null || user.getEmail().equals("")) {
             throw new ValidationUserException("Email равен null или отсутствует!");
-        }
-        if (!users.containsKey(user.getId())) {
-            throw new ValidationUserException("Пользователь не найден в системе!");
         }
         if (emails.contains(user.getEmail())) {
             throw new ValidationUserException("Электронная почта уже зарегестрированна в системе!");
