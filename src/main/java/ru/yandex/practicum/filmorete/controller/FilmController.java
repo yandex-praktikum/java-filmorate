@@ -8,9 +8,7 @@ import ru.yandex.practicum.filmorete.exeptions.ValidationUserException;
 import ru.yandex.practicum.filmorete.model.Film;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RequestMapping("/films")
@@ -18,6 +16,7 @@ import java.util.Map;
 public class FilmController {
 
     private Map<Integer, Film> films = new HashMap();
+    private Set<String> names = new HashSet<>();
     private Integer lastIdentification = 1;
 
     @GetMapping()
@@ -28,13 +27,14 @@ public class FilmController {
 
     @PostMapping()
     public Film create(@RequestBody Film film) throws ValidationFilmException {
-        if (films.containsKey(film.getId())) {
+        if (names.contains(film.getName())) {
             throw new ValidationFilmException("Фильм уже есть в коллекции!");
         }
         else {
             validatorFilms(film);
             film.setId(getLastIdentification());
             films.put(film.getId(), film);
+            names.add(film.getName());
             log.debug("Добавление нового фильма: {}", film.getName());
             return film;
         }
@@ -48,10 +48,23 @@ public class FilmController {
         if (!films.containsKey(film.getId())) {
             throw new ValidationFilmException("Фильм не найден для обновления!");
         }
+
         validatorFilms(film);
+
+        Film oldFilm = films.get(film.getId());
+        names.remove(oldFilm.getName());
+        names.add(film.getName());
+
         films.put(film.getId(), film);
         log.debug("Обновление фильма: {}", film.getName());
         return film;
+    }
+
+    @DeleteMapping()
+    public void clear() {
+        films.clear();
+        names.clear();
+        lastIdentification = 1;
     }
 
     private void validatorFilms(Film film) throws ValidationFilmException {
