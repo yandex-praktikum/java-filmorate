@@ -1,9 +1,6 @@
 package ru.yandex.practicum.filmorete.controller;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
@@ -21,16 +18,30 @@ class FilmControllerTests {
 	private String url = String.format("%s/films", baseUrl);
 	private final HttpClient client = HttpClient.newHttpClient();
 
+	private HttpRequest request;
+	private HttpResponse<String> response;
+	private HttpResponse.BodyHandler<String> handler;
+	private String body;
+
+	private HttpRequest buildRequestPutJson(String body) {
+		return HttpRequest.newBuilder()
+				.PUT(HttpRequest.BodyPublishers.ofString(body))
+				.uri(URI.create(url))
+				.version(HttpClient.Version.HTTP_1_1)
+				.header("Content-Type", "application/json")
+				.build();
+	}
+
 	@AfterEach
 	public void afterEach() throws IOException, InterruptedException {
-		HttpRequest request = HttpRequest.newBuilder()
+		request = HttpRequest.newBuilder()
 				.DELETE()
 				.uri(URI.create(url))
 				.version(HttpClient.Version.HTTP_1_1)
 				.build();
 
-		HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
-		HttpResponse<String> response = client.send(request, handler);
+		handler = HttpResponse.BodyHandlers.ofString();
+		response = client.send(request, handler);
 		assertEquals(200, response.statusCode());
 	}
 
@@ -42,13 +53,13 @@ class FilmControllerTests {
 		@DisplayName("Запрос всех фильмов - Пустой список")
 		void getAllFilmEmptyTest() throws IOException, InterruptedException {
 
-			HttpRequest request = HttpRequest.newBuilder()
+			request = HttpRequest.newBuilder()
 					.GET()
 					.uri(URI.create(url))
 					.build();
 
-			HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
-			HttpResponse<String> response = client.send(request, handler);
+			handler = HttpResponse.BodyHandlers.ofString();
+			response = client.send(request, handler);
 
 			assertEquals(200, response.statusCode());
 			assertEquals("[]", response.body());
@@ -58,11 +69,7 @@ class FilmControllerTests {
 		@DisplayName("Запрос всех фильмов - После добавления фильма")
 		void getAllFilmTest() throws IOException, InterruptedException {
 
-			HttpRequest request;
-			HttpResponse<String> response;
-			HttpResponse.BodyHandler<String> handler;
-
-			String body =
+			body =
 					"{" +
 					"\"name\":\"nisi eiusmod\"," +
 					"\"description\":\"adipisicing\"," +
@@ -108,9 +115,7 @@ class FilmControllerTests {
 		@DisplayName("Добавление нового фильма - с проверкой добавления дубликата")
 		void postFilmTest() throws IOException, InterruptedException {
 
-			HttpResponse<String> response;
-
-			String body =
+			body =
 					"{" +
 					"\"name\":\"nisi eiusmod\"," +
 					"\"description\":\"adipisicing\"," +
@@ -118,14 +123,14 @@ class FilmControllerTests {
 					"\"duration\":100" +
 					"}";
 
-			HttpRequest request = HttpRequest.newBuilder()
+			request = HttpRequest.newBuilder()
 					.POST(HttpRequest.BodyPublishers.ofString(body))
 					.uri(URI.create(url))
 					.version(HttpClient.Version.HTTP_1_1)
 					.header("Content-Type", "application/json")
 					.build();
 
-			HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
+			handler = HttpResponse.BodyHandlers.ofString();
 
 			response = client.send(request, handler);
 			assertEquals(200, response.statusCode());
@@ -138,23 +143,21 @@ class FilmControllerTests {
 		@DisplayName("Добавление нового фильма - name : null")
 		void postFilmCheckValidNameNullTest() throws IOException, InterruptedException {
 
-			HttpResponse<String> response;
-
-			String body =
+			body =
 					"{" +
 					"\"description\":\"adipisicing\"," +
 					"\"releaseDate\":\"1967-03-25\"," +
 					"\"duration\":100" +
 					"}";
 
-			HttpRequest request = HttpRequest.newBuilder()
+			request = HttpRequest.newBuilder()
 					.POST(HttpRequest.BodyPublishers.ofString(body))
 					.uri(URI.create(url))
 					.version(HttpClient.Version.HTTP_1_1)
 					.header("Content-Type", "application/json")
 					.build();
 
-			HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
+			handler = HttpResponse.BodyHandlers.ofString();
 
 			response = client.send(request, handler);
 			assertEquals(400, response.statusCode());
@@ -164,8 +167,6 @@ class FilmControllerTests {
 		@DisplayName("Добавление нового фильма - description : null")
 		void postFilmCheckValidDescriptionNullTest() throws IOException, InterruptedException {
 
-			HttpResponse<String> response;
-
 			String body =
 					"{" +
 					"\"name\":\"nisi eiusmod\"," +
@@ -173,14 +174,14 @@ class FilmControllerTests {
 					"\"duration\":100" +
 					"}";
 
-			HttpRequest request = HttpRequest.newBuilder()
+			request = HttpRequest.newBuilder()
 					.POST(HttpRequest.BodyPublishers.ofString(body))
 					.uri(URI.create(url))
 					.version(HttpClient.Version.HTTP_1_1)
 					.header("Content-Type", "application/json")
 					.build();
 
-			HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
+			handler = HttpResponse.BodyHandlers.ofString();
 
 			response = client.send(request, handler);
 			assertEquals(400, response.statusCode());
@@ -190,8 +191,6 @@ class FilmControllerTests {
 		@DisplayName("Добавление нового фильма - releaseDate : null")
 		void postFilmCheckValidReleaseDateNullTest() throws IOException, InterruptedException {
 
-			HttpResponse<String> response;
-
 			String body =
 					"{" +
 					"\"name\":\"nisi eiusmod\"," +
@@ -199,14 +198,14 @@ class FilmControllerTests {
 					"\"duration\":100" +
 					"}";
 
-			HttpRequest request = HttpRequest.newBuilder()
+			request = HttpRequest.newBuilder()
 					.POST(HttpRequest.BodyPublishers.ofString(body))
 					.uri(URI.create(url))
 					.version(HttpClient.Version.HTTP_1_1)
 					.header("Content-Type", "application/json")
 					.build();
 
-			HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
+			handler = HttpResponse.BodyHandlers.ofString();
 
 			response = client.send(request, handler);
 			assertEquals(400, response.statusCode());
@@ -216,8 +215,6 @@ class FilmControllerTests {
 		@DisplayName("Добавление нового фильма - duration : null")
 		void postFilmCheckValidDurationNullTest() throws IOException, InterruptedException {
 
-			HttpResponse<String> response;
-
 			String body =
 					"{" +
 					"\"name\":\"nisi eiusmod\"," +
@@ -225,14 +222,14 @@ class FilmControllerTests {
 					"\"releaseDate\":\"1967-03-25\"," +
 					"}";
 
-			HttpRequest request = HttpRequest.newBuilder()
+			request = HttpRequest.newBuilder()
 					.POST(HttpRequest.BodyPublishers.ofString(body))
 					.uri(URI.create(url))
 					.version(HttpClient.Version.HTTP_1_1)
 					.header("Content-Type", "application/json")
 					.build();
 
-			HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
+			handler = HttpResponse.BodyHandlers.ofString();
 
 			response = client.send(request, handler);
 			assertEquals(400, response.statusCode());
@@ -242,8 +239,6 @@ class FilmControllerTests {
 		@DisplayName("Добавление нового фильма - name : empty")
 		void postFilmCheckValidNameEmptyTest() throws IOException, InterruptedException {
 
-			HttpResponse<String> response;
-
 			String body =
 					"{" +
 					"\"name\":\"\"," +
@@ -252,14 +247,14 @@ class FilmControllerTests {
 					"\"duration\":100" +
 					"}";
 
-			HttpRequest request = HttpRequest.newBuilder()
+			request = HttpRequest.newBuilder()
 					.POST(HttpRequest.BodyPublishers.ofString(body))
 					.uri(URI.create(url))
 					.version(HttpClient.Version.HTTP_1_1)
 					.header("Content-Type", "application/json")
 					.build();
 
-			HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
+			handler = HttpResponse.BodyHandlers.ofString();
 
 			response = client.send(request, handler);
 			assertEquals(500, response.statusCode());
@@ -269,9 +264,7 @@ class FilmControllerTests {
 		@DisplayName("Добавление нового фильма - description : empty")
 		void postFilmCheckValidDescriptionEmptyTest() throws IOException, InterruptedException {
 
-			HttpResponse<String> response;
-
-			String body =
+			body =
 					"{" +
 					"\"description\":\"nisi eiusmod\"," +
 					"\"description\":\"adipisicing\"," +
@@ -279,14 +272,14 @@ class FilmControllerTests {
 					"\"duration\":100" +
 					"}";
 
-			HttpRequest request = HttpRequest.newBuilder()
+			request = HttpRequest.newBuilder()
 					.POST(HttpRequest.BodyPublishers.ofString(body))
 					.uri(URI.create(url))
 					.version(HttpClient.Version.HTTP_1_1)
 					.header("Content-Type", "application/json")
 					.build();
 
-			HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
+			handler = HttpResponse.BodyHandlers.ofString();
 
 			response = client.send(request, handler);
 			assertEquals(400, response.statusCode());
@@ -296,9 +289,7 @@ class FilmControllerTests {
 		@DisplayName("Добавление нового фильма - releaseDate : empty")
 		void postFilmCheckValidReleaseDateEmptyTest() throws IOException, InterruptedException {
 
-			HttpResponse<String> response;
-
-			String body =
+			body =
 					"{" +
 					"\"name\":\"nisi eiusmod\"," +
 					"\"description\":\"adipisicing\"," +
@@ -306,14 +297,14 @@ class FilmControllerTests {
 					"\"duration\":100" +
 					"}";
 
-			HttpRequest request = HttpRequest.newBuilder()
+			request = HttpRequest.newBuilder()
 					.POST(HttpRequest.BodyPublishers.ofString(body))
 					.uri(URI.create(url))
 					.version(HttpClient.Version.HTTP_1_1)
 					.header("Content-Type", "application/json")
 					.build();
 
-			HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
+			handler = HttpResponse.BodyHandlers.ofString();
 
 			response = client.send(request, handler);
 			assertEquals(400, response.statusCode());
@@ -324,15 +315,8 @@ class FilmControllerTests {
 	@DisplayName("PUT")
 	class MethodPut {
 
-		@Test
-		@DisplayName("Обновление существующего фильма")
-		void putFilmUpdateTest() throws IOException, InterruptedException {
-
-			HttpRequest request;
-			HttpResponse<String> response;
-			HttpResponse.BodyHandler<String> handler;
-			String body;
-
+		@BeforeEach
+		public void beforeEach() throws IOException, InterruptedException {
 			body =
 					"{" +
 					"\"name\":\"nisi eiusmod\"," +
@@ -350,6 +334,11 @@ class FilmControllerTests {
 
 			handler = HttpResponse.BodyHandlers.ofString();
 			client.send(request, handler);
+		}
+
+		@Test
+		@DisplayName("Обновление существующего фильма")
+		void putFilmUpdateTest() throws IOException, InterruptedException {
 
 			body =
 					"{" +
@@ -360,16 +349,10 @@ class FilmControllerTests {
 					"\"duration\":135" +
 					"}";
 
-			request = HttpRequest.newBuilder()
-					.PUT(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
+			request = buildRequestPutJson(body);
 			handler = HttpResponse.BodyHandlers.ofString();
-
 			response = client.send(request, handler);
+
 			assertEquals(200, response.statusCode());
 			assertEquals("{" +
 					"\"id\":1," +
@@ -384,29 +367,6 @@ class FilmControllerTests {
 		@DisplayName("Обновление существующего фильма - id : null")
 		void putFilmUpdateCheckValidIdNullTest() throws IOException, InterruptedException {
 
-			HttpRequest request;
-			HttpResponse<String> response;
-			HttpResponse.BodyHandler<String> handler;
-			String body;
-
-			body =
-					"{" +
-					"\"name\":\"nisi eiusmod\"," +
-					"\"description\":\"adipisicing\"," +
-					"\"releaseDate\":\"1967-03-25\"," +
-					"\"duration\":100" +
-					"}";
-
-			request = HttpRequest.newBuilder()
-					.POST(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
-			handler = HttpResponse.BodyHandlers.ofString();
-			client.send(request, handler);
-
 			body =
 					"{" +
 					"\"name\":\"Один Дома\"," +
@@ -415,16 +375,10 @@ class FilmControllerTests {
 					"\"duration\":135" +
 					"}";
 
-			request = HttpRequest.newBuilder()
-					.PUT(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
+			request = buildRequestPutJson(body);
 			handler = HttpResponse.BodyHandlers.ofString();
-
 			response = client.send(request, handler);
+
 			assertEquals(500, response.statusCode());
 		}
 
@@ -432,29 +386,6 @@ class FilmControllerTests {
 		@DisplayName("Обновление существующего фильма - name : null")
 		void putFilmUpdateCheckValidNameNullTest() throws IOException, InterruptedException {
 
-			HttpRequest request;
-			HttpResponse<String> response;
-			HttpResponse.BodyHandler<String> handler;
-			String body;
-
-			body =
-					"{" +
-					"\"name\":\"nisi eiusmod\"," +
-					"\"description\":\"adipisicing\"," +
-					"\"releaseDate\":\"1967-03-25\"," +
-					"\"duration\":100" +
-					"}";
-
-			request = HttpRequest.newBuilder()
-					.POST(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
-			handler = HttpResponse.BodyHandlers.ofString();
-			client.send(request, handler);
-
 			body =
 					"{" +
 					"\"id\":1," +
@@ -463,45 +394,16 @@ class FilmControllerTests {
 					"\"duration\":135" +
 					"}";
 
-			request = HttpRequest.newBuilder()
-					.PUT(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
+			request = buildRequestPutJson(body);
 			handler = HttpResponse.BodyHandlers.ofString();
-
 			response = client.send(request, handler);
+
 			assertEquals(400, response.statusCode());
 		}
 
 		@Test
 		@DisplayName("Обновление существующего фильма - description : null")
 		void putFilmUpdateCheckValidDescriptionsNullTest() throws IOException, InterruptedException {
-
-			HttpRequest request;
-			HttpResponse<String> response;
-			HttpResponse.BodyHandler<String> handler;
-			String body;
-
-			body =
-					"{" +
-					"\"name\":\"nisi eiusmod\"," +
-					"\"description\":\"adipisicing\"," +
-					"\"releaseDate\":\"1967-03-25\"," +
-					"\"duration\":100" +
-					"}";
-
-			request = HttpRequest.newBuilder()
-					.POST(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
-			handler = HttpResponse.BodyHandlers.ofString();
-			client.send(request, handler);
 
 			body =
 					"{" +
@@ -511,45 +413,16 @@ class FilmControllerTests {
 					"\"duration\":135" +
 					"}";
 
-			request = HttpRequest.newBuilder()
-					.PUT(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
+			request = buildRequestPutJson(body);
 			handler = HttpResponse.BodyHandlers.ofString();
-
 			response = client.send(request, handler);
+
 			assertEquals(400, response.statusCode());
 		}
 
 		@Test
 		@DisplayName("Обновление существующего фильма - releaseDate : null")
 		void putFilmUpdateCheckValidReleaseDateNullTest() throws IOException, InterruptedException {
-
-			HttpRequest request;
-			HttpResponse<String> response;
-			HttpResponse.BodyHandler<String> handler;
-			String body;
-
-			body =
-					"{" +
-					"\"name\":\"nisi eiusmod\"," +
-					"\"description\":\"adipisicing\"," +
-					"\"releaseDate\":\"1967-03-25\"," +
-					"\"duration\":100" +
-					"}";
-
-			request = HttpRequest.newBuilder()
-					.POST(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
-			handler = HttpResponse.BodyHandlers.ofString();
-			client.send(request, handler);
 
 			body =
 					"{" +
@@ -559,45 +432,16 @@ class FilmControllerTests {
 					"\"duration\":135" +
 					"}";
 
-			request = HttpRequest.newBuilder()
-					.PUT(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
+			request = buildRequestPutJson(body);
 			handler = HttpResponse.BodyHandlers.ofString();
-
 			response = client.send(request, handler);
+
 			assertEquals(400, response.statusCode());
 		}
 
 		@Test
 		@DisplayName("Обновление существующего фильма - duration : null")
 		void putFilmUpdateCheckValidDurationNullTest() throws IOException, InterruptedException {
-
-			HttpRequest request;
-			HttpResponse<String> response;
-			HttpResponse.BodyHandler<String> handler;
-			String body;
-
-			body =
-					"{" +
-					"\"name\":\"nisi eiusmod\"," +
-					"\"description\":\"adipisicing\"," +
-					"\"releaseDate\":\"1967-03-25\"," +
-					"\"duration\":100" +
-					"}";
-
-			request = HttpRequest.newBuilder()
-					.POST(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
-			handler = HttpResponse.BodyHandlers.ofString();
-			client.send(request, handler);
 
 			body =
 					"{" +
@@ -607,45 +451,16 @@ class FilmControllerTests {
 					"\"releaseDate\":\"1967-03-25\"," +
 					"}";
 
-			request = HttpRequest.newBuilder()
-					.PUT(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
+			request = buildRequestPutJson(body);
 			handler = HttpResponse.BodyHandlers.ofString();
-
 			response = client.send(request, handler);
+
 			assertEquals(400, response.statusCode());
 		}
 
 		@Test
 		@DisplayName("Обновление существующего фильма - name : empty")
 		void putFilmUpdateCheckValidNameEmptyTest() throws IOException, InterruptedException {
-
-			HttpRequest request;
-			HttpResponse<String> response;
-			HttpResponse.BodyHandler<String> handler;
-			String body;
-
-			body =
-					"{" +
-					"\"name\":\"nisi eiusmod\"," +
-					"\"description\":\"adipisicing\"," +
-					"\"releaseDate\":\"1967-03-25\"," +
-					"\"duration\":100" +
-					"}";
-
-			request = HttpRequest.newBuilder()
-					.POST(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
-			handler = HttpResponse.BodyHandlers.ofString();
-			client.send(request, handler);
 
 			body =
 					"{" +
@@ -655,45 +470,16 @@ class FilmControllerTests {
 					"\"releaseDate\":\"1967-03-25\"," +
 					"}";
 
-			request = HttpRequest.newBuilder()
-					.PUT(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
+			request = buildRequestPutJson(body);
 			handler = HttpResponse.BodyHandlers.ofString();
-
 			response = client.send(request, handler);
+
 			assertEquals(400, response.statusCode());
 		}
 
 		@Test
 		@DisplayName("Обновление существующего фильма - description : empty")
 		void putFilmUpdateCheckValidDescriptionEmptyTest() throws IOException, InterruptedException {
-
-			HttpRequest request;
-			HttpResponse<String> response;
-			HttpResponse.BodyHandler<String> handler;
-			String body;
-
-			body =
-					"{" +
-					"\"name\":\"nisi eiusmod\"," +
-					"\"description\":\"adipisicing\"," +
-					"\"releaseDate\":\"1967-03-25\"," +
-					"\"duration\":100" +
-					"}";
-
-			request = HttpRequest.newBuilder()
-					.POST(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
-			handler = HttpResponse.BodyHandlers.ofString();
-			client.send(request, handler);
 
 			body =
 					"{" +
@@ -703,45 +489,16 @@ class FilmControllerTests {
 					"\"releaseDate\":\"1967-03-25\"," +
 					"}";
 
-			request = HttpRequest.newBuilder()
-					.PUT(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
+			request = buildRequestPutJson(body);
 			handler = HttpResponse.BodyHandlers.ofString();
-
 			response = client.send(request, handler);
+
 			assertEquals(400, response.statusCode());
 		}
 
 		@Test
 		@DisplayName("Обновление существующего фильма - releaseDate : empty")
 		void putFilmUpdateCheckValidReleaseDateEmptyTest() throws IOException, InterruptedException {
-
-			HttpRequest request;
-			HttpResponse<String> response;
-			HttpResponse.BodyHandler<String> handler;
-			String body;
-
-			body =
-					"{" +
-					"\"name\":\"nisi eiusmod\"," +
-					"\"description\":\"adipisicing\"," +
-					"\"releaseDate\":\"1967-03-25\"," +
-					"\"duration\":100" +
-					"}";
-
-			request = HttpRequest.newBuilder()
-					.POST(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
-			handler = HttpResponse.BodyHandlers.ofString();
-			client.send(request, handler);
 
 			body =
 					"{" +
@@ -751,16 +508,10 @@ class FilmControllerTests {
 					"\"releaseDate\":\"\"," +
 					"}";
 
-			request = HttpRequest.newBuilder()
-					.PUT(HttpRequest.BodyPublishers.ofString(body))
-					.uri(URI.create(url))
-					.version(HttpClient.Version.HTTP_1_1)
-					.header("Content-Type", "application/json")
-					.build();
-
+			request = buildRequestPutJson(body);
 			handler = HttpResponse.BodyHandlers.ofString();
-
 			response = client.send(request, handler);
+
 			assertEquals(400, response.statusCode());
 		}
 	}
