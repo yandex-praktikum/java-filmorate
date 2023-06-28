@@ -59,6 +59,13 @@ public class UserController {
         return user;
     }
 
+    @DeleteMapping()
+    public void clear() {
+        users.clear();
+        emails.clear();
+        lastIdentification = 1;
+    }
+
     private void validatorUser(User user) throws ValidationUserException {
         if (user.getBirthday() == null || user.getBirthday().equals("")) {
             throw new ValidationUserException("Дата рождения равна null или отсутствует!");
