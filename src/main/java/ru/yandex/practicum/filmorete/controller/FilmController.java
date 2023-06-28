@@ -29,6 +29,7 @@ public class FilmController {
         }
         else {
             validatorFilms(film);
+            film.setId(getLastIdentification());
             films.put(film.getId(), film);
             return film;
         }
