@@ -6,26 +6,27 @@ import ru.yandex.practicum.filmorete.exeptions.ValidationUserException;
 import ru.yandex.practicum.filmorete.model.User;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
+@RequestMapping("/users")
 @RestController
 public class UserController {
 
-    private Map<String, User> users = new HashMap<>();
+    private Map<Integer, User> users = new HashMap<>();
+    private Set<String> emails = new HashSet<>();
     private Integer lastIdentification = 1;
 
-    @GetMapping("/users")
+    @GetMapping()
     public Collection<User> findAll() {
         return users.values();
     }
 
-    @PostMapping("/user")
+    @PostMapping()
     public User create(@RequestBody User user) throws ValidationUserException {
-        if (users.containsKey(user.getEmail())) {
-            String message = String.format("Пользователь {} уже есть в системе!", user.getName());
+
+        if (users.containsKey(user.getId())) {
+            String message = String.format("Пользователь %s уже есть в системе!", user.getName());
             throw new ValidationUserException(message);
 
         }
@@ -35,26 +36,33 @@ public class UserController {
         else {
             validatorUser(user);
             user.setId(getLastIdentification());
-            users.put(user.getEmail(), user);
+            users.put(user.getId(), user);
+            emails.add(user.getEmail());
             log.debug("Добавлен новый пользователь: {}", user.getName());
             return user;
         }
     }
 
-    @PutMapping("/user")
+    @PutMapping()
     public User update(@RequestBody User user) throws ValidationUserException {
         if (user.getEmail() == null || user.getEmail().equals("")) {
             throw new ValidationUserException("Email равен null или отсутствует!");
         }
+        if (!users.containsKey(user.getId())) {
+            throw new ValidationUserException("Пользователь не найден в системе!");
+        }
         validatorUser(user);
-        users.put(user.getEmail(), user);
+        users.put(user.getId(), user);
         log.debug("Пользователь {} успешно обновлен!", user.getName());
         return user;
     }
 
     private void validatorUser(User user) throws ValidationUserException {
+        if (emails.contains(user.getEmail())) {
+            throw new ValidationUserException("Электронная почта уже зарегестрированна в системе!");
+        }
         if (user.getEmail().isEmpty()) {
-            throw new ValidationUserException("Название фильма не может быть пустым!");
+            throw new ValidationUserException("Электронная почта не может быть пустой!");
         }
         if (!user.getEmail().contains("@")) {
             throw new ValidationUserException("Электронная почта должна содержать символ '@'!");
@@ -65,7 +73,7 @@ public class UserController {
         if (user.getLogin().contains(" ")) {
             throw new ValidationUserException("Логин не должен содержать пробелы!");
         }
-        if (user.getName().isEmpty()) {
+        if (user.getName() == null) {
             user.setName(user.getLogin());
         }
         if (user.getBirthday().isAfter(LocalDate.now())) {
