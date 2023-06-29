@@ -266,8 +266,8 @@ class FilmControllerTests {
 
 			body =
 					"{" +
-					"\"description\":\"nisi eiusmod\"," +
-					"\"description\":\"adipisicing\"," +
+					"\"name\":\"nisi eiusmod\"," +
+					"\"description\":\"\"," +
 					"\"releaseDate\":\"1967-03-25\"," +
 					"\"duration\":100" +
 					"}";
@@ -282,7 +282,7 @@ class FilmControllerTests {
 			handler = HttpResponse.BodyHandlers.ofString();
 
 			response = client.send(request, handler);
-			assertEquals(400, response.statusCode());
+			assertEquals(200, response.statusCode());
 		}
 
 		@Test
