@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 class USerControllerTests {
 
-    private String baseUrl = "http://localhost:8081";
-    private String url = String.format("%s/users", baseUrl);
+    private final String baseUrl = "http://localhost:8081";
+    private final String url = String.format("%s/users", baseUrl);
     private final HttpClient client = HttpClient.newHttpClient();
 
     private HttpRequest request;
