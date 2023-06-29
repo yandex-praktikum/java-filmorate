@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import ru.yandex.practicum.filmorete.model.Film;
 import ru.yandex.practicum.filmorete.model.User;
 
-import java.time.Duration;
 import java.time.LocalDate;
 
 @SpringBootApplication

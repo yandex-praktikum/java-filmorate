@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorete.exeptions.ValidationFilmException;
-import ru.yandex.practicum.filmorete.exeptions.ValidationUserException;
 import ru.yandex.practicum.filmorete.model.Film;
 
 import java.time.LocalDate;
@@ -15,8 +14,8 @@ import java.util.*;
 @RestController
 public class FilmController {
 
-    private Map<Integer, Film> films = new HashMap();
-    private Set<String> names = new HashSet<>();
+    private final Map<Integer, Film> films = new HashMap<>();
+    private final Set<String> names = new HashSet<>();
     private Integer lastIdentification = 1;
 
     @GetMapping()

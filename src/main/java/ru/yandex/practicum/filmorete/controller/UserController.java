@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorete.controller;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorete.exeptions.ValidationFilmException;
 import ru.yandex.practicum.filmorete.exeptions.ValidationUserException;
 import ru.yandex.practicum.filmorete.model.User;
 
@@ -15,8 +14,8 @@ import java.util.*;
 @RestController
 public class UserController {
 
-    private Map<Integer, User> users = new HashMap<>();
-    private Set<String> emails = new HashSet<>();
+    private final Map<Integer, User> users = new HashMap<>();
+    private final Set<String> emails = new HashSet<>();
     private Integer lastIdentification = 1;
 
     @GetMapping()
