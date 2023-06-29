@@ -29,3 +29,10 @@ public class User {
     @Email
     private String email;
 }
+
+//  "{" +
+//  "\"name\":\"SinitsaBogdan\"," +
+//  "\"birthday\":\"1997-04-11\"," +
+//  "\"login\":\"Bogdan\"," +
+//  "\"email\":\"mail@mail.ru\"" +
+//  "}";
