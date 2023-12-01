@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<<<<<<< HEAD
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+=======
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+>>>>>>> fe5308a283657e62f7304ac14ae2e1ab40ddfac5
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
+<<<<<<< HEAD
 		<version>2.7.3</version>
+=======
+		<version>2.7.18</version>
+>>>>>>> fe5308a283657e62f7304ac14ae2e1ab40ddfac5
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ru.yandex.practicum</groupId>
 	<artifactId>filmorate</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>filmorate</name>
+<<<<<<< HEAD
 	<description>Homework 9 for Yandex Practicum</description>
 
 	<properties>
@@ -21,6 +30,12 @@
 		<java.version>11</java.version>
 	</properties>
 
+=======
+	<description>filmorate</description>
+	<properties>
+		<java.version>11</java.version>
+	</properties>
+>>>>>>> fe5308a283657e62f7304ac14ae2e1ab40ddfac5
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -28,6 +43,7 @@
 		</dependency>
 
 		<dependency>
+<<<<<<< HEAD
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -44,6 +60,15 @@
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
 			<version>5.9.2</version>
+=======
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+>>>>>>> fe5308a283657e62f7304ac14ae2e1ab40ddfac5
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -53,7 +78,10 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+<<<<<<< HEAD
 				<version>2.7.12</version>
+=======
+>>>>>>> fe5308a283657e62f7304ac14ae2e1ab40ddfac5
 			</plugin>
 		</plugins>
 	</build>

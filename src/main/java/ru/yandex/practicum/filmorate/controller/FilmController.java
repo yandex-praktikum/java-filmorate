@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+<<<<<<< HEAD
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exeptions.ValidationException;
@@ -60,3 +61,10 @@ public class FilmController {
         return ++idFilm;
     }
 }
+=======
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class FilmController {
+}
+>>>>>>> fe5308a283657e62f7304ac14ae2e1ab40ddfac5
