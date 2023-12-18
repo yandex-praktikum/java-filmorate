@@ -21,7 +21,7 @@ import java.util.Map;
 @Slf4j
 public class FilmController {
 
-    private Integer currentId = 1;
+    private Integer globalId = 1;
     private final Map<Integer, Film> films = new HashMap<>();
     private static final LocalDate EARLIEST_FILM = LocalDate.of(1895, 12, 28);
     private final MessageSource messageSource;
@@ -36,9 +36,9 @@ public class FilmController {
     public Film create(@Valid @RequestBody Film film){
         validateFilmReleaseDate(film.getReleaseDate());
 
-        film.setId(currentId);
-        films.put(currentId, film);
-        currentId++;
+        film.setId(globalId);
+        films.put(globalId, film);
+        globalId++;
 
         log.debug("Film with id = {} has been created.", film.getId());
         return film;
