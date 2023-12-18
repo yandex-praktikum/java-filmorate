@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
@@ -12,9 +13,8 @@ import java.time.LocalDate;
 
 @Data
 @Valid
-public class User {
-
-    private Integer id;
+@ToString(callSuper = true)
+public class User extends StorageData {
 
     @NotBlank(message = "{email.user.not_blank}")
     @Email(message = "{email.user.not_valid}")

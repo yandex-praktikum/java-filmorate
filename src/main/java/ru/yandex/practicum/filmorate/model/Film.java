@@ -1,7 +1,9 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -11,10 +13,11 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Data
+@ToString(callSuper = true)
 @Valid
-public class Film {
+@AllArgsConstructor
+public class Film extends StorageData {
 
-    private Integer id;
     @NotBlank(message = "{name.film.not_blank}")
     private String name;
 
@@ -27,6 +30,6 @@ public class Film {
     private LocalDate releaseDate;
 
     @Positive(message = "{duration.film.positive}")
-    private Float duration;
+    private Long duration;
 
 }
