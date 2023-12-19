@@ -5,12 +5,22 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.util.List;
 
 public interface FilmStorage {
+
     /**
      * Method returns all films.
      *
      * @return List of all films.
      */
     List<Film> findAll();
+
+    /**
+     * Method returns film from repository by id.
+     *
+     * @param id Id of film to be found.
+     *
+     * @return film with requested id.
+     */
+    Film findById(Integer id);
 
     /**
      * Method adds film to repository.
@@ -29,4 +39,6 @@ public interface FilmStorage {
      * @return Updated film.
      */
     Film update(Film film);
+
+
 }

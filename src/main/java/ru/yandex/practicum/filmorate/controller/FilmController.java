@@ -1,64 +1,51 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.BadRequestException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/films")
-@Data
+@RequiredArgsConstructor
 @Slf4j
+@Validated
 public class FilmController {
 
-    private Integer globalId = 1;
-    private final Map<Integer, Film> films = new HashMap<>();
     private static final LocalDate EARLIEST_FILM = LocalDate.of(1895, 12, 28);
-    private final MessageSource messageSource;
+    private final FilmService filmService;
 
     @GetMapping
     public List<Film> findAll() {
         log.debug("List off all films has been requested.");
-        return new ArrayList<>(films.values());
+        return filmService.findAll();
     }
 
     @PostMapping
     public Film create(@Valid @RequestBody Film film){
         validateFilmReleaseDate(film.getReleaseDate());
 
-        film.setId(globalId);
-        films.put(globalId, film);
-        globalId++;
+        Film createdFilm = filmService.create(film);
 
-        log.debug("Film with id = {} has been created.", film.getId());
-        return film;
+        log.debug("Film with id = {} has been created.", createdFilm.getId());
+        return createdFilm;
     }
 
     @PutMapping
     public Film update(@Valid @RequestBody Film film) {
-        int id = film.getId();
+        validateFilmReleaseDate(film.getReleaseDate());
 
-        checkFilmExist(id);
-        films.put(id, film);
+        Film updatedFilm = filmService.update(film);
 
-        log.debug("Film with id = {} has been updated.", film.getId());
-        return film;
-    }
-
-    private void checkFilmExist(Integer id) {
-        if (!films.containsKey(id)) {
-            throw new NotFoundException(String.format("Film with id %d does not exist!", id));
-        }
+        log.debug("Film with id = {} has been updated.", updatedFilm.getId());
+        return updatedFilm;
     }
 
     private void validateFilmReleaseDate(LocalDate releaseDate) {

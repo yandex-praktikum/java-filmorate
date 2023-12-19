@@ -38,7 +38,7 @@ public class UserController {
     public User update(@Valid @RequestBody User user) {
         User updatedUser = userService.update(user);
 
-        log.debug("User with id = {} has been updated.", updatedUser);
+        log.debug("User with id = {} has been updated.", updatedUser.getId());
         return updatedUser;
     }
 }
