@@ -22,8 +22,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findById(Integer id) {
+        User result = userStorage.findById(id);
+
+        if (result == null) {
+            throw new NotFoundException(String.format("User with id = %d is not found.", id));
+        }
+
+        return result;
+    }
+
+    @Override
     public User create(User user) {
-        if (user.getName() == null) {
+        if (user.getName() == null || user.getName().equals("")) {
             user.setName(user.getLogin());
         }
 
@@ -32,18 +43,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User user) {
-        checkUserExist(user.getId());
+        userStorage.checkUserExist(user.getId());
 
         if (user.getName() == null) {
             user.setName(user.getLogin());
         }
 
         return userStorage.update(user);
-    }
-
-    private void checkUserExist(Integer id) {
-        if (userStorage.findById(id) == null) {
-            throw new NotFoundException(String.format("User with id = %d is not found.", id));
-        }
     }
 }

@@ -22,20 +22,25 @@ public class FilmServiceImpl implements FilmService{
     }
 
     @Override
+    public Film findById(Integer id) {
+        Film result = filmStorage.findById(id);
+
+        if (result == null) {
+            throw new NotFoundException(String.format("Film with id = %d is not found.", id));
+        }
+
+        return result;
+    }
+
+    @Override
     public Film create(Film film) {
         return filmStorage.create(film);
     }
 
     @Override
     public Film update(Film film) {
-        checkFilmExist(film.getId());
+        filmStorage.checkFilmExist(film.getId());
 
         return filmStorage.update(film);
-    }
-
-    private void checkFilmExist(Integer id) {
-        if (filmStorage.findById(id) == null) {
-            throw new NotFoundException(String.format("Film with id = %d is not found.", id));
-        }
     }
 }

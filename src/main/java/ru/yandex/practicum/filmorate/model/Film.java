@@ -1,21 +1,20 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
-@ToString(callSuper = true)
 @Valid
-@AllArgsConstructor
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 public class Film extends StorageData {
 
     @NotBlank(message = "{name.film.not_blank}")
@@ -29,7 +28,20 @@ public class Film extends StorageData {
     @Past(message = "{release.film.not_future}")
     private LocalDate releaseDate;
 
+    @NotNull(message = "{duration.film.not_null}")
     @Positive(message = "{duration.film.positive}")
     private Long duration;
 
+    @NotNull(message = "{rate.film.not_null}")
+    private Integer rate = 0;
+
+    private final Set<Integer> likes = new HashSet<>();
+
+    public Film(Integer id, String name, String description, LocalDate releaseDate, Long duration) {
+        super(id);
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+    }
 }

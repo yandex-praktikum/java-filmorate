@@ -14,6 +14,15 @@ public interface UserService {
     List<User> findAll();
 
     /**
+     * Method returns user from repository by id.
+     *
+     * @param id Id of user to be found.
+     *
+     * @return User with requested id.
+     */
+    User findById(Integer id);
+
+    /**
      * Method adds user to repository.
      *
      * @param user User to be added.
@@ -30,4 +39,6 @@ public interface UserService {
      * @return Updated user.
      */
     User update(User user);
+
+
 }

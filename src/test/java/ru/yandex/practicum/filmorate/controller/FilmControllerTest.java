@@ -26,7 +26,7 @@ public class FilmControllerTest {
 
     private static final LocalDate RELEASE_DATE = LocalDate.of(1895, 12, 28);
     private static final LocalDate FUTURE_DATE = LocalDate.now().plusDays(1);
-    private static final Film VALID_FILM = new Film("film", RandomString.make(200), RELEASE_DATE, 1L);
+    private static final Film VALID_FILM = new Film(1, "film", RandomString.make(200), RELEASE_DATE, 1L);
 
     @Autowired
     private MockMvc mockMvc;
@@ -40,7 +40,6 @@ public class FilmControllerTest {
     public void shouldReturn200andListOnGetAllWhenValidFilm() throws Exception {
         //given
         postValidFilm();
-        VALID_FILM.setId(1);
 
         //when
         mockMvc.perform(
@@ -82,7 +81,7 @@ public class FilmControllerTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void shouldReturn400OnPostFilmWhenBlankFilmName() throws Exception {
         //given
-        Film film = new Film("", RandomString.make(200), RELEASE_DATE, 1L);
+        Film film = new Film(1, "", RandomString.make(200), RELEASE_DATE, 1L);
 
         //when
         mockMvc.perform(
@@ -100,7 +99,7 @@ public class FilmControllerTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void shouldReturn400OnPostFilmWhenLongFilmDescription() throws Exception {
         //given
-        Film film = new Film("film", RandomString.make(201), RELEASE_DATE, 1L);
+        Film film = new Film(1, "film", RandomString.make(201), RELEASE_DATE, 1L);
 
         //when
         mockMvc.perform(
@@ -118,7 +117,7 @@ public class FilmControllerTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void shouldReturn400OnPostFilmWhenFutureFilmRelease() throws Exception {
         //given
-        Film film = new Film("film", RandomString.make(200), FUTURE_DATE, 1L);
+        Film film = new Film(1, "film", RandomString.make(200), FUTURE_DATE, 1L);
 
         //when
         mockMvc.perform(
@@ -136,7 +135,7 @@ public class FilmControllerTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void shouldReturn400OnPostFilmWhenInvalidFilmRelease() throws Exception {
         //given
-        Film film = new Film( "film", RandomString.make(200), RELEASE_DATE.minusDays(1), 1L);
+        Film film = new Film(1, "film", RandomString.make(200), RELEASE_DATE.minusDays(1), 1L);
 
         //when
         mockMvc.perform(
@@ -157,7 +156,7 @@ public class FilmControllerTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void shouldReturn400OnPostFilmWhenNegativeFilmDuration() throws Exception {
         //given
-        Film film = new Film("film", RandomString.make(200), RELEASE_DATE, -1L);
+        Film film = new Film(1, "film", RandomString.make(200), RELEASE_DATE, -1L);
 
         //when
         mockMvc.perform(
@@ -177,8 +176,7 @@ public class FilmControllerTest {
         //given
         postValidFilm();
 
-        Film updatedFilm = new Film("updated film", RandomString.make(200), RELEASE_DATE, 2L);
-        updatedFilm.setId(1);
+        Film updatedFilm = new Film(1, "updated film", RandomString.make(200), RELEASE_DATE, 2L);
 
         //when
         mockMvc.perform(

@@ -14,6 +14,15 @@ public interface FilmService {
     List<Film> findAll();
 
     /**
+     * Method returns film from repository by id.
+     *
+     * @param id Id of film to be found.
+     *
+     * @return film with requested id.
+     */
+    Film findById(Integer id);
+
+    /**
      * Method adds film to repository.
      *
      * @param film Film to be added.

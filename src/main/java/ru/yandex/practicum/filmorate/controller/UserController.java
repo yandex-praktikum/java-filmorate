@@ -26,6 +26,13 @@ public class UserController {
         return userService.findAll();
     }
 
+    @GetMapping("/{id}")
+    public User findById(@PathVariable Integer id) {
+        log.debug("User with id = {} has been requested.", id);
+
+        return userService.findById(id);
+    }
+
     @PostMapping
     public User create(@Valid @RequestBody User user) {
         User createdUser = userService.create(user);

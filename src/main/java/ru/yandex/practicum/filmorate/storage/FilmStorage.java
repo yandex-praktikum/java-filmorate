@@ -40,5 +40,10 @@ public interface FilmStorage {
      */
     Film update(Film film);
 
-
+    /**
+     * Method checks if film exist in repository and throws NotFoundException if data is not found.
+     *
+     * @param id Id of film to be checked.
+     */
+    void checkFilmExist(Integer id);
 }

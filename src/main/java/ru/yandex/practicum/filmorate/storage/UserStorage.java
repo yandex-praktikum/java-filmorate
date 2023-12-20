@@ -38,4 +38,22 @@ public interface UserStorage {
      * @return Updated user.
      */
     User update(User user);
+
+    /**
+     * Method makes users with id and friendId friends.
+     *
+     * @param id Id of user adding a friend.
+     * @param friendId Id of user to be friended.
+     *
+     * @return List of both new friends.
+     */
+    List<User> addFriend(Integer id, Integer friendId);
+
+    /**
+     * Method checks if user exist in repository and throws NotFoundException if data is not found.
+     *
+     * @param id Id of user to be checked.
+     */
+    void checkUserExist(Integer id);
+
 }
