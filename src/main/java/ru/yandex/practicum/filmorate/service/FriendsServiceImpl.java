@@ -22,4 +22,27 @@ public class FriendsServiceImpl implements FriendsService {
 
         return userStorage.addFriend(id, friendId);
     }
+
+    @Override
+    public List<User> deleteFriend(Integer id, Integer friendId) {
+        userStorage.checkUserExist(id);
+        userStorage.checkUserExist(friendId);
+
+        return userStorage.deleteFriend(id, friendId);
+    }
+
+    @Override
+    public List<User> getFriends(Integer id) {
+        userStorage.checkUserExist(id);
+
+        return userStorage.getFriends(id);
+    }
+
+    @Override
+    public List<User> getCommonFriends(Integer id, Integer otherId) {
+        userStorage.checkUserExist(id);
+        userStorage.checkUserExist(otherId);
+
+        return userStorage.getCommonFriends(id, otherId);
+    }
 }

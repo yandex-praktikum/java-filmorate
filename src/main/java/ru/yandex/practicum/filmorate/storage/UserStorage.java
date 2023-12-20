@@ -50,10 +50,38 @@ public interface UserStorage {
     List<User> addFriend(Integer id, Integer friendId);
 
     /**
+     * Method unfriends users with id and friendId.
+     *
+     * @param id Id of user deleting a friend.
+     * @param friendId Id of user to be defriended.
+     *
+     * @return List of both ex-friends.
+     */
+    List<User> deleteFriend(Integer id, Integer friendId);
+
+    /**
+     * Method returns a list of user's friends.
+     *
+     * @param id Id of user requesting friends.
+     *
+     * @return List of user's friends.
+     */
+    List<User> getFriends(Integer id);
+
+    /**
+     * Method returns a list of user's common friends with other user.
+     *
+     * @param id Id of user requesting common friends.
+     * @param otherId Id of user with whom the common friends are requested.
+     *
+     * @return List of user's common friends with other user.
+     */
+    List<User> getCommonFriends(Integer id, Integer otherId);
+
+    /**
      * Method checks if user exist in repository and throws NotFoundException if data is not found.
      *
      * @param id Id of user to be checked.
      */
     void checkUserExist(Integer id);
-
 }
