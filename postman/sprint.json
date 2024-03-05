@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "5bc299c1-f2a4-4e89-8ae7-26e06579ca77",
-		"name": "sprint10/add-friends-likes",
+		"_postman_id": "c48e59d5-4de8-4757-a8c4-c13e763036df",
+		"name": "sprint11/add-friends-likes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "2036415"
+		"_exporter_id": "23073145",
+		"_collection_link": "https://universal-shadow-295426.postman.co/workspace/My-Workspace~4200f6aa-0504-44b1-8a1d-707d0dcbd5ce/collection/23073145-c48e59d5-4de8-4757-a8c4-c13e763036df?action=share&source=collection_link&creator=23073145"
 	},
 	"item": [
 		{
@@ -16,6 +17,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"const source = JSON.parse(pm.request.body.raw)\r",
+									"\r",
 									"pm.test(\"Status code is 200 or 201\", function () {\r",
 									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
 									"});\r",
@@ -26,28 +29,67 @@
 									"pm.test(\"Test user 'id' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('id');\r",
-									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(1);\r",
 									"});\r",
 									"pm.test(\"Test user 'email' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('email');\r",
-									"    pm.expect(jsonData.email, '\"email\" must be \"mail@mail.ru\"').to.eql('mail@mail.ru');\r",
+									"    pm.expect(jsonData.email, `\"email\" must be \"${source.mail}\"`).to.eql(source.email);\r",
 									"});\r",
 									"pm.test(\"Test user 'name' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('name');\r",
-									"    pm.expect(jsonData.name, '\"name\" must be \"Nick Name\"').to.eql('Nick Name');\r",
+									"    pm.expect(jsonData.name, `\"name\" must be \"${source.name}\"`).to.eql(source.name);\r",
 									"});\r",
 									"pm.test(\"Test user 'login' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('login');\r",
-									"    pm.expect(jsonData.login, '\"login\" field must be \"dolore\"').to.eql('dolore');    \r",
+									"    pm.expect(jsonData.login, `\"login\" field must be \"${source.login}\"`).to.eql(source.login);    \r",
 									"});\r",
 									"pm.test(\"Test user 'birthday' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('birthday');\r",
-									"    pm.expect(jsonData.birthday, '\"birthday\" field must be \"1946-08-20\"').to.eql('1946-08-20');\r",
+									"    pm.expect(jsonData.birthday, `\"birthday\" field must be \"${source.birthday}\"`).to.eql(source.birthday);\r",
 									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user;\r",
+									"    try {\r",
+									"        user = rnd.getUser();\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
 								],
 								"type": "text/javascript"
 							}
@@ -250,6 +292,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"const source = pm.collectionVariables.get(\"user\")\r",
+									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.be.ok;\r",
 									"});\r",
@@ -260,7 +304,7 @@
 									"pm.test(\"Test user 'id' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('id');\r",
-									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(1);\r",
+									"    pm.expect(jsonData.id, `\"id\" must be ${source.id}`).to.eql(source.id);\r",
 									"});\r",
 									"pm.test(\"Test user 'email' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
@@ -285,6 +329,54 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        pm.collectionVariables.set(\"user\", user);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"login\": \"doloreUpdate\",\r",
+									"            \"name\": \"est adipisicing\",\r",
+									"            \"id\": user.id,\r",
+									"            \"email\": \"mail@yandex.ru\",\r",
+									"            \"birthday\": \"1976-09-20\"\r",
+									"            }),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
@@ -301,7 +393,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"login\": \"doloreUpdate\",\n  \"name\": \"est adipisicing\",\n  \"id\": 1,\n  \"email\": \"mail@yandex.ru\",\n  \"birthday\": \"1976-09-20\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -334,6 +426,54 @@
 									"    pm.response.to.be.withBody;\r",
 									"    pm.response.to.be.json;\r",
 									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        pm.collectionVariables.set(\"user\", user);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"login\": \"doloreUpdate\",\r",
+									"            \"name\": \"est adipisicing\",\r",
+									"            \"id\": user.id+1,\r",
+									"            \"email\": \"mail@yandex.ru\",\r",
+									"            \"birthday\": \"1976-09-20\"\r",
+									"            }),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
 								],
 								"type": "text/javascript"
 							}
@@ -385,35 +525,12 @@
 									"pm.test(\"Test list user response\", function () {\r",
 									"    pm.response.to.be.withBody;\r",
 									"    pm.response.to.be.json;\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
 									"});\r",
 									"pm.test(\"Test user[0] 'id' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData[0]).to.have.property('id');\r",
 									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(1);\r",
 									"});\r",
-									"pm.test(\"Test user[0] 'email' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('email');\r",
-									"    pm.expect(jsonData[0].email, '\"email\" must be \"mail@yandex.ru\"').to.eql('mail@yandex.ru');\r",
-									"});\r",
-									"pm.test(\"Test user[0] 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('name');\r",
-									"    pm.expect(jsonData[0].name, '\"name\" must be \"est adipisicing\"').to.eql('est adipisicing');\r",
-									"});\r",
-									"pm.test(\"Test user[0] 'login' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('login');\r",
-									"    pm.expect(jsonData[0].login, '\"login\" field must be \"doloreUpdate\"').to.eql('doloreUpdate');    \r",
-									"});\r",
-									"pm.test(\"Test user[0] 'birthday' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
-									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"1976-09-20\"').to.eql('1976-09-20');\r",
-									"});\r",
-									"\r",
 									""
 								],
 								"type": "text/javascript"
@@ -443,54 +560,87 @@
 			]
 		},
 		{
-			"name": "user",
+			"name": "friends",
 			"item": [
 				{
-					"name": "Friend Create",
+					"name": "Friend add",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200 or 201\", function () {\r",
-									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+									"const user1_id = pm.collectionVariables.get(\"id\");\r",
+									"const user2_id = pm.collectionVariables.get(\"friend_id\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
 									"});\r",
-									"pm.test(\"Has user create response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/users/\" + user1_id + '/friends',\r",
+									"    method : \"GET\",\r",
+									"    header: { \"Content-Type\": \"application/json\" }\r",
+									"}, (error, response) => {\r",
+									"    pm.test(\"user1 has user2 friend\", function () {\r",
+									"        pm.expect(response.json()[0].id).to.be.equal(user2_id);\r",
+									"    });\r",
 									"});\r",
-									"pm.test(\"Test user 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('id');\r",
-									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(2);\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/users/\" + user2_id + '/friends',\r",
+									"    method : \"GET\",\r",
+									"    header: { \"Content-Type\": \"application/json\" }\r",
+									"}, (error, response) => {\r",
+									"    pm.test(\"user2 doesn't have user1 friend\", function () {\r",
+									"        pm.expect(response.json().length).to.be.equal(0);\r",
+									"    });\r",
 									"});\r",
-									"pm.test(\"Test user 'email' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('email');\r",
-									"    pm.expect(jsonData.email, '\"email\" must be \"friend@mail.ru\"').to.eql('friend@mail.ru');\r",
-									"});\r",
-									"pm.test(\"Test user 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('name');\r",
-									"    pm.expect(jsonData.name, '\"name\" must be \"friend adipisicing\"').to.eql('friend adipisicing');\r",
-									"});\r",
-									"pm.test(\"Test user 'login' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('login');\r",
-									"    pm.expect(jsonData.login, '\"login\" field must be \"friend\"').to.eql('friend');    \r",
-									"});\r",
-									"pm.test(\"Test user 'birthday' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('birthday');\r",
-									"    pm.expect(jsonData.birthday, '\"birthday\" field must be \"1976-08-20\"').to.eql('1976-08-20');\r",
-									"});"
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user1, user2;\r",
+									"    try {\r",
+									"        user1 = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        pm.collectionVariables.set(\"id\", user1.id);\r",
+									"        pm.collectionVariables.set(\"friend_id\", user2.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
 								],
 								"type": "text/javascript"
 							}
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -503,7 +653,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"login\": \"friend\",\n  \"name\": \"friend adipisicing\",\n  \"email\": \"friend@mail.ru\",\n  \"birthday\": \"1976-08-20\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -511,64 +661,90 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users",
+							"raw": "{{baseUrl}}/users/{{id}}/friends/{{friend_id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"users"
+								"users",
+								"{{id}}",
+								"friends",
+								"{{friend_id}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Common Friend Create",
+					"name": "Friend get",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200 or 201\", function () {\r",
-									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+									"const user_friends = pm.collectionVariables.get(\"user_friends\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
 									"});\r",
-									"pm.test(\"Has user create response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
+									"\r",
+									"pm.test(\"initially user1 should have 0 friends\", function () {\r",
+									"    pm.expect(user_friends.length).to.be.equal(0);\r",
 									"});\r",
-									"pm.test(\"Test user 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('id');\r",
-									"    pm.expect(jsonData.id, '\"id\" must be 3').to.eql(3);\r",
-									"});\r",
-									"pm.test(\"Test user 'email' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('email');\r",
-									"    pm.expect(jsonData.email, '\"email\" must be \"friend@common.ru\"').to.eql('friend@common.ru');\r",
-									"});\r",
-									"pm.test(\"Test user 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('name');\r",
-									"    pm.expect(jsonData.name, '\"name\" must be \"common\"').to.eql('common');\r",
-									"});\r",
-									"pm.test(\"Test user 'login' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('login');\r",
-									"    pm.expect(jsonData.login, '\"login\" field must be \"common\"').to.eql('common');    \r",
-									"});\r",
-									"pm.test(\"Test user 'birthday' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('birthday');\r",
-									"    pm.expect(jsonData.birthday, '\"birthday\" field must be \"2000-08-20\"').to.eql('2000-08-20');\r",
-									"});\r",
-									""
+									"\r",
+									"pm.test(\"finally user1 should have 1 friend\", function () {\r",
+									"    pm.expect(pm.response.json().length).to.be.equal(1);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user1, user2, user1_friends;\r",
+									"    try {\r",
+									"        user1 = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        user1_friends = await api.getFriends(user1.id);\r",
+									"        await api.addFriend(user1.id, user2.id);\r",
+									"        pm.collectionVariables.set(\"id\", user1.id);\r",
+									"        pm.collectionVariables.set(\"user_friends\", user1_friends);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
 								],
 								"type": "text/javascript"
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -581,7 +757,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"login\": \"common\",\n  \"name\": \"\",\n  \"email\": \"friend@common.ru\",\n  \"birthday\": \"2000-08-20\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -589,978 +765,91 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users",
+							"raw": "{{baseUrl}}/users/{{id}}/friends",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"users"
+								"users",
+								"{{id}}",
+								"friends"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "User get by id=1",
+					"name": "Friend remove",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.be.ok;\r",
-									"});\r",
-									"pm.test(\"Has user get response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"pm.test(\"Test user 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('id');\r",
-									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(1);\r",
-									"});\r",
-									"pm.test(\"Test user 'email' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('email');\r",
-									"    pm.expect(jsonData.email, '\"email\" must be \"mail@yandex.ru\"').to.eql('mail@yandex.ru');\r",
-									"});\r",
-									"pm.test(\"Test user 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('name');\r",
-									"    pm.expect(jsonData.name, '\"name\" must be \"est adipisicing\"').to.eql('est adipisicing');\r",
-									"});\r",
-									"pm.test(\"Test user 'login' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('login');\r",
-									"    pm.expect(jsonData.login, '\"login\" field must be \"doloreUpdate\"').to.eql('doloreUpdate');    \r",
-									"});\r",
-									"pm.test(\"Test user 'birthday' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('birthday');\r",
-									"    pm.expect(jsonData.birthday, '\"birthday\" field must be \"1976-09-20\"').to.eql('1976-09-20');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "(Required) "
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "User get unknown with id=9999",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 404\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "9999",
-									"description": "(Required) "
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Friend get user id=2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.be.ok;\r",
-									"});\r",
-									"pm.test(\"Has user get response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"pm.test(\"Test user 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('id');\r",
-									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(2);\r",
-									"});\r",
-									"pm.test(\"Test user 'email' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('email');\r",
-									"    pm.expect(jsonData.email, '\"email\" must be \"friend@mail.ru\"').to.eql('friend@mail.ru');\r",
-									"});\r",
-									"pm.test(\"Test user 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('name');\r",
-									"    pm.expect(jsonData.name, '\"name\" must be \"friend adipisicing\"').to.eql('friend adipisicing');\r",
-									"});\r",
-									"pm.test(\"Test user 'login' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('login');\r",
-									"    pm.expect(jsonData.login, '\"login\" field must be \"friend\"').to.eql('friend');    \r",
-									"});\r",
-									"pm.test(\"Test user 'birthday' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('birthday');\r",
-									"    pm.expect(jsonData.birthday, '\"birthday\" field must be \"1976-08-20\"').to.eql('1976-08-20');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "2",
-									"description": "(Required) "
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "friend",
-			"item": [
-				{
-					"name": "User get friends common empty",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.be.ok;\r",
-									"});\r",
-									"pm.test(\"Test list user response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be empty').to.eql(0);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id/friends/common/:otherId",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id",
-								"friends",
-								"common",
-								":otherId"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "(Required) "
-								},
-								{
-									"key": "otherId",
-									"value": "2"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "User id=1 add friend id=2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
+									"const user1_id = pm.collectionVariables.get(\"id\");\r",
+									"const user2_id = pm.collectionVariables.get(\"friend_id\");\r",
+									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
 									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id",
-								"friends",
-								":friendId"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "(Required) "
-								},
-								{
-									"key": "friendId",
-									"value": "2",
-									"description": "(Required) "
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "User id=1 add friend unknown id=-1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 404\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									"pm.test(\"Has error response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id",
-								"friends",
-								":friendId"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "(Required) "
-								},
-								{
-									"key": "friendId",
-									"value": "-1",
-									"description": "(Required) "
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "User id=1 get friends",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.be.ok;\r",
-									"});\r",
-									"pm.test(\"Test list friend response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('id');\r",
-									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(2);\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'email' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('email');\r",
-									"    pm.expect(jsonData[0].email, '\"email\" must be \"friend@mail.ru\"').to.eql('friend@mail.ru');\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('name');\r",
-									"    pm.expect(jsonData[0].name, '\"name\" must be \"friend adipisicing\"').to.eql('friend adipisicing');\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'login' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('login');\r",
-									"    pm.expect(jsonData[0].login, '\"login\" field must be \"friend\"').to.eql('friend');    \r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'birthday' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
-									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"1976-08-20\"').to.eql('1976-08-20');\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/users/\" + user1_id + '/friends',\r",
+									"    method : \"GET\",\r",
+									"    header: { \"Content-Type\": \"application/json\" }\r",
+									"}, (error, response) => {\r",
+									"    pm.test(\"user1 should have 0 friends\", function () {\r",
+									"        pm.expect(response.json().length).to.be.equal(0);\r",
+									"    });\r",
 									"});\r",
 									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id/friends",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id",
-								"friends"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "(Required) "
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "User id=2 get friends",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.be.ok;\r",
-									"});\r",
-									"pm.test(\"Test list friend response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('id');\r",
-									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(1);\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'email' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('email');\r",
-									"    pm.expect(jsonData[0].email, '\"email\" must be \"mail@yandex.ru\"').to.eql('mail@yandex.ru');\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('name');\r",
-									"    pm.expect(jsonData[0].name, '\"name\" must be \"est adipisicing\"').to.eql('est adipisicing');\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'login' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('login');\r",
-									"    pm.expect(jsonData[0].login, '\"login\" field must be \"doloreUpdate\"').to.eql('doloreUpdate');    \r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'birthday' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
-									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"1976-09-20\"').to.eql('1976-09-20');\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id/friends",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id",
-								"friends"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "2",
-									"description": "(Required) "
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Empty Common friends to user id=1 with user id=2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.be.ok;\r",
-									"});\r",
-									"pm.test(\"Test list common user response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be empty').to.eql(0);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id/friends/common/:otherId",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id",
-								"friends",
-								"common",
-								":otherId"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "(Required) "
-								},
-								{
-									"key": "otherId",
-									"value": "2"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "User id=1 add  friend id=3",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id",
-								"friends",
-								":friendId"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "(Required) "
-								},
-								{
-									"key": "friendId",
-									"value": "3",
-									"description": "(Required) "
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "User id=1 get 2 friends",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.be.ok;\r",
-									"});\r",
-									"pm.test(\"Test list friend response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 2').to.eql(2);\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('id');\r",
-									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(2);\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'email' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('email');\r",
-									"    pm.expect(jsonData[0].email, '\"email\" must be \"friend@mail.ru\"').to.eql('friend@mail.ru');\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('name');\r",
-									"    pm.expect(jsonData[0].name, '\"name\" must be \"friend adipisicing\"').to.eql('friend adipisicing');\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'login' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('login');\r",
-									"    pm.expect(jsonData[0].login, '\"login\" field must be \"friend\"').to.eql('friend');    \r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'birthday' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
-									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"1976-08-20\"').to.eql('1976-08-20');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Test friend[1] 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[1]).to.have.property('id');\r",
-									"    pm.expect(jsonData[1].id, '\"id\" must be 3').to.eql(3);\r",
-									"});\r",
-									"pm.test(\"Test friend[1] 'email' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[1]).to.have.property('email');\r",
-									"    pm.expect(jsonData[1].email, '\"email\" must be \"friend@common.ru\"').to.eql('friend@common.ru');\r",
-									"});\r",
-									"pm.test(\"Test friend[1] 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[1]).to.have.property('name');\r",
-									"    pm.expect(jsonData[1].name, '\"name\" must be \"common\"').to.eql('common');\r",
-									"});\r",
-									"pm.test(\"Test friend[1] 'login' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[1]).to.have.property('login');\r",
-									"    pm.expect(jsonData[1].login, '\"login\" field must be \"common\"').to.eql('common');    \r",
-									"});\r",
-									"pm.test(\"Test friend[1] 'birthday' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[1]).to.have.property('birthday');\r",
-									"    pm.expect(jsonData[1].birthday, '\"birthday\" field must be \"2000-08-20\"').to.eql('2000-08-20');\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/users/\" + user2_id + '/friends',\r",
+									"    method : \"GET\",\r",
+									"    header: { \"Content-Type\": \"application/json\" }\r",
+									"}, (error, response) => {\r",
+									"    pm.test(\"user2 should have 0 friends\", function () {\r",
+									"        pm.expect(response.json().length).to.be.equal(0);\r",
+									"    });\r",
 									"});\r",
 									""
 								],
 								"type": "text/javascript"
 							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id/friends",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id",
-								"friends"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "(Required) "
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "User id=2 add  friend id=3",
-					"event": [
+						},
 						{
-							"listen": "test",
+							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id/friends/:friendId",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id",
-								"friends",
-								":friendId"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "2",
-									"description": "(Required) "
-								},
-								{
-									"key": "friendId",
-									"value": "3",
-									"description": "(Required) "
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "User id=2 get 2 friends",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.be.ok;\r",
-									"});\r",
-									"pm.test(\"Test list friend response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 2').to.eql(2);\r",
-									"});\r",
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
 									"\r",
-									"pm.test(\"Test friend[0] 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('id');\r",
-									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(1);\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'email' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('email');\r",
-									"    pm.expect(jsonData[0].email, '\"email\" must be \"mail@yandex.ru\"').to.eql('mail@yandex.ru');\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('name');\r",
-									"    pm.expect(jsonData[0].name, '\"name\" must be \"est adipisicing\"').to.eql('est adipisicing');\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'login' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('login');\r",
-									"    pm.expect(jsonData[0].login, '\"login\" field must be \"doloreUpdate\"').to.eql('doloreUpdate');    \r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'birthday' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
-									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"1976-09-20\"').to.eql('1976-09-20');\r",
-									"});\r",
+									"    let user1, user2;\r",
+									"    try {\r",
+									"        user1 = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        pm.collectionVariables.set(\"id\", user1.id);\r",
+									"        pm.collectionVariables.set(\"friend_id\", user2.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
 									"\r",
-									"pm.test(\"Test friend[1] 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[1]).to.have.property('id');\r",
-									"    pm.expect(jsonData[1].id, '\"id\" must be 3').to.eql(3);\r",
-									"});\r",
-									"pm.test(\"Test friend[1] 'email' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[1]).to.have.property('email');\r",
-									"    pm.expect(jsonData[1].email, '\"email\" must be \"friend@common.ru\"').to.eql('friend@common.ru');\r",
-									"});\r",
-									"pm.test(\"Test friend[1] 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[1]).to.have.property('name');\r",
-									"    pm.expect(jsonData[1].name, '\"name\" must be \"common\"').to.eql('common');\r",
-									"});\r",
-									"pm.test(\"Test friend[1] 'login' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[1]).to.have.property('login');\r",
-									"    pm.expect(jsonData[1].login, '\"login\" field must be \"common\"').to.eql('common');    \r",
-									"});\r",
-									"pm.test(\"Test friend[1] 'birthday' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[1]).to.have.property('birthday');\r",
-									"    pm.expect(jsonData[1].birthday, '\"birthday\" field must be \"2000-08-20\"').to.eql('2000-08-20');\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id/friends",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id",
-								"friends"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "2",
-									"description": "(Required) "
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Common friend to user id=1 with user id=2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.be.ok;\r",
-									"});\r",
-									"pm.test(\"Test list common friend response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
-									"});\r",
+									"};\r",
 									"\r",
-									"pm.test(\"Test friend[0] 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('id');\r",
-									"    pm.expect(jsonData[0].id, '\"id\" must be 3').to.eql(3);\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'email' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('email');\r",
-									"    pm.expect(jsonData[0].email, '\"email\" must be \"friend@common.ru\"').to.eql('friend@common.ru');\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('name');\r",
-									"    pm.expect(jsonData[0].name, '\"name\" must be \"common\"').to.eql('common');\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'login' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('login');\r",
-									"    pm.expect(jsonData[0].login, '\"login\" field must be \"common\"').to.eql('common');    \r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'birthday' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
-									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"2000-08-20\"').to.eql('2000-08-20');\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id/friends/common/:otherId",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id",
-								"friends",
-								"common",
-								":otherId"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "(Required) "
-								},
-								{
-									"key": "otherId",
-									"value": "2"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "User id=1 remove friend id=2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
-									"});"
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
 								],
 								"type": "text/javascript"
 							}
@@ -1570,198 +859,139 @@
 						"method": "DELETE",
 						"header": [
 							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
 								"key": "Accept",
 								"value": "*/*"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{baseUrl}}/users/:id/friends/:friendId",
+							"raw": "{{baseUrl}}/users/{{id}}/friends/{{friend_id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								":id",
+								"{{id}}",
 								"friends",
-								":friendId"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "(Required) "
-								},
-								{
-									"key": "friendId",
-									"value": "2",
-									"description": "(Required) "
-								}
+								"{{friend_id}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "User id=1 get common with user id=2",
+					"name": "Get common friends",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
+									"const user3_id = pm.collectionVariables.get(\"user3_id\");\r",
+									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.be.ok;\r",
-									"});\r",
-									"pm.test(\"Test list common friend response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Test friend[0] 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('id');\r",
-									"    pm.expect(jsonData[0].id, '\"id\" must be 3').to.eql(3);\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'email' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('email');\r",
-									"    pm.expect(jsonData[0].email, '\"email\" must be \"friend@common.ru\"').to.eql('friend@common.ru');\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('name');\r",
-									"    pm.expect(jsonData[0].name, '\"name\" must be \"common\"').to.eql('common');\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'login' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('login');\r",
-									"    pm.expect(jsonData[0].login, '\"login\" field must be \"common\"').to.eql('common');    \r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'birthday' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
-									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"2000-08-20\"').to.eql('2000-08-20');\r",
+									"pm.test(\"user1 should have 1 common friend with user2\", function () {\r",
+									"    pm.expect(pm.response.json().length).to.be.equal(1);\r",
+									"    pm.expect(pm.response.json()[0].id).to.be.equal(user3_id);\r",
 									"});\r",
 									""
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user1, user2, user3;\r",
+									"    try {\r",
+									"        user1 = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        user3 = await api.addUser(rnd.getUser());\r",
+									"        await api.addFriend(user1.id, user3.id);\r",
+									"        await api.addFriend(user1.id, user2.id);\r",
+									"        await api.addFriend(user2.id, user3.id);\r",
+									"        pm.collectionVariables.set(\"id\", user1.id);\r",
+									"        pm.collectionVariables.set(\"friend_id\", user2.id);\r",
+									"        pm.collectionVariables.set(\"user3_id\", user3.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/users/:id/friends/common/:otherId",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"users",
-								":id",
-								"friends",
-								"common",
-								":otherId"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "(Required) "
-								},
-								{
-									"key": "otherId",
-									"value": "2"
-								}
-							]
-						}
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
 					},
-					"response": []
-				},
-				{
-					"name": "User id=2 get common with user id=1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.be.ok;\r",
-									"});\r",
-									"pm.test(\"Test list common friend response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Test friend[0] 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('id');\r",
-									"    pm.expect(jsonData[0].id, '\"id\" must be 3').to.eql(3);\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'email' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('email');\r",
-									"    pm.expect(jsonData[0].email, '\"email\" must be \"friend@common.ru\"').to.eql('friend@common.ru');\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('name');\r",
-									"    pm.expect(jsonData[0].name, '\"name\" must be \"common\"').to.eql('common');\r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'login' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('login');\r",
-									"    pm.expect(jsonData[0].login, '\"login\" field must be \"common\"').to.eql('common');    \r",
-									"});\r",
-									"pm.test(\"Test friend[0] 'birthday' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('birthday');\r",
-									"    pm.expect(jsonData[0].birthday, '\"birthday\" field must be \"2000-08-20\"').to.eql('2000-08-20');\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
 					"request": {
 						"method": "GET",
 						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
 							{
 								"key": "Accept",
 								"value": "*/*"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{baseUrl}}/users/:id/friends/common/:otherId",
+							"raw": "{{baseUrl}}/users/{{id}}/friends/common/{{friend_id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								":id",
+								"{{id}}",
 								"friends",
 								"common",
-								":otherId"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "2",
-									"description": "(Required) "
-								},
-								{
-									"key": "otherId",
-									"value": "1"
-								}
+								"{{friend_id}}"
 							]
 						}
 					},
@@ -1773,53 +1003,14 @@
 			"name": "films",
 			"item": [
 				{
-					"name": "Film get All",
+					"name": "Film create",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.be.ok;\r",
-									"});\r",
-									"pm.test(\"Test list film response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 0').to.eql(0);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/films",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"films"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Film id=1 create",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
+									"const source = JSON.parse(pm.request.body.raw)\r",
+									"\r",
 									"pm.test(\"Status code is 200 or 201\", function () {\r",
 									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
 									"});\r",
@@ -1830,30 +1021,69 @@
 									"pm.test(\"Test film 'id' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('id');\r",
-									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(1);\r",
 									"});\r",
 									"pm.test(\"Test film 'name' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('name');\r",
-									"    pm.expect(jsonData.name, '\"name\" must be \"nisi eiusmod\"').to.eql('nisi eiusmod');\r",
+									"    pm.expect(jsonData.name, `\"name\" must be \"${source.name}\"`).to.eql(source.name);\r",
 									"});\r",
 									"pm.test(\"Test film 'description' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('description');\r",
-									"    pm.expect(jsonData.description, '\"description\" must be \"adipisicing\"').to.eql('adipisicing');\r",
+									"    pm.expect(jsonData.description, `\"description\" must be \"${source.description}\"`).to.eql(source.description);\r",
 									"});\r",
 									"pm.test(\"Test film 'releaseDate' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('releaseDate');\r",
-									"    pm.expect(jsonData.releaseDate, '\"releaseDate\" field must be \"1967-03-25\"').to.eql('1967-03-25');\r",
+									"    pm.expect(jsonData.releaseDate, `\"releaseDate\" field must be \"${source.releaseDate}\"`).to.eql(source.releaseDate);\r",
 									"});\r",
 									"pm.test(\"Test film 'duration' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('duration');\r",
-									"    pm.expect(jsonData.duration, '\"duration\" field must be 100').to.eql(100);    \r",
+									"    pm.expect(jsonData.duration, `\"duration\" field must be %{source.duration}`).to.eql(source.duration);    \r",
 									"});\r",
 									"\r",
 									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let film;\r",
+									"    try {\r",
+									"        film = rnd.getFilm();\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(film),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
 								],
 								"type": "text/javascript"
 							}
@@ -2111,6 +1341,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"const source = pm.collectionVariables.get(\"film\")\r",
+									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.be.ok;\r",
 									"});\r",
@@ -2122,7 +1354,7 @@
 									"pm.test(\"Test film 'id' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData).to.have.property('id');\r",
-									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(1);\r",
+									"    pm.expect(jsonData.id, `\"id\" must be ${source.id}`).to.eql(source.id);\r",
 									"});\r",
 									"pm.test(\"Test film 'name' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
@@ -2149,6 +1381,55 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user;\r",
+									"    try {\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        pm.collectionVariables.set(\"film\", film);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"id\": film.id,\r",
+									"            \"name\": \"Film Updated\",\r",
+									"            \"releaseDate\": \"1989-04-17\",\r",
+									"            \"description\": \"New film update decription\",\r",
+									"            \"duration\": 190,\r",
+									"            \"rate\": 4\r",
+									"            }),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
@@ -2165,7 +1446,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": 1,\n  \"name\": \"Film Updated\",\n  \"releaseDate\": \"1989-04-17\",\n  \"description\": \"New film update decription\",\n  \"duration\": 190,\n  \"rate\": 4\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2202,6 +1483,55 @@
 								],
 								"type": "text/javascript"
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user;\r",
+									"    try {\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        pm.collectionVariables.set(\"film\", film);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"id\": film.id+1,\r",
+									"            \"name\": \"Film Updated\",\r",
+									"            \"releaseDate\": \"1989-04-17\",\r",
+									"            \"description\": \"New film update decription\",\r",
+									"            \"duration\": 190,\r",
+									"            \"rate\": 4\r",
+									"            }),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
 						}
 					],
 					"request": {
@@ -2218,7 +1548,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": 9999,\n  \"name\": \"Film Updated\",\n  \"releaseDate\": \"1989-04-17\",\n  \"description\": \"New film update decription\",\n  \"duration\": 190,\n  \"rate\": 4\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2250,33 +1580,11 @@
 									"pm.test(\"Test list film response\", function () {\r",
 									"    pm.response.to.be.withBody;\r",
 									"    pm.response.to.be.json;\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
 									"});\r",
 									"pm.test(\"Test film[0] 'id' field\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(jsonData[0]).to.have.property('id');\r",
 									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(1);\r",
-									"});\r",
-									"pm.test(\"Test film[0] 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('name');\r",
-									"    pm.expect(jsonData[0].name, '\"name\" must be \"Film Updated\"').to.eql('Film Updated');\r",
-									"});\r",
-									"pm.test(\"Test film[0] 'description' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('description');\r",
-									"    pm.expect(jsonData[0].description, '\"description\" must be \"New film update decription\"').to.eql('New film update decription');\r",
-									"});\r",
-									"pm.test(\"Test film[0] 'releaseDate' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('releaseDate');\r",
-									"    pm.expect(jsonData[0].releaseDate, '\"releaseDate\" field must be \"1989-04-17\"').to.eql('1989-04-17');\r",
-									"});\r",
-									"pm.test(\"Test film[0] 'duration' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('duration');\r",
-									"    pm.expect(jsonData[0].duration, '\"duration\" field must be 190').to.eql(190);    \r",
 									"});\r",
 									""
 								],
@@ -2311,191 +1619,78 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"const film1_id = pm.collectionVariables.get(\"film1_id\");\r",
+									"const film2_id = pm.collectionVariables.get(\"film2_id\");\r",
+									"const film3_id = pm.collectionVariables.get(\"film3_id\");\r",
+									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.be.ok;\r",
 									"});\r",
 									"pm.test(\"Test list popular film response\", function () {\r",
 									"    pm.response.to.be.withBody;\r",
 									"    pm.response.to.be.json;\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
 									"});\r",
-									"pm.test(\"Test film[0] 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('id');\r",
-									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(1);\r",
-									"});\r",
-									"pm.test(\"Test film[0] 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('name');\r",
-									"    pm.expect(jsonData[0].name, '\"name\" must be \"Film Updated\"').to.eql('Film Updated');\r",
-									"});\r",
-									"pm.test(\"Test film[0] 'description' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('description');\r",
-									"    pm.expect(jsonData[0].description, '\"description\" must be \"New film update decription\"').to.eql('New film update decription');\r",
-									"});\r",
-									"pm.test(\"Test film[0] 'releaseDate' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('releaseDate');\r",
-									"    pm.expect(jsonData[0].releaseDate, '\"releaseDate\" field must be \"1989-04-17\"').to.eql('1989-04-17');\r",
-									"});\r",
-									"pm.test(\"Test film[0] 'duration' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('duration');\r",
-									"    pm.expect(jsonData[0].duration, '\"duration\" field must be 190').to.eql(190);    \r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/films/popular",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"films",
-								"popular"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "film",
-			"item": [
-				{
-					"name": "Film id=2 create",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200 or 201\", function () {\r",
-									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
-									"});\r",
-									"pm.test(\"Has film create response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"pm.test(\"Test film 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('id');\r",
-									"    pm.expect(jsonData.id, '\"id\" must be 2').to.eql(2);\r",
-									"});\r",
-									"pm.test(\"Test film 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('name');\r",
-									"    pm.expect(jsonData.name, '\"name\" must be \"New film\"').to.eql('New film');\r",
-									"});\r",
-									"pm.test(\"Test film 'description' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('description');\r",
-									"    pm.expect(jsonData.description, '\"description\" must be \"New film about friends\"').to.eql('New film about friends');\r",
-									"});\r",
-									"pm.test(\"Test film 'releaseDate' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('releaseDate');\r",
-									"    pm.expect(jsonData.releaseDate, '\"releaseDate\" field must be \"1999-04-30\"').to.eql('1999-04-30');\r",
-									"});\r",
-									"pm.test(\"Test film 'duration' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('duration');\r",
-									"    pm.expect(jsonData.duration, '\"duration\" field must be 100').to.eql(120);    \r",
+									"\r",
+									"const index1 = pm.response.json().findIndex(x => x.id == film1_id);\r",
+									"const index2 = pm.response.json().findIndex(x => x.id == film2_id);\r",
+									"const index3 = pm.response.json().findIndex(x => x.id == film3_id);\r",
+									"\r",
+									"pm.test(\"Test films сonsistency\", function () {\r",
+									"    pm.expect(index1).to.be.above(index2);\r",
+									"    pm.expect(index1).to.be.above(index3);\r",
+									"    pm.expect(index3).to.be.above(index2);\r",
 									"});\r",
 									"\r",
 									""
 								],
 								"type": "text/javascript"
 							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"New film\",\n  \"releaseDate\": \"1999-04-30\",\n  \"description\": \"New film about friends\",\n  \"duration\": 120,\n  \"rate\": 4\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
 						},
-						"url": {
-							"raw": "{{baseUrl}}/films",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"films"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Film id=1 get",
-					"event": [
 						{
-							"listen": "test",
+							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.be.ok;\r",
-									"});\r",
-									"pm.test(\"Get film response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"pm.test(\"Test film 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('id');\r",
-									"    pm.expect(jsonData.id, '\"id\" must be 1').to.eql(1);\r",
-									"});\r",
-									"pm.test(\"Test film 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('name');\r",
-									"    pm.expect(jsonData.name, '\"name\" must be \"Film Updated\"').to.eql('Film Updated');\r",
-									"});\r",
-									"pm.test(\"Test film 'description' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('description');\r",
-									"    pm.expect(jsonData.description, '\"description\" must be \"New film update decription\"').to.eql('New film update decription');\r",
-									"});\r",
-									"pm.test(\"Test film 'releaseDate' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('releaseDate');\r",
-									"    pm.expect(jsonData.releaseDate, '\"releaseDate\" field must be \"1989-04-17\"').to.eql('1989-04-17');\r",
-									"});\r",
-									"pm.test(\"Test film 'duration' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData).to.have.property('duration');\r",
-									"    pm.expect(jsonData.duration, '\"duration\" field must be 190').to.eql(190);    \r",
-									"});\r",
-									""
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user1, user2, user3, film1, film2, film3;\r",
+									"    try {\r",
+									"        user1 = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        user3 = await api.addUser(rnd.getUser());\r",
+									"        film1 = await api.addFilm(rnd.getFilm());\r",
+									"        film2 = await api.addFilm(rnd.getFilm());\r",
+									"        film3 = await api.addFilm(rnd.getFilm());\r",
+									"        await api.addLike(film2.id, user1.id);\r",
+									"        await api.addLike(film2.id, user2.id);\r",
+									"        await api.addLike(film2.id, user3.id);\r",
+									"        await api.addLike(film3.id, user1.id);\r",
+									"        await api.addLike(film3.id, user2.id);\r",
+									"        await api.addLike(film1.id, user1.id);\r",
+									"        pm.collectionVariables.set(\"film1_id\", film1.id);\r",
+									"        pm.collectionVariables.set(\"film2_id\", film2.id);\r",
+									"        pm.collectionVariables.set(\"film3_id\", film3.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
 								],
 								"type": "text/javascript"
 							}
@@ -2510,62 +1705,18 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/films/:id",
+							"raw": "{{baseUrl}}/films/popular?count=1000",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"films",
-								":id"
+								"popular"
 							],
-							"variable": [
+							"query": [
 								{
-									"key": "id",
-									"value": "1",
-									"description": "(Required) "
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Film id=9999 get not found",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 404\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/films/:id",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"films",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "9999",
-									"description": "(Required) "
+									"key": "count",
+									"value": "1000"
 								}
 							]
 						}
@@ -2578,7 +1729,7 @@
 			"name": "like",
 			"item": [
 				{
-					"name": "Film id=2 add Like from user id=1",
+					"name": "Add like",
 					"event": [
 						{
 							"listen": "test",
@@ -2586,7 +1737,54 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
-									"});"
+									"});\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/films/\" + 45,\r",
+									"    method : \"GET\",\r",
+									"    header: { \"Content-Type\": \"application/json\" }\r",
+									"}, (error, response) => {\r",
+									"    console.log(response.json())\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user, film;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        pm.collectionVariables.set(\"id\", user.id);\r",
+									"        pm.collectionVariables.set(\"film_id\", film.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
 								],
 								"type": "text/javascript"
 							}
@@ -2596,113 +1794,40 @@
 						"method": "PUT",
 						"header": [
 							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/films/:id/like/:userId",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"films",
-								":id",
-								"like",
-								":userId"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "2",
-									"description": "(Required) "
-								},
-								{
-									"key": "userId",
-									"value": "1",
-									"description": "(Required) "
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Film most popular film",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.be.ok;\r",
-									"});\r",
-									"pm.test(\"Test list popular film response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
-									"});\r",
-									"pm.test(\"Test film[0] 'id' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('id');\r",
-									"    pm.expect(jsonData[0].id, '\"id\" must be 2').to.eql(2);\r",
-									"});\r",
-									"pm.test(\"Test film[0] 'name' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('name');\r",
-									"    pm.expect(jsonData[0].name, '\"name\" must be \"New film\"').to.eql('New film');\r",
-									"});\r",
-									"pm.test(\"Test film[0] 'description' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('description');\r",
-									"    pm.expect(jsonData[0].description, '\"description\" must be \"New film about friends\"').to.eql('New film about friends');\r",
-									"});\r",
-									"pm.test(\"Test film[0] 'releaseDate' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('releaseDate');\r",
-									"    pm.expect(jsonData[0].releaseDate, '\"releaseDate\" field must be \"1999-04-30\"').to.eql('1999-04-30');\r",
-									"});\r",
-									"pm.test(\"Test film[0] 'duration' field\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData[0]).to.have.property('duration');\r",
-									"    pm.expect(jsonData[0].duration, '\"duration\" field must be 100').to.eql(120);    \r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
+								"key": "Content-Type",
+								"value": "application/json"
+							},
 							{
 								"key": "Accept",
 								"value": "*/*"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{baseUrl}}/films/popular?count=1",
+							"raw": "{{baseUrl}}/films/{{film_id}}/like/{{id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"films",
-								"popular"
-							],
-							"query": [
-								{
-									"key": "count",
-									"value": "1"
-								}
+								"{{film_id}}",
+								"like",
+								"{{id}}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Film id=2 add Like from user id=1",
+					"name": "Remove like",
 					"event": [
 						{
 							"listen": "test",
@@ -2710,100 +1835,47 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/films/:id/like/:userId",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"films",
-								":id",
-								"like",
-								":userId"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "2",
-									"description": "(Required) "
-								},
-								{
-									"key": "userId",
-									"value": "1",
-									"description": "(Required) "
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Film get all popular film",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.be.ok;\r",
-									"});\r",
-									"pm.test(\"Test list popular film response\", function () {\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 2').to.eql(2);\r",
 									"});\r",
 									""
 								],
 								"type": "text/javascript"
 							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "*/*"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/films/popular",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"films",
-								"popular"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Film id=2 remove Like from user id=-2  not found",
-					"event": [
+						},
 						{
-							"listen": "test",
+							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 404\", function () {\r",
-									"    pm.response.to.have.status(404);\r",
-									"});"
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user, film;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        await api.addLike(film.id, user.id);\r",
+									"        pm.collectionVariables.set(\"id\", user.id);\r",
+									"        pm.collectionVariables.set(\"film_id\", film.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
 								],
 								"type": "text/javascript"
 							}
@@ -2813,32 +1885,33 @@
 						"method": "DELETE",
 						"header": [
 							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
 								"key": "Accept",
 								"value": "*/*"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{baseUrl}}/films/:id/like/:userId",
+							"raw": "{{baseUrl}}/films/{{film_id}}/like/{{id}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"films",
-								":id",
+								"{{film_id}}",
 								"like",
-								":userId"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "1",
-									"description": "(Required) "
-								},
-								{
-									"key": "userId",
-									"value": "-2",
-									"description": "(Required) "
-								}
+								"{{id}}"
 							]
 						}
 					},
@@ -2847,11 +1920,196 @@
 			]
 		}
 	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"API = class {",
+					"    constructor(postman, verbose = false, baseUrl = \"http://localhost:8080\") {",
+					"        this.baseUrl = baseUrl;",
+					"        this.pm = postman;",
+					"        this._verbose = verbose;",
+					"    }",
+					"",
+					"    async addUser(user, verbose=null) {",
+					"        return this.post(\"/users\", user, \"Ошибка при добавлении нового пользователя: \", verbose);",
+					"    }",
+					"",
+					"    async addFilm(film, verbose=null) {",
+					"        return this.post(\"/films\", film, \"Ошибка при добавлении нового фильма: \", verbose);",
+					"    }",
+					"",
+					"    async addFriend(userId, friendId, verbose=null) {",
+					"        return this.put(\"/users/\" + userId + '/friends/' + friendId, null, \"Ошибка при добавлении нового фильма: \", verbose);",
+					"    }",
+					"",
+					"    async addLike(filmId, userId, verbose=null) {",
+					"        return this.put(\"/films/\" + filmId + '/like/' + userId, null, \"Ошибка при добавлении лайка на фильм: \", verbose);",
+					"    }",
+					"",
+					"    async getFriends(userId, verbose=null) {",
+					"        return this.get('/users/' + userId + '/friends', null, \"Ошибка при поиске друзей по id пользователя\", verbose);",
+					"    }",
+					"",
+					"    async post(path, body, errorText = \"Ошибка при выполнении post-запроса: \", verbose=null) {",
+					"        return this.sendRequest(\"POST\", path, body, errorText, verbose);",
+					"    }",
+					"",
+					"    async patch(path, body = null, errorText = \"Ошибка при выполнении patch-запроса: \", verbose=null) {",
+					"        return this.sendRequest(\"PATCH\", path, body, errorText, verbose);",
+					"    }",
+					"",
+					"    async get(path, body = null, errorText = \"Ошибка при выполнении get-запроса: \", verbose=null) {",
+					"        return this.sendRequest(\"GET\", path, body, errorText, verbose);",
+					"    }",
+					"",
+					"    async put(path, body = null, errorText = \"Ошибка при выполнении put-запроса: \", verbose=null) {",
+					"        return this.sendRequest(\"PUT\", path, body, errorText, verbose);",
+					"    }",
+					"",
+					"    async sendRequest(method, path, body=null, errorText = \"Ошибка при выполнении запроса: \", verbose=null) {",
+					"        return new Promise((resolve, reject) => {",
+					"            verbose = verbose == null ? this._verbose : verbose;",
+					"            const request = {",
+					"                url: this.baseUrl + path,",
+					"                method: method,",
+					"                body: body == null ? \"\" : JSON.stringify(body),",
+					"                header: { \"Content-Type\": \"application/json\" },",
+					"            };",
+					"            if(verbose) {",
+					"                console.log(\"Отправляю запрос: \", request);",
+					"            }",
+					"",
+					"            try {",
+					"                this.pm.sendRequest(request, (error, response) => {",
+					"                    if(error || (response.code >= 400 && response.code <= 599)) {",
+					"                        let err = error ? error : JSON.stringify(response.json());",
+					"                        console.error(\"При выполнении запроса к серверу возникла ошика.\\n\", err,",
+					"                             \"\\nДля отладки проблемы повторите такой же запрос к вашей программе \" + ",
+					"                             \"на локальном компьютере. Данные запроса:\\n\", JSON.stringify(request));",
+					"",
+					"                        reject(new Error(errorText + err));",
+					"                    }",
+					"                    if(verbose) {",
+					"                        console.log(\"Результат обработки запроса: код состояния - \", response.code, \", тело: \", response.json());",
+					"                    }",
+					"                    if (response.stream.length === 0){",
+					"                        resolve(null);",
+					"                    }else{",
+					"                        resolve(response.json());",
+					"                    }",
+					"                });",
+					"                ",
+					"            } catch(err) {",
+					"                if(verbose) {",
+					"                    console.error(errorText, err);",
+					"                }",
+					"                return Promise.reject(err);",
+					"            }",
+					"        });",
+					"    }",
+					"};",
+					"",
+					"RandomUtils = class {",
+					"    constructor() {}",
+					"",
+					"    getUser() {",
+					"        let date = new Date(new Date(1960, 0, 1).getTime() + Math.random() * (new Date(2010, 0, 1).getTime() - new Date(1960, 0, 1).getTime()));",
+					"        return {",
+					"            name: pm.variables.replaceIn('{{$randomFullName}}'),",
+					"            login: this.getWord(10),",
+					"            email: pm.variables.replaceIn('{{$randomEmail}}'),",
+					"            birthday: date.toISOString().slice(0,10)",
+					"        };",
+					"    }",
+					"",
+					"    getFilm() {",
+					"        let date = new Date(new Date(1960, 0, 1).getTime() + Math.random() * (new Date(2010, 0, 1).getTime() - new Date(1960, 0, 1).getTime()));",
+					"        return {",
+					"            name: this.getWord(15),",
+					"            description: this.getWord(50),",
+					"            releaseDate: date.toISOString().slice(0,10),",
+					"            duration: Math.floor(Math.random() * (180 - 60 + 1) + 60)",
+					"        };",
+					"    }",
+					"",
+					"    getWord(length = 1) {",
+					"        let result = '';",
+					"        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';",
+					"        const charactersLength = characters.length;",
+					"        let counter = 0;",
+					"        while (counter < length) {",
+					"            result += characters.charAt(Math.floor(Math.random() * charactersLength));",
+					"            counter += 1;",
+					"        }",
+					"        return result;",
+					"    }",
+					"",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
 	"variable": [
 		{
 			"key": "baseUrl",
 			"value": "http://localhost:8080",
 			"type": "string"
+		},
+		{
+			"key": "id",
+			"value": "0"
+		},
+		{
+			"key": "friend_id",
+			"value": "0"
+		},
+		{
+			"key": "user_friends",
+			"value": ""
+		},
+		{
+			"key": "is",
+			"value": ""
+		},
+		{
+			"key": "user3_id",
+			"value": ""
+		},
+		{
+			"key": "film1_id",
+			"value": ""
+		},
+		{
+			"key": "film2_id",
+			"value": ""
+		},
+		{
+			"key": "film3_id",
+			"value": ""
+		},
+		{
+			"key": "film_id",
+			"value": ""
+		},
+		{
+			"key": "user",
+			"value": ""
+		},
+		{
+			"key": "film",
+			"value": ""
 		}
 	]
 }
