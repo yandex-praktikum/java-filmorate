@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "c48e59d5-4de8-4757-a8c4-c13e763036df",
-		"name": "sprint11/add-friends-likes",
+		"name": "add-friends-likes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23073145",
 		"_collection_link": "https://universal-shadow-295426.postman.co/workspace/My-Workspace~4200f6aa-0504-44b1-8a1d-707d0dcbd5ce/collection/23073145-c48e59d5-4de8-4757-a8c4-c13e763036df?action=share&source=collection_link&creator=23073145"
@@ -591,8 +591,8 @@
 									"    method : \"GET\",\r",
 									"    header: { \"Content-Type\": \"application/json\" }\r",
 									"}, (error, response) => {\r",
-									"    pm.test(\"user2 doesn't have user1 friend\", function () {\r",
-									"        pm.expect(response.json().length).to.be.equal(0);\r",
+									"    pm.test(\"user2 has have user1 friend\", function () {\r",
+									"        pm.expect(response.json()[0].id).to.be.equal(user1_id)\r",
 									"    });\r",
 									"});\r",
 									""
