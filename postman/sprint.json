@@ -827,6 +827,7 @@
 									"    try {\r",
 									"        user1 = await api.addUser(rnd.getUser());\r",
 									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        await api.addFriend(user1.id, user2.id);\r",
 									"        pm.collectionVariables.set(\"id\", user1.id);\r",
 									"        pm.collectionVariables.set(\"friend_id\", user2.id);\r",
 									"    } catch(err) {\r",
