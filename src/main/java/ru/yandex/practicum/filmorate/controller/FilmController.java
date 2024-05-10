@@ -1,8 +1,11 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -10,7 +13,9 @@ import ru.yandex.practicum.filmorate.service.film.FilmService;
 
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -26,33 +31,58 @@ public class FilmController {
 
 
     @PostMapping
-    public ResponseEntity<Film> addFilm(@RequestBody Film film) {
+    public ResponseEntity<Object> addFilm(@Valid @RequestBody Film film, BindingResult bindingResult) {
         log.info("Attempting to add a new film with title: {}", film.getName());
-        validateReleaseDate(film.getReleaseDate());
+
+        if (bindingResult.hasErrors()) {
+            log.warn("Validation addFilm errors occurred: {}", bindingResult.getAllErrors());
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Validation error: " + bindingResult.getAllErrors()));
+        }
+
+        try {
+            validateReleaseDate(film.getReleaseDate());
+        } catch (ValidationException e) {
+            log.error("Error creating film: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("error",
+                    "Error creating film due to invalid input: " + e.getMessage()));
+        }
         Film savedFilm = filmService.addFilm(film);
         log.info("Film added successfully with ID: {}", savedFilm.getId());
-        return ResponseEntity.ok(savedFilm);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedFilm);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Film> updateFilm(@PathVariable Long id, @RequestBody Film film) {
+    public ResponseEntity<Object> updateFilm(@PathVariable Long id, @Valid @RequestBody Film film,
+                                             BindingResult bindingResult) {
         log.info("Attempting to update film with ID: {}", id);
-        validateReleaseDate(film.getReleaseDate());
+        if (bindingResult.hasErrors()) {
+            log.warn("Validation updateFilm errors occurred: {}", bindingResult.getAllErrors());
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Validation error: "
+                    + bindingResult.getAllErrors()));
+        }
+        try {
+            validateReleaseDate(film.getReleaseDate());
+        } catch (ValidationException e) {
+            log.error("Error creating film: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("error",
+                    "Error updating film due to invalid input: " + e.getMessage()));
+        }
         Film updatedFilm = filmService.updateFilm(id, film);
         if (updatedFilm == null) {
             log.warn("Failed to find film with ID: {} for update", id);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error",
+                    "Film not found with ID: " + id));
         }
         log.info("Film updated successfully with ID: {}", updatedFilm.getId());
-        return ResponseEntity.ok(updatedFilm);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedFilm);
     }
 
     @GetMapping
     public ResponseEntity<List<Film>> getAllFilms() {
         log.debug("Fetching all films.");
         List<Film> films = filmService.getAllFilms();
-        return ResponseEntity.ok(films);
+        return ResponseEntity.status(HttpStatus.OK).body(films);
     }
 
     private void validateReleaseDate(LocalDate releaseDate) {

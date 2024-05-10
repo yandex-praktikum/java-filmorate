@@ -16,7 +16,7 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
 
     private final Map<Long, User> users = new HashMap<>();
-    private Long currentId = 0L;
+    private Long currentId = 1L;
 
     @Override
     public User createUser(User user) {

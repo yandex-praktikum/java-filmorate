@@ -12,6 +12,7 @@ import java.time.LocalDate;
 public class Film {
     private Long id;
 
+
     @NotBlank(message = "Name cannot be blank")
     private String name;
 
