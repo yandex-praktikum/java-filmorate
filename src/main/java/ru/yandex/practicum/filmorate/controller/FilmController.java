@@ -15,7 +15,6 @@ import ru.yandex.practicum.filmorate.service.film.FilmService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @RestController
