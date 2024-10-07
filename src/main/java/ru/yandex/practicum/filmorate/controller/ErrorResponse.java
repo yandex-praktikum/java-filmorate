@@ -6,10 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ErrorResponse {
-    private String error;
+    private String message;
 
-    public ErrorResponse(String error) {
-        this.error = error;
+    public ErrorResponse(String message) {
+        this.message = message;
     }
 }
+
 
