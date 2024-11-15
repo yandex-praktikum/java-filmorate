@@ -1,0 +1,13 @@
+INSERT INTO status (status) VALUES("Неподтверждён");
+INSERT INTO status (status) VALUES("Подтверждён");
+INSERT INTO genre (genre) VALUES("Комедия");
+INSERT INTO genre (genre) VALUES("Драма");
+INSERT INTO genre (genre) VALUES("Мультфильм");
+INSERT INTO genre (genre) VALUES("Триллер");
+INSERT INTO genre (genre) VALUES("Документальный");
+INSERT INTO genre (genre) VALUES("Боевик");
+INSERT INTO rating (rating) VALUES("G");
+INSERT INTO rating (rating) VALUES("PG");
+INSERT INTO rating (rating) VALUES("PG-13");
+INSERT INTO rating (rating) VALUES("R");
+INSERT INTO rating (rating) VALUES("NC-17");
