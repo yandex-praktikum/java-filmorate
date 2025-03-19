@@ -6,7 +6,6 @@ import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.time.Duration;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +25,7 @@ class FilmControllerTest {
         film.setName("Первый фильм");
         film.setDescription("Описание первого фильма");
         film.setReleaseDate(LocalDate.of(2022, 1, 1));
-        film.setDuration(Duration.ofMinutes(120));
+        film.setDuration(120);
 
         Film createdFilm = filmController.create(film);
 
@@ -40,7 +39,7 @@ class FilmControllerTest {
         film.setName("Первый фильм");
         film.setDescription("Описание первого фильма");
         film.setReleaseDate(LocalDate.of(1800, 1, 1)); // Неверная дата
-        film.setDuration(Duration.ofMinutes(120));
+        film.setDuration(120);
 
         ValidationException exception = assertThrows(ValidationException.class, () -> filmController.create(film));
         assertEquals("Некорректные данные фильма", exception.getMessage());
@@ -52,7 +51,7 @@ class FilmControllerTest {
         film.setName("Первый фильм");
         film.setDescription("Описание первого фильма");
         film.setReleaseDate(LocalDate.of(2022, 1, 1));
-        film.setDuration(Duration.ofMinutes(120));
+        film.setDuration(120);
         Film createdFilm = filmController.create(film);
 
         createdFilm.setName("Обновленный первый фильм");

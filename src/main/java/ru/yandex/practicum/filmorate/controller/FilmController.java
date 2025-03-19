@@ -65,9 +65,9 @@ public class FilmController {
     }
 
     private void checkFilm(Film film) {
-        if(film.getName().isBlank() || film.getName().length() > 200 ||
+        if(film.getName().isBlank() || film.getDescription().length() > 200 ||
                 film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28)) ||
-                film.getDuration().toMinutes() < 0) {
+                film.getDuration() <= 0) {
             throw new ValidationException("Некорректные данные фильма");
         }
     }

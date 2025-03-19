@@ -71,7 +71,7 @@ public class UserController {
         if(user.getLogin().isBlank() || user.getLogin().contains(" ")) {
             throw new ValidationException("Логин не может быть пустым и содержать пробелы");
         }
-        if(user.getName().isBlank()) {
+        if(user.getName() == null) {
             user.setName(user.getLogin());
         }
         if(user.getBirthday().isAfter(LocalDate.now())) {
