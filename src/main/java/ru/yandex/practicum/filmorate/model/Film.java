@@ -5,10 +5,6 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-/**
- * Film.
- */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

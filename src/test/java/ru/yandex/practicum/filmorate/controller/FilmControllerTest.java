@@ -18,7 +18,6 @@ class FilmControllerTest {
     @BeforeEach
     void setUp() {
         filmController = new FilmController();
-
         validFilm = new Film();
         validFilm.setName("Test Film");
         validFilm.setDescription("Test description");
