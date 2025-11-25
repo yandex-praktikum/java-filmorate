@@ -1,0 +1,8 @@
+logging:
+  level:
+    org.zalando.logbook: TRACE
+    ru.yandex.practicum.filmorate: INFO
+
+spring:
+  profiles:
+    active: db, dbFilms
