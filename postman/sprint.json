@@ -1,0 +1,6244 @@
+{
+	"info": {
+		"_postman_id": "6fdae548-2be1-4010-a606-38238d799878",
+		"name": "add-feed",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23073145",
+		"_collection_link": "https://universal-shadow-295426.postman.co/workspace/My-Workspace~4200f6aa-0504-44b1-8a1d-707d0dcbd5ce/collection/23073145-6fdae548-2be1-4010-a606-38238d799878?action=share&source=collection_link&creator=23073145"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "User create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const source = JSON.parse(pm.request.body.raw)\r",
+									"\r",
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+									"});\r",
+									"pm.test(\"Has user create response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test user 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"});\r",
+									"pm.test(\"Test user 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('email');\r",
+									"    pm.expect(jsonData.email, `\"email\" must be \"${source.mail}\"`).to.eql(source.email);\r",
+									"});\r",
+									"pm.test(\"Test user 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, `\"name\" must be \"${source.name}\"`).to.eql(source.name);\r",
+									"});\r",
+									"pm.test(\"Test user 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('login');\r",
+									"    pm.expect(jsonData.login, `\"login\" field must be \"${source.login}\"`).to.eql(source.login);    \r",
+									"});\r",
+									"pm.test(\"Test user 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('birthday');\r",
+									"    pm.expect(jsonData.birthday, `\"birthday\" field must be \"${source.birthday}\"`).to.eql(source.birthday);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user;\r",
+									"    try {\r",
+									"        user = rnd.getUser();\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(user),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"dolore\",\n  \"name\": \"Nick Name\",\n  \"email\": \"mail@mail.ru\",\n  \"birthday\": \"1946-08-20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User create Fail login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.equal(400);\r",
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"email\": \"yandex@mail.ru\",\n  \"birthday\": \"2446-08-20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User create Fail email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.equal(400);\r",
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"\",\n  \"email\": \"mail.ru\",\n  \"birthday\": \"1980-08-20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User create Fail birthday",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.equal(400);\r",
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"dolore\",\n  \"name\": \"\",\n  \"email\": \"test@mail.ru\",\n  \"birthday\": \"2446-08-20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const source = pm.collectionVariables.get(\"user\")\r",
+									"const new_user_info = pm.collectionVariables.get(\"new_user_info\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"pm.test(\"Has user update response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test user 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData.id, `\"id\" must be ${source.id}`).to.eql(source.id);\r",
+									"});\r",
+									"pm.test(\"Test user 'email' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('email');\r",
+									"    pm.expect(jsonData.email, `\"email\" must be \"${new_user_info.email}\"`).to.eql(new_user_info.email);\r",
+									"});\r",
+									"pm.test(\"Test user 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, `\"name\" must be \"${new_user_info.name}\"`).to.eql(new_user_info.name);\r",
+									"});\r",
+									"pm.test(\"Test user 'login' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('login');\r",
+									"    pm.expect(jsonData.login, `\"login\" field must be \"${new_user_info.login}\"`).to.eql(new_user_info.login);    \r",
+									"});\r",
+									"pm.test(\"Test user 'birthday' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('birthday');\r",
+									"    pm.expect(jsonData.birthday, `\"birthday\" field must be \"${new_user_info.birthday}\"`).to.eql(new_user_info.birthday);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        pm.collectionVariables.set(\"user\", user);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    let new_user_info = rnd.getUser();\r",
+									"    pm.collectionVariables.set(\"new_user_info\", new_user_info);\r",
+									"    new_user_info[\"id\"] = user.id;\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(new_user_info),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User update unknown",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.equal(404);\r",
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        pm.collectionVariables.set(\"user\", user);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"login\": \"doloreUpdate\",\r",
+									"            \"name\": \"est adipisicing\",\r",
+									"            \"id\": user.id+1,\r",
+									"            \"email\": \"mail@yandex.ru\",\r",
+									"            \"birthday\": \"1976-09-20\"\r",
+									"            }),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"login\": \"doloreUpdate\",\n  \"name\": \"est adipisicing\",\n  \"id\": 9999,\n  \"email\": \"mail@yandex.ru\",\n  \"birthday\": \"1976-09-20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User get All",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"pm.test(\"Test list user response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test user[0] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(1);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "friends",
+			"item": [
+				{
+					"name": "Friend add",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const user1_id = pm.collectionVariables.get(\"id\");\r",
+									"const user2_id = pm.collectionVariables.get(\"friend_id\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
+									"});\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/users/\" + user1_id + '/friends',\r",
+									"    method : \"GET\",\r",
+									"    header: { \"Content-Type\": \"application/json\" }\r",
+									"}, (error, response) => {\r",
+									"    pm.test(\"user1 has user2 friend\", function () {\r",
+									"        pm.expect(response.json()[0].id).to.be.equal(user2_id);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/users/\" + user2_id + '/friends',\r",
+									"    method : \"GET\",\r",
+									"    header: { \"Content-Type\": \"application/json\" }\r",
+									"}, (error, response) => {\r",
+									"    pm.test(\"user2 doesn't have user1 friend\", function () {\r",
+									"        pm.expect(response.json().length).to.be.equal(0);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user1, user2;\r",
+									"    try {\r",
+									"        user1 = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        pm.collectionVariables.set(\"id\", user1.id);\r",
+									"        pm.collectionVariables.set(\"friend_id\", user2.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{id}}/friends/{{friend_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{id}}",
+								"friends",
+								"{{friend_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Friend add unknown id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.equal(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user1, user2;\r",
+									"    try {\r",
+									"        user1 = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        pm.collectionVariables.set(\"id\", user1.id);\r",
+									"        pm.collectionVariables.set(\"friend_id\", user2.id+1);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{id}}/friends/{{friend_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{id}}",
+								"friends",
+								"{{friend_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Friend get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const user_friends = pm.collectionVariables.get(\"user_friends\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"initially user1 should have 0 friends\", function () {\r",
+									"    pm.expect(user_friends.length).to.be.equal(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"finally user1 should have 1 friend\", function () {\r",
+									"    pm.expect(pm.response.json().length).to.be.equal(1);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user1, user2, user1_friends;\r",
+									"    try {\r",
+									"        user1 = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        user1_friends = await api.getFriends(user1.id);\r",
+									"        await api.addFriend(user1.id, user2.id);\r",
+									"        pm.collectionVariables.set(\"id\", user1.id);\r",
+									"        pm.collectionVariables.set(\"user_friends\", user1_friends);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{id}}/friends",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{id}}",
+								"friends"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Friend get unknown id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.equal(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        pm.collectionVariables.set(\"id\", user.id+1);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{id}}/friends",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{id}}",
+								"friends"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Friend remove",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const user1_id = pm.collectionVariables.get(\"id\");\r",
+									"const user2_id = pm.collectionVariables.get(\"friend_id\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
+									"});\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/users/\" + user1_id + '/friends',\r",
+									"    method : \"GET\",\r",
+									"    header: { \"Content-Type\": \"application/json\" }\r",
+									"}, (error, response) => {\r",
+									"    pm.test(\"user1 should have 0 friends\", function () {\r",
+									"        pm.expect(response.json().length).to.be.equal(0);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/users/\" + user2_id + '/friends',\r",
+									"    method : \"GET\",\r",
+									"    header: { \"Content-Type\": \"application/json\" }\r",
+									"}, (error, response) => {\r",
+									"    pm.test(\"user2 should have 0 friends\", function () {\r",
+									"        pm.expect(response.json().length).to.be.equal(0);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user1, user2;\r",
+									"    try {\r",
+									"        user1 = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        await api.addFriend(user1.id, user2.id);\r",
+									"        pm.collectionVariables.set(\"id\", user1.id);\r",
+									"        pm.collectionVariables.set(\"friend_id\", user2.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{id}}/friends/{{friend_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{id}}",
+								"friends",
+								"{{friend_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Not friend remove",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const user1_id = pm.collectionVariables.get(\"id\");\r",
+									"const user2_id = pm.collectionVariables.get(\"friend_id\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
+									"});\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/users/\" + user1_id + '/friends',\r",
+									"    method : \"GET\",\r",
+									"    header: { \"Content-Type\": \"application/json\" }\r",
+									"}, (error, response) => {\r",
+									"    pm.test(\"user1 should have 0 friends\", function () {\r",
+									"        pm.expect(response.json().length).to.be.equal(0);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/users/\" + user2_id + '/friends',\r",
+									"    method : \"GET\",\r",
+									"    header: { \"Content-Type\": \"application/json\" }\r",
+									"}, (error, response) => {\r",
+									"    pm.test(\"user2 should have 0 friends\", function () {\r",
+									"        pm.expect(response.json().length).to.be.equal(0);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user1, user2;\r",
+									"    try {\r",
+									"        user1 = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        pm.collectionVariables.set(\"id\", user1.id);\r",
+									"        pm.collectionVariables.set(\"friend_id\", user2.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{id}}/friends/{{friend_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{id}}",
+								"friends",
+								"{{friend_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Friend reciprocity",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const user1_id = pm.collectionVariables.get(\"id\");\r",
+									"const user2_id = pm.collectionVariables.get(\"friend_id\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
+									"});\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/users/\" + user1_id + '/friends',\r",
+									"    method : \"GET\",\r",
+									"    header: { \"Content-Type\": \"application/json\" }\r",
+									"}, (error, response) => {\r",
+									"    pm.test(\"user1 should have 0 friends\", function () {\r",
+									"        pm.expect(response.json().length).to.be.equal(0);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/users/\" + user2_id + '/friends',\r",
+									"    method : \"GET\",\r",
+									"    header: { \"Content-Type\": \"application/json\" }\r",
+									"}, (error, response) => {\r",
+									"    pm.test(\"user2 should have 1 friends\", function () {\r",
+									"        pm.expect(response.json().length).to.be.equal(1);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user1, user2;\r",
+									"    try {\r",
+									"        user1 = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        await api.addFriend(user1.id, user2.id);\r",
+									"        pm.collectionVariables.set(\"id\", user2.id);\r",
+									"        pm.collectionVariables.set(\"friend_id\", user1.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{id}}/friends/{{friend_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{id}}",
+								"friends",
+								"{{friend_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Friend remove unknown id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.equal(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user1, user2;\r",
+									"    try {\r",
+									"        user1 = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        await api.addFriend(user1.id, user2.id);\r",
+									"        pm.collectionVariables.set(\"id\", user1.id + 4);\r",
+									"        pm.collectionVariables.set(\"friend_id\", user2.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{id}}/friends/{{friend_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{id}}",
+								"friends",
+								"{{friend_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Friend remove unknown friend id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.equal(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user1, user2;\r",
+									"    try {\r",
+									"        user1 = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        await api.addFriend(user1.id, user2.id);\r",
+									"        pm.collectionVariables.set(\"id\", user1.id);\r",
+									"        pm.collectionVariables.set(\"friend_id\", user2.id+1);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{id}}/friends/{{friend_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{id}}",
+								"friends",
+								"{{friend_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get common friends",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const user3_id = pm.collectionVariables.get(\"user3_id\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"user1 should have 1 common friend with user2\", function () {\r",
+									"    pm.expect(pm.response.json().length).to.be.equal(1);\r",
+									"    pm.expect(pm.response.json()[0].id).to.be.equal(user3_id);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user1, user2, user3;\r",
+									"    try {\r",
+									"        user1 = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        user3 = await api.addUser(rnd.getUser());\r",
+									"        await api.addFriend(user1.id, user3.id);\r",
+									"        await api.addFriend(user1.id, user2.id);\r",
+									"        await api.addFriend(user2.id, user3.id);\r",
+									"        pm.collectionVariables.set(\"id\", user1.id);\r",
+									"        pm.collectionVariables.set(\"friend_id\", user2.id);\r",
+									"        pm.collectionVariables.set(\"user3_id\", user3.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/{{id}}/friends/common/{{friend_id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{id}}",
+								"friends",
+								"common",
+								"{{friend_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "films",
+			"item": [
+				{
+					"name": "Film create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const source = JSON.parse(pm.request.body.raw)\r",
+									"\r",
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+									"});\r",
+									"pm.test(\"Has film create response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test film 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"});\r",
+									"pm.test(\"Test film 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, `\"name\" must be \"${source.name}\"`).to.eql(source.name);\r",
+									"});\r",
+									"pm.test(\"Test film 'description' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('description');\r",
+									"    pm.expect(jsonData.description, `\"description\" must be \"${source.description}\"`).to.eql(source.description);\r",
+									"});\r",
+									"pm.test(\"Test film 'releaseDate' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('releaseDate');\r",
+									"    pm.expect(jsonData.releaseDate, `\"releaseDate\" field must be \"${source.releaseDate}\"`).to.eql(source.releaseDate);\r",
+									"});\r",
+									"pm.test(\"Test film 'duration' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('duration');\r",
+									"    pm.expect(jsonData.duration, `\"duration\" field must be %{source.duration}`).to.eql(source.duration);    \r",
+									"});\r",
+									"pm.test(\"Test film 'mpa' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('mpa');\r",
+									"    pm.expect(jsonData.mpa.id, `\"mpa.id\" field must be %{source.mpa.id}`).to.eql(source.mpa.id);    \r",
+									"});\r",
+									"pm.test(\"Test film 'genres' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    let responseGenres = [];\r",
+									"    let requestGenres = [];\r",
+									"    source.genres.forEach((element) => requestGenres.push(element.id));\r",
+									"    jsonData.genres.forEach((element) => responseGenres.push(element.id));\r",
+									"    pm.expect(jsonData).to.have.property('genres');\r",
+									"    pm.expect(responseGenres, `\"genres\" field must be %{requestGenres}`).to.eql(requestGenres);    \r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let film;\r",
+									"    try {\r",
+									"        film = rnd.getFilm();\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(film),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Film create several genres",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const source = JSON.parse(pm.request.body.raw)\r",
+									"\r",
+									"pm.test(\"Status code is 200 or 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+									"});\r",
+									"pm.test(\"Has film create response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test film 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"});\r",
+									"pm.test(\"Test film 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, `\"name\" must be \"${source.name}\"`).to.eql(source.name);\r",
+									"});\r",
+									"pm.test(\"Test film 'description' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('description');\r",
+									"    pm.expect(jsonData.description, `\"description\" must be \"${source.description}\"`).to.eql(source.description);\r",
+									"});\r",
+									"pm.test(\"Test film 'releaseDate' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('releaseDate');\r",
+									"    pm.expect(jsonData.releaseDate, `\"releaseDate\" field must be \"${source.releaseDate}\"`).to.eql(source.releaseDate);\r",
+									"});\r",
+									"pm.test(\"Test film 'duration' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('duration');\r",
+									"    pm.expect(jsonData.duration, `\"duration\" field must be %{source.duration}`).to.eql(source.duration);    \r",
+									"});\r",
+									"pm.test(\"Test film 'mpa' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('mpa');\r",
+									"    pm.expect(jsonData.mpa.id, `\"mpa.id\" field must be %{source.mpa.id}`).to.eql(source.mpa.id);    \r",
+									"});\r",
+									"pm.test(\"Test film 'genres' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    let responseGenres = [];\r",
+									"    let requestGenres = [];\r",
+									"    source.genres.forEach((element) => requestGenres.push(element.id));\r",
+									"    jsonData.genres.forEach((element) => responseGenres.push(element.id));\r",
+									"    pm.expect(jsonData).to.have.property('genres');\r",
+									"    pm.expect(responseGenres, `\"genres\" field must be %{requestGenres}`).to.eql(requestGenres);    \r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let film;\r",
+									"    try {\r",
+									"        film = rnd.getFilm();\r",
+									"        film.genres = [\r",
+									"            {\"id\": 3},\r",
+									"            {\"id\": 5}\r",
+									"        ]\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify(film),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"nisi eiusmod\",\n  \"description\": \"adipisicing\",\n  \"releaseDate\": \"1967-03-25\",\n  \"duration\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Film create Fail name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.equal(400);\r",
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"\",\n  \"description\": \"Description\",\n  \"releaseDate\": \"1900-03-25\",\n  \"duration\": 200,\n  \"mpa\": { \"id\": 1}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Film create Fail description",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.equal(400);\r",
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Film name\",\n  \"description\": \"Пятеро друзей ( комик-группа «Шарло»), приезжают в город Бризуль. Здесь они хотят разыскать господина Огюста Куглова, который задолжал им деньги, а именно 20 миллионов. о Куглов, который за время «своего отсутствия», стал кандидатом Коломбани.\",\n    \"releaseDate\": \"1900-03-25\",\n  \"duration\": 200,\n  \"mpa\": { \"id\": 1}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Film create Fail releaseDate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.equal(400);\r",
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Name\",\n  \"description\": \"Description\",\n  \"releaseDate\": \"1890-03-25\",\n  \"duration\": 200,\n  \"mpa\": { \"id\": 1}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Film create Fail duration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.equal(400);\r",
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Name\",\n  \"description\": \"Descrition\",\n  \"releaseDate\": \"1980-03-25\",\n  \"duration\": -200,\n  \"mpa\": { \"id\": 1}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Film create Fail MPA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.equal(404);\r",
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Name\",\n  \"description\": \"Descrition\",\n  \"releaseDate\": \"1980-03-25\",\n  \"duration\": 200,\n  \"mpa\": { \"id\": 10}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Film create Fail Genre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.equal(404);\r",
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Name\",\n  \"description\": \"Descrition\",\n  \"releaseDate\": \"1980-03-25\",\n  \"duration\": 200,\n  \"mpa\": { \"id\": 5},\n  \"genres\": [\n    {\"id\": 500}\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Film update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const source = pm.collectionVariables.get(\"film\")\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"pm.test(\"Has film update response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Test film 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData.id, `\"id\" must be ${source.id}`).to.eql(source.id);\r",
+									"});\r",
+									"pm.test(\"Test film 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, '\"name\" must be \"Film Updated\"').to.eql('Film Updated');\r",
+									"});\r",
+									"pm.test(\"Test film 'description' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('description');\r",
+									"    pm.expect(jsonData.description, '\"description\" must be \"New film update decription\"').to.eql('New film update decription');\r",
+									"});\r",
+									"pm.test(\"Test film 'releaseDate' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('releaseDate');\r",
+									"    pm.expect(jsonData.releaseDate, '\"releaseDate\" field must be \"1989-04-17\"').to.eql('1989-04-17');\r",
+									"});\r",
+									"pm.test(\"Test film 'duration' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('duration');\r",
+									"    pm.expect(jsonData.duration, '\"duration\" field must be 190').to.eql(190);    \r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user;\r",
+									"    try {\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        pm.collectionVariables.set(\"film\", film);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"id\": film.id,\r",
+									"            \"name\": \"Film Updated\",\r",
+									"            \"releaseDate\": \"1989-04-17\",\r",
+									"            \"description\": \"New film update decription\",\r",
+									"            \"duration\": 190,\r",
+									"            \"rate\": 4,\r",
+									"            \"mpa\": { \"id\": 3}\r",
+									"            }),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Film update unknown",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([500, 404]);\r",
+									"});\r",
+									"pm.test(\"Has error response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user;\r",
+									"    try {\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        pm.collectionVariables.set(\"film\", film);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"id\": film.id+1,\r",
+									"            \"name\": \"Film Updated\",\r",
+									"            \"releaseDate\": \"1989-04-17\",\r",
+									"            \"description\": \"New film update decription\",\r",
+									"            \"duration\": 190,\r",
+									"            \"rate\": 4,\r",
+									"            \"mpa\": { \"id\": 3}\r",
+									"            }),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Film get All",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"pm.test(\"Test list film response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test film[0] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(1);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Film get Popular",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const film1_id = pm.collectionVariables.get(\"film1_id\");\r",
+									"const film2_id = pm.collectionVariables.get(\"film2_id\");\r",
+									"const film3_id = pm.collectionVariables.get(\"film3_id\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"pm.test(\"Test list popular film response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"const index1 = pm.response.json().findIndex(x => x.id == film1_id);\r",
+									"const index2 = pm.response.json().findIndex(x => x.id == film2_id);\r",
+									"const index3 = pm.response.json().findIndex(x => x.id == film3_id);\r",
+									"\r",
+									"pm.test(\"Test films сonsistency\", function () {\r",
+									"    pm.expect(index1).to.be.above(index2);\r",
+									"    pm.expect(index1).to.be.above(index3);\r",
+									"    pm.expect(index3).to.be.above(index2);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user1, user2, user3, film1, film2, film3;\r",
+									"    try {\r",
+									"        user1 = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        user3 = await api.addUser(rnd.getUser());\r",
+									"        film1 = await api.addFilm(rnd.getFilm());\r",
+									"        film2 = await api.addFilm(rnd.getFilm());\r",
+									"        film3 = await api.addFilm(rnd.getFilm());\r",
+									"        await api.addLike(film2.id, user1.id);\r",
+									"        await api.addLike(film2.id, user2.id);\r",
+									"        await api.addLike(film2.id, user3.id);\r",
+									"        await api.addLike(film3.id, user1.id);\r",
+									"        await api.addLike(film3.id, user2.id);\r",
+									"        await api.addLike(film1.id, user1.id);\r",
+									"        pm.collectionVariables.set(\"film1_id\", film1.id);\r",
+									"        pm.collectionVariables.set(\"film2_id\", film2.id);\r",
+									"        pm.collectionVariables.set(\"film3_id\", film3.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/films/popular?count=1000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								"popular"
+							],
+							"query": [
+								{
+									"key": "count",
+									"value": "1000"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "like",
+			"item": [
+				{
+					"name": "Add like",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user, film;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        pm.collectionVariables.set(\"id\", user.id);\r",
+									"        pm.collectionVariables.set(\"film_id\", film.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films/{{film_id}}/like/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								"{{film_id}}",
+								"like",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove like",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user, film;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        await api.addLike(film.id, user.id);\r",
+									"        pm.collectionVariables.set(\"id\", user.id);\r",
+									"        pm.collectionVariables.set(\"film_id\", film.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/films/{{film_id}}/like/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"films",
+								"{{film_id}}",
+								"like",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MPA",
+			"item": [
+				{
+					"name": "Get MPA name by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"pm.test(\"Get MPA response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"const source = pm.collectionVariables.get(\"source\");\r",
+									"\r",
+									"pm.test(\"Test MPA 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('id');\r",
+									"    pm.expect(jsonData.id, `\"id\" must be ${source}`).to.eql(source);\r",
+									"});\r",
+									"\r",
+									"const MPAS = {\r",
+									"    1: \"G\",\r",
+									"    2: \"PG\",\r",
+									"    3: \"PG-13\",\r",
+									"    4: \"R\",\r",
+									"    5: \"NC-17\"\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Test MPA 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('name');\r",
+									"    pm.expect(jsonData.name, `\"name\" must be \"${MPAS[source]}\"`).to.eql(MPAS[source]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const mpa = Math.floor(Math.random() * (5 - 1 + 1) + 1);\r",
+									"pm.collectionVariables.set(\"id\", mpa);\r",
+									"pm.collectionVariables.set(\"source\", mpa)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/mpa/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mpa",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "MPA  id=9999 get not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/mpa/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mpa",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "9999",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "MPA get All",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"pm.test(\"Test list MPA response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length, 'List length must be 5').to.eql(5);\r",
+									"});\r",
+									"pm.test(\"Test MPA[0] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('id');\r",
+									"    pm.expect(jsonData[0].id, '\"id\" must be 1').to.eql(1);\r",
+									"});\r",
+									"pm.test(\"Test MPA[0] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('name');\r",
+									"    pm.expect(jsonData[0].name, '\"name\" must be \"G\"').to.eql('G');\r",
+									"});\r",
+									"pm.test(\"Test MPA[1] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('id');\r",
+									"    pm.expect(jsonData[1].id, '\"id\" must be 2').to.eql(2);\r",
+									"});\r",
+									"pm.test(\"Test MPA[1] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('name');\r",
+									"    pm.expect(jsonData[1].name, '\"name\" must be \"PG\"').to.eql('PG');\r",
+									"});\r",
+									"pm.test(\"Test MPA[2] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[2]).to.have.property('id');\r",
+									"    pm.expect(jsonData[2].id, '\"id\" must be 3').to.eql(3);\r",
+									"});\r",
+									"pm.test(\"Test MPA[2] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[2]).to.have.property('name');\r",
+									"    pm.expect(jsonData[2].name, '\"name\" must be \"PG-13\"').to.eql('PG-13');\r",
+									"});\r",
+									"pm.test(\"Test MPA[3] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[3]).to.have.property('id');\r",
+									"    pm.expect(jsonData[3].id, '\"id\" must be 4').to.eql(4);\r",
+									"});\r",
+									"pm.test(\"Test MPA[3] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[3]).to.have.property('name');\r",
+									"    pm.expect(jsonData[3].name, '\"name\" must be \"R\"').to.eql('R');\r",
+									"});\r",
+									"pm.test(\"Test MPA[4] 'id' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[4]).to.have.property('id');\r",
+									"    pm.expect(jsonData[4].id, '\"id\" must be 5').to.eql(5);\r",
+									"});\r",
+									"pm.test(\"Test MPA[4] 'name' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[4]).to.have.property('name');\r",
+									"    pm.expect(jsonData[4].name, '\"name\" must be \"NC-17\"').to.eql('NC-17');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/mpa",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"mpa"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "add-reviews",
+			"item": [
+				{
+					"name": "Create and get bad review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"var review = pm.collectionVariables.get(\"review\");\r",
+									"pm.test(\"Has review response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test review 'reviewId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('reviewId');\r",
+									"    pm.expect(jsonData.reviewId, `\"reviewId\" must be ${review.reviewId}`).to.eql(review.reviewId);\r",
+									"});\r",
+									"pm.test(\"Test review 'content' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('content');\r",
+									"    pm.expect(jsonData.content, `\"content\" must be \"${review.content}\"`).to.eql(review.content);\r",
+									"});\r",
+									"pm.test(\"Test review 'isPositive' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('isPositive');\r",
+									"    pm.expect(jsonData.isPositive, '\"isPositive\" field must be \"false\"').to.false;   \r",
+									"});\r",
+									"pm.test(\"Test review 'userId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('userId');\r",
+									"    pm.expect(jsonData.userId, `\"userId\" field must be ${review.userId}`).to.eql(review.userId);\r",
+									"});\r",
+									"pm.test(\"Test review 'filmId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('filmId');\r",
+									"    pm.expect(jsonData.filmId, `\"filmId\" field must be ＄{review.filmId}`).to.eql(review.filmId);\r",
+									"});\r",
+									"pm.test(\"Test review 'useful' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('useful');\r",
+									"    pm.expect(jsonData.useful, '\"useful\" field must be \"0\"').to.eql(0);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user, film, review;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        review = await api.addReview({\r",
+									"            \"content\": \"This film is soo bad.\",\r",
+									"            \"isPositive\": false,\r",
+									"            \"userId\": user.id,\r",
+									"            \"filmId\": film.id\r",
+									"            });\r",
+									"        pm.collectionVariables.set(\"id\", review.reviewId);\r",
+									"        pm.collectionVariables.set(\"review\", review);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reviews/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Review create Fail content",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500 or 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.oneOf([500,400]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"isPositive\": false,\n  \"userId\": 1,\n  \"filmId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Review create Fail user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.oneOf([404]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"This film is soo bad.\",\n  \"isPositive\": false,\n  \"userId\": -1,\n  \"filmId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Review create Fail user null",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.oneOf([500, 400]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"This film is soo bad.\",\n  \"isPositive\": false,\n  \"filmId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Review create Fail film",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.oneOf([404]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"This film is soo bad.\",\n  \"isPositive\": false,\n  \"userId\": 1,\n  \"filmId\": -1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Review create Fail film null",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.oneOf([500, 400]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"This film is soo bad.\",\n  \"isPositive\": false,\n  \"userId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Review create Fail positive null",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"     pm.expect(pm.response.code).to.be.oneOf([500, 400]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"content\": \"This film is soo bad.\",\n  \"userId\": 1,\n  \"filmId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Review update to positive Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"var review = pm.collectionVariables.get(\"review\");\r",
+									"pm.test(\"Has review response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test review 'reviewId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('reviewId');\r",
+									"    pm.expect(jsonData.reviewId, `\"reviewId\" must be ${review.reviewId}`).to.eql(review.reviewId);\r",
+									"});\r",
+									"pm.test(\"Test review 'content' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('content');\r",
+									"    pm.expect(jsonData.content, '\"content\" must be \"This film is not too bad.\"').to.eql(\"This film is not too bad.\");\r",
+									"});\r",
+									"pm.test(\"Test review 'isPositive' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('isPositive');\r",
+									"    pm.expect(jsonData.isPositive, '\"isPositive\" field must be \"false\"').to.true;   \r",
+									"});\r",
+									"pm.test(\"Test review 'userId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('userId');\r",
+									"    pm.expect(jsonData.userId, `\"userId\" field must be ${review.userId}`).to.eql(review.userId);\r",
+									"});\r",
+									"pm.test(\"Test review 'filmId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('filmId');\r",
+									"    pm.expect(jsonData.filmId, `\"filmId\" field must be ＄{review.filmId}`).to.eql(review.filmId);\r",
+									"});\r",
+									"pm.test(\"Test review 'useful' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('useful');\r",
+									"    pm.expect(jsonData.useful, '\"useful\" field must be \"0\"').to.eql(0);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user, film, review;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        review = await api.addReview({\r",
+									"            \"content\": \"This film is soo bad.\",\r",
+									"            \"isPositive\": false,\r",
+									"            \"userId\": user.id,\r",
+									"            \"filmId\": film.id\r",
+									"            });\r",
+									"        pm.collectionVariables.set(\"id\", review.reviewId);\r",
+									"        pm.collectionVariables.set(\"review\", review);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"reviewId\": review.reviewId,\r",
+									"            \"content\": \"This film is not too bad.\",\r",
+									"            \"isPositive\": true,\r",
+									"            \"userId\": user.id,\r",
+									"            \"filmId\": film.id\r",
+									"            }),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reviewId\": 1,\n  \"content\": \"This film is not too bad.\",\n  \"isPositive\": true,\n  \"userId\": 2,\n  \"filmId\": 2,\n  \"useful\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get reviews to film",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"var review = pm.collectionVariables.get(\"review\");\r",
+									"pm.test(\"Has review response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"pm.test(\"Test review 'reviewId' field\", function () {\r",
+									"    var jsonData = pm.response.json()[0];\r",
+									"    pm.expect(jsonData).to.have.property('reviewId');\r",
+									"    pm.expect(jsonData.reviewId, `\"reviewId\" must be ${review.reviewId}`).to.eql(review.reviewId);\r",
+									"});\r",
+									"pm.test(\"Test review 'content' field\", function () {\r",
+									"    var jsonData = pm.response.json()[0];\r",
+									"    pm.expect(jsonData).to.have.property('content');\r",
+									"    pm.expect(jsonData.content, `\"content\" must be \"${review.content}\"`).to.eql(review.content);\r",
+									"});\r",
+									"pm.test(\"Test review 'isPositive' field\", function () {\r",
+									"    var jsonData = pm.response.json()[0];\r",
+									"    pm.expect(jsonData).to.have.property('isPositive');\r",
+									"    pm.expect(jsonData.isPositive, '\"isPositive\" field must be \"false\"').to.false;   \r",
+									"});\r",
+									"pm.test(\"Test review 'userId' field\", function () {\r",
+									"    var jsonData = pm.response.json()[0];\r",
+									"    pm.expect(jsonData).to.have.property('userId');\r",
+									"    pm.expect(jsonData.userId, `\"userId\" field must be ${review.userId}`).to.eql(review.userId);\r",
+									"});\r",
+									"pm.test(\"Test review 'filmId' field\", function () {\r",
+									"    var jsonData = pm.response.json()[0];\r",
+									"    pm.expect(jsonData).to.have.property('filmId');\r",
+									"    pm.expect(jsonData.filmId, `\"filmId\" field must be ${review.filmId}`).to.eql(review.filmId);\r",
+									"});\r",
+									"pm.test(\"Test review 'useful' field\", function () {\r",
+									"    var jsonData = pm.response.json()[0];\r",
+									"    pm.expect(jsonData).to.have.property('useful');\r",
+									"    pm.expect(jsonData.useful, '\"useful\" field must be \"0\"').to.eql(0);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user, film, review;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        review = await api.addReview({\r",
+									"            \"content\": \"This film is soo bad.\",\r",
+									"            \"isPositive\": false,\r",
+									"            \"userId\": user.id,\r",
+									"            \"filmId\": film.id\r",
+									"            });\r",
+									"        pm.collectionVariables.set(\"id\", film.id);\r",
+									"        pm.collectionVariables.set(\"review\", review);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reviews?filmId={{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "filmId",
+									"value": "{{id}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Delete review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,204]);\r",
+									"});\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/reviews?filmId=\" + pm.collectionVariables.get(\"filmId\"),\r",
+									"    method : \"GET\"\r",
+									"    }, (error, response) => {\r",
+									"        pm.test(\"Review number has changed\", function () {\r",
+									"            var reviewsLength = pm.collectionVariables.get(\"reviewsLength\");\r",
+									"            var newReviewsLength = response.json().length;\r",
+									"            pm.expect(newReviewsLength, 'List length decreased by 1').to.eql(reviewsLength-1);\r",
+									"        });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user, film, review, reviewGet;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        review = await api.addReview({\r",
+									"            \"content\": \"This film is soo bad.\",\r",
+									"            \"isPositive\": false,\r",
+									"            \"userId\": user.id,\r",
+									"            \"filmId\": film.id\r",
+									"            });\r",
+									"        reviewGet = await api.getReview(film.id);\r",
+									"        pm.collectionVariables.set(\"id\", review.reviewId);\r",
+									"        pm.collectionVariables.set(\"filmId\", film.id);\r",
+									"        pm.collectionVariables.set(\"reviewsLength\", reviewGet.length);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reviews/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Get review after delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user, film, review, reviewGet;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        review = await api.addReview({\r",
+									"            \"content\": \"This film is soo bad.\",\r",
+									"            \"isPositive\": false,\r",
+									"            \"userId\": user.id,\r",
+									"            \"filmId\": film.id\r",
+									"            });\r",
+									"        await api.removeReview(review.reviewId);\r",
+									"        \r",
+									"        pm.collectionVariables.set(\"id\", review.reviewId);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/reviews/{{id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews",
+								"{{id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Add like to review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"var review = pm.collectionVariables.get(\"review\");\r",
+									"pm.test(\"Test review 'reviewId' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('reviewId');\r",
+									"    pm.expect(jsonData.reviewId, `\"reviewId\" must be ${review.reviewId}`).to.eql(review.reviewId);\r",
+									"});\r",
+									"pm.test(\"Test review 'content' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('content');\r",
+									"    pm.expect(jsonData.content, `\"content\" must be \"${review.content}\"`).to.eql(review.content);\r",
+									"});\r",
+									"pm.test(\"Test review 'isPositive' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('isPositive');\r",
+									"    pm.expect(jsonData.isPositive, `\"isPositive\" field must be ${review.isPositive}\"`).to.eql(review.isPositive);   \r",
+									"});\r",
+									"pm.test(\"Test review 'userId' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('userId');\r",
+									"    pm.expect(jsonData.userId, `\"userId\" field must be ${review.userId}`).to.eql(review.userId);\r",
+									"});\r",
+									"pm.test(\"Test review 'filmId' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('filmId');\r",
+									"    pm.expect(jsonData.filmId, `\"filmId\" field must be ＄{review.filmId}`).to.eql(review.filmId);\r",
+									"});\r",
+									"pm.test(\"Test review 'useful' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('useful');\r",
+									"    pm.expect(jsonData.useful, '\"useful\" field must be \"0\"').to.eql(0);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user, film, review, reviewGet;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        review = await api.addReview({\r",
+									"            \"content\": \"This film is soo bad.\",\r",
+									"            \"isPositive\": false,\r",
+									"            \"userId\": user.id,\r",
+									"            \"filmId\": film.id\r",
+									"            });\r",
+									"        pm.collectionVariables.set(\"reviewId\", review.reviewId);\r",
+									"        pm.collectionVariables.set(\"userId\", user.id);\r",
+									"        pm.collectionVariables.set(\"review\", review);\r",
+									"        reviewGet = await api.getReview(film.id);\r",
+									"        pm.collectionVariables.set(\"reviewGet\", reviewGet[0]);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"reviewId\": review.reviewId,\r",
+									"            \"content\": \"This film is not too bad.\",\r",
+									"            \"isPositive\": true,\r",
+									"            \"userId\": user.id,\r",
+									"            \"filmId\": film.id\r",
+									"            }),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reviewId\": 1,\n  \"content\": \"This film is not too bad.\",\n  \"isPositive\": true,\n  \"userId\": 2,\n  \"filmId\": 2,\n  \"useful\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews/{{reviewId}}/like/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews",
+								"{{reviewId}}",
+								"like",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Remove like from review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"var review = pm.collectionVariables.get(\"review\");\r",
+									"pm.test(\"Test review 'reviewId' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('reviewId');\r",
+									"    pm.expect(jsonData.reviewId, `\"reviewId\" must be ${review.reviewId}`).to.eql(review.reviewId);\r",
+									"});\r",
+									"pm.test(\"Test review 'content' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('content');\r",
+									"    pm.expect(jsonData.content, `\"content\" must be \"${review.content}\"`).to.eql(review.content);\r",
+									"});\r",
+									"pm.test(\"Test review 'isPositive' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('isPositive');\r",
+									"    pm.expect(jsonData.isPositive, `\"isPositive\" field must be ${review.isPositive}\"`).to.eql(review.isPositive);   \r",
+									"});\r",
+									"pm.test(\"Test review 'userId' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('userId');\r",
+									"    pm.expect(jsonData.userId, `\"userId\" field must be ${review.userId}`).to.eql(review.userId);\r",
+									"});\r",
+									"pm.test(\"Test review 'filmId' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('filmId');\r",
+									"    pm.expect(jsonData.filmId, `\"filmId\" field must be ＄{review.filmId}`).to.eql(review.filmId);\r",
+									"});\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/reviews?filmId=\" + pm.collectionVariables.get(\"filmId\"),\r",
+									"    method : \"GET\"\r",
+									"    }, (error, response) => {\r",
+									"        pm.test(\"Test review 'useful' field\", function () {\r",
+									"            var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"            pm.expect(jsonData).to.have.property('useful');\r",
+									"            pm.expect(jsonData.useful, '\"useful\" field must be \"1\" before deleting like').to.eql(1);\r",
+									"            console.log(response.json())\r",
+									"            pm.expect(response.json()[0].useful, '\"useful\" field must be \"0\" after deleting like').to.eql(0);\r",
+									"        });\r",
+									"    });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user, film, review, reviewGet, user2;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        review = await api.addReview({\r",
+									"            \"content\": \"This film is soo bad.\",\r",
+									"            \"isPositive\": false,\r",
+									"            \"userId\": user.id,\r",
+									"            \"filmId\": film.id\r",
+									"            });\r",
+									"        pm.collectionVariables.set(\"reviewId\", review.reviewId);\r",
+									"        pm.collectionVariables.set(\"userId\", user2.id);\r",
+									"        pm.collectionVariables.set(\"review\", review);\r",
+									"        pm.collectionVariables.set(\"filmId\", film.id);\r",
+									"        await api.addLikeToReview(review.reviewId, user2.id)\r",
+									"        reviewGet = await api.getReview(film.id);\r",
+									"        pm.collectionVariables.set(\"reviewGet\", reviewGet[0]);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"reviewId\": review.reviewId,\r",
+									"            \"content\": \"This film is not too bad.\",\r",
+									"            \"isPositive\": true,\r",
+									"            \"userId\": user.id,\r",
+									"            \"filmId\": film.id\r",
+									"            }),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reviewId\": 1,\n  \"content\": \"This film is not too bad.\",\n  \"isPositive\": true,\n  \"userId\": 2,\n  \"filmId\": 2,\n  \"useful\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews/{{reviewId}}/like/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews",
+								"{{reviewId}}",
+								"like",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Add dislike to review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"var review = pm.collectionVariables.get(\"review\");\r",
+									"pm.test(\"Test review 'reviewId' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('reviewId');\r",
+									"    pm.expect(jsonData.reviewId, `\"reviewId\" must be ${review.reviewId}`).to.eql(review.reviewId);\r",
+									"});\r",
+									"pm.test(\"Test review 'content' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('content');\r",
+									"    pm.expect(jsonData.content, `\"content\" must be \"${review.content}\"`).to.eql(review.content);\r",
+									"});\r",
+									"pm.test(\"Test review 'isPositive' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('isPositive');\r",
+									"    pm.expect(jsonData.isPositive, `\"isPositive\" field must be ${review.isPositive}\"`).to.eql(review.isPositive);   \r",
+									"});\r",
+									"pm.test(\"Test review 'userId' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('userId');\r",
+									"    pm.expect(jsonData.userId, `\"userId\" field must be ${review.userId}`).to.eql(review.userId);\r",
+									"});\r",
+									"pm.test(\"Test review 'filmId' field\", function () {\r",
+									"    var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"    pm.expect(jsonData).to.have.property('filmId');\r",
+									"    pm.expect(jsonData.filmId, `\"filmId\" field must be ＄{review.filmId}`).to.eql(review.filmId);\r",
+									"});\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url : \"http://localhost:8080/reviews?filmId=\" + pm.collectionVariables.get(\"filmId\"),\r",
+									"    method : \"GET\"\r",
+									"    }, (error, response) => {\r",
+									"        pm.test(\"Test review 'useful' field\", function () {\r",
+									"            var jsonData = pm.collectionVariables.get(\"reviewGet\");\r",
+									"            pm.expect(jsonData).to.have.property('useful');\r",
+									"            pm.expect(jsonData.useful, '\"useful\" field must be \"1\" before adding dislike').to.eql(1);\r",
+									"            console.log(response.json())\r",
+									"            pm.expect(response.json()[0].useful, '\"useful\" field must be \"-1\" after adding dislike').to.eql(-1);\r",
+									"        });\r",
+									"    });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user, film, review, reviewGet, user2;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        user2 = await api.addUser(rnd.getUser());\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        review = await api.addReview({\r",
+									"            \"content\": \"This film is soo bad.\",\r",
+									"            \"isPositive\": false,\r",
+									"            \"userId\": user.id,\r",
+									"            \"filmId\": film.id\r",
+									"            });\r",
+									"        pm.collectionVariables.set(\"reviewId\", review.reviewId);\r",
+									"        pm.collectionVariables.set(\"userId\", user2.id);\r",
+									"        pm.collectionVariables.set(\"review\", review);\r",
+									"        pm.collectionVariables.set(\"filmId\", film.id);\r",
+									"        await api.addLikeToReview(review.reviewId, user2.id)\r",
+									"        reviewGet = await api.getReview(film.id);\r",
+									"        pm.collectionVariables.set(\"reviewGet\", reviewGet[0]);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"    pm.request.body.update({\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            \"reviewId\": review.reviewId,\r",
+									"            \"content\": \"This film is not too bad.\",\r",
+									"            \"isPositive\": true,\r",
+									"            \"userId\": user.id,\r",
+									"            \"filmId\": film.id\r",
+									"            }),\r",
+									"        options: { raw: { language: 'json' } }\r",
+									"    });\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"reviewId\": 1,\n  \"content\": \"This film is not too bad.\",\n  \"isPositive\": true,\n  \"userId\": 2,\n  \"filmId\": 2,\n  \"useful\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/reviews/{{reviewId}}/dislike/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"reviews",
+								"{{reviewId}}",
+								"dislike",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"login\": \"dolore ullamco\",\n  \"name\": \"est adipisicing\",\n  \"id\": -35528664,\n  \"email\": \"Lorem mollit nisi anim\",\n  \"birthday\": \"1946-08-20\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "add-feed",
+			"item": [
+				{
+					"name": "User get feed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"});\r",
+									"pm.test(\"Test list feed response\", function () {\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length, 'List length must be 7').to.eql(7);\r",
+									"});\r",
+									"\r",
+									"var userid = pm.collectionVariables.get(\"userid\");\r",
+									"var friendid = pm.collectionVariables.get(\"friendid\");\r",
+									"var reviewid = pm.collectionVariables.get(\"reviewid\");\r",
+									"var filmid = pm.collectionVariables.get(\"filmid\");\r",
+									"\r",
+									"pm.test(\"Test feed[0] 'userId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('userId');\r",
+									"    pm.expect(jsonData[0].userId, `\"userId\" must be ${userid}`).to.eql(userid);\r",
+									"});\r",
+									"pm.test(\"Test feed[0] 'entityId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('entityId');\r",
+									"    pm.expect(jsonData[0].entityId, `\"entityId\" must be ${friendid}`).to.eql(friendid);\r",
+									"});\r",
+									"pm.test(\"Test feed[0] 'eventType' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('eventType');\r",
+									"    pm.expect(jsonData[0].eventType, '\"eventType\" must be \"FRIEND\"').to.eql(\"FRIEND\");\r",
+									"});\r",
+									"pm.test(\"Test feed[0] 'operation' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('operation');\r",
+									"    pm.expect(jsonData[0].operation, '\"eventType\" must be \"ADD\"').to.eql(\"ADD\");\r",
+									"});\r",
+									"pm.test(\"Test feed[0] 'timestamp' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[0]).to.have.property('timestamp');\r",
+									"    pm.expect(jsonData[0].timestamp, '\"timestamp\" must be above 1670590017281').to.above(1670590017281);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Test feed[1] 'userId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('userId');\r",
+									"    pm.expect(jsonData[1].userId, `\"userId\" must be ${userid}`).to.eql(userid);\r",
+									"});\r",
+									"pm.test(\"Test feed[1] 'entityId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('entityId');\r",
+									"    pm.expect(jsonData[1].entityId, `\"entityId\" must be ${friendid}`).to.eql(friendid);\r",
+									"});\r",
+									"pm.test(\"Test feed[1] 'eventType' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('eventType');\r",
+									"    pm.expect(jsonData[1].eventType, '\"eventType\" must be \"FRIEND\"').to.eql(\"FRIEND\");\r",
+									"});\r",
+									"pm.test(\"Test feed[1] 'operation' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('operation');\r",
+									"    pm.expect(jsonData[1].operation, '\"eventType\" must be \"REMOVE\"').to.eql(\"REMOVE\");\r",
+									"});\r",
+									"pm.test(\"Test feed[1] 'timestamp' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[1]).to.have.property('timestamp');\r",
+									"    pm.expect(jsonData[1].timestamp, '\"timestamp\" must be above 1670590017281').to.above(1670590017281);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Test feed[2] 'userId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[2]).to.have.property('userId');\r",
+									"    pm.expect(jsonData[2].userId, `\"userId\" must be ${userid}`).to.eql(userid);\r",
+									"});\r",
+									"pm.test(\"Test feed[2] 'entityId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[2]).to.have.property('entityId');\r",
+									"    pm.expect(jsonData[2].entityId, `\"entityId\" must be ${reviewid}`).to.eql(reviewid);\r",
+									"});\r",
+									"pm.test(\"Test feed[2] 'eventType' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[2]).to.have.property('eventType');\r",
+									"    pm.expect(jsonData[2].eventType, '\"eventType\" must be \"REVIEW\"').to.eql(\"REVIEW\");\r",
+									"});\r",
+									"pm.test(\"Test feed[2] 'operation' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[2]).to.have.property('operation');\r",
+									"    pm.expect(jsonData[2].operation, '\"eventType\" must be \"ADD\"').to.eql(\"ADD\");\r",
+									"});\r",
+									"pm.test(\"Test feed[2] 'timestamp' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[2]).to.have.property('timestamp');\r",
+									"    pm.expect(jsonData[2].timestamp, '\"timestamp\" must be above 1670590017281').to.above(1670590017281);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Test feed[3] 'userId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[3]).to.have.property('userId');\r",
+									"    pm.expect(jsonData[3].userId, `\"userId\" must be ${userid}`).to.eql(userid);\r",
+									"});\r",
+									"pm.test(\"Test feed[3] 'entityId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[3]).to.have.property('entityId');\r",
+									"    pm.expect(jsonData[3].entityId, `\"entityId\" must be ${reviewid}`).to.eql(reviewid);\r",
+									"});\r",
+									"pm.test(\"Test feed[3] 'eventType' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[3]).to.have.property('eventType');\r",
+									"    pm.expect(jsonData[3].eventType, '\"eventType\" must be \"REVIEW\"').to.eql(\"REVIEW\");\r",
+									"});\r",
+									"pm.test(\"Test feed[3] 'operation' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[3]).to.have.property('operation');\r",
+									"    pm.expect(jsonData[3].operation, '\"eventType\" must be \"UPDATE\"').to.eql(\"UPDATE\");\r",
+									"});\r",
+									"pm.test(\"Test feed[3] 'timestamp' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[3]).to.have.property('timestamp');\r",
+									"    pm.expect(jsonData[3].timestamp, '\"timestamp\" must be above 1670590017281').to.above(1670590017281);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Test feed[4] 'userId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[4]).to.have.property('userId');\r",
+									"    pm.expect(jsonData[4].userId, `\"userId\" must be ${userid}`).to.eql(userid);\r",
+									"});\r",
+									"pm.test(\"Test feed[4] 'entityId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[4]).to.have.property('entityId');\r",
+									"    pm.expect(jsonData[4].entityId, `\"entityId\" must be ${reviewid}`).to.eql(reviewid);\r",
+									"});\r",
+									"pm.test(\"Test feed[4] 'eventType' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[4]).to.have.property('eventType');\r",
+									"    pm.expect(jsonData[4].eventType, '\"eventType\" must be \"REVIEW\"').to.eql(\"REVIEW\");\r",
+									"});\r",
+									"pm.test(\"Test feed[4] 'operation' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[4]).to.have.property('operation');\r",
+									"    pm.expect(jsonData[4].operation, '\"eventType\" must be \"REMOVE\"').to.eql(\"REMOVE\");\r",
+									"});\r",
+									"pm.test(\"Test feed[4] 'timestamp' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[4]).to.have.property('timestamp');\r",
+									"    pm.expect(jsonData[4].timestamp, '\"timestamp\" must be above 1670590017281').to.above(1670590017281);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Test feed[5] 'userId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[5]).to.have.property('userId');\r",
+									"    pm.expect(jsonData[5].userId, `\"userId\" must be ${userid}`).to.eql(userid);\r",
+									"});\r",
+									"pm.test(\"Test feed[5] 'entityId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[5]).to.have.property('entityId');\r",
+									"    pm.expect(jsonData[5].entityId, `\"entityId\" must be ${filmid}`).to.eql(filmid);\r",
+									"});\r",
+									"pm.test(\"Test feed[5] 'eventType' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[5]).to.have.property('eventType');\r",
+									"    pm.expect(jsonData[5].eventType, '\"eventType\" must be \"LIKE\"').to.eql(\"LIKE\");\r",
+									"});\r",
+									"pm.test(\"Test feed[5] 'operation' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[5]).to.have.property('operation');\r",
+									"    pm.expect(jsonData[5].operation, '\"eventType\" must be \"ADD\"').to.eql(\"ADD\");\r",
+									"});\r",
+									"pm.test(\"Test feed[5] 'timestamp' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[5]).to.have.property('timestamp');\r",
+									"    pm.expect(jsonData[5].timestamp, '\"timestamp\" must be above 1670590017281').to.above(1670590017281);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Test feed[6] 'userId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[6]).to.have.property('userId');\r",
+									"    pm.expect(jsonData[6].userId, `\"userId\" must be ${userid}`).to.eql(userid);\r",
+									"});\r",
+									"pm.test(\"Test feed[6] 'entityId' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[6]).to.have.property('entityId');\r",
+									"    pm.expect(jsonData[6].entityId, `\"entityId\" must be ${filmid}`).to.eql(filmid);\r",
+									"});\r",
+									"pm.test(\"Test feed[6] 'eventType' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[6]).to.have.property('eventType');\r",
+									"    pm.expect(jsonData[6].eventType, '\"eventType\" must be \"LIKE\"').to.eql(\"LIKE\");\r",
+									"});\r",
+									"pm.test(\"Test feed[6] 'operation' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[6]).to.have.property('operation');\r",
+									"    pm.expect(jsonData[6].operation, '\"eventType\" must be \"REMOVE\"').to.eql(\"REMOVE\");\r",
+									"});\r",
+									"pm.test(\"Test feed[6] 'timestamp' field\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData[6]).to.have.property('timestamp');\r",
+									"    pm.expect(jsonData[6].timestamp, '\"timestamp\" must be above 1670590017281').to.above(1670590017281);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const main = async () => {\r",
+									"    const api = new API(pm);\r",
+									"    const rnd = new RandomUtils();\r",
+									"\r",
+									"    let user, film, review, friend;\r",
+									"    try {\r",
+									"        user = await api.addUser(rnd.getUser());\r",
+									"        friend = await api.addUser(rnd.getUser());\r",
+									"        await api.addFriend(user.id, friend.id);\r",
+									"        await api.removeFriend(user.id, friend.id);\r",
+									"        film = await api.addFilm(rnd.getFilm());\r",
+									"        review = await api.addReview({\r",
+									"            \"content\": \"This film is soo bad.\",\r",
+									"            \"isPositive\": false,\r",
+									"            \"userId\": user.id,\r",
+									"            \"filmId\": film.id\r",
+									"            });\r",
+									"        await api.updateReview({\r",
+									"            \"reviewId\": review.reviewId,\r",
+									"            \"content\": \"This film is not too bad.\",\r",
+									"            \"isPositive\": true,\r",
+									"            \"userId\": user.id,\r",
+									"            \"filmId\": film.id,\r",
+									"            \"useful\": 25\r",
+									"        })\r",
+									"        await api.removeReview(review.reviewId);\r",
+									"        await api.addLike(film.id, user.id);\r",
+									"        await api.removeLike(film.id, user.id);\r",
+									"\r",
+									"        pm.collectionVariables.set(\"userid\", user.id);\r",
+									"        pm.collectionVariables.set(\"friendid\", friend.id);\r",
+									"        pm.collectionVariables.set(\"reviewid\", review.reviewId);\r",
+									"        pm.collectionVariables.set(\"filmid\", film.id);\r",
+									"    } catch(err) {\r",
+									"        console.error(\"Ошибка при подготовке тестовых данных.\", err);\r",
+									"    }\r",
+									"\r",
+									"};\r",
+									"\r",
+									"const interval = setInterval(() => {}, 1000);\r",
+									"\r",
+									"setTimeout(async () => \r",
+									"    {\r",
+									"        try {\r",
+									"            await main();\r",
+									"        } catch (e) {\r",
+									"            console.error(e);\r",
+									"        } finally {\r",
+									"            clearInterval(interval);\r",
+									"        }\r",
+									"    },  \r",
+									"    100 \r",
+									");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/{{userid}}/feed",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"{{userid}}",
+								"feed"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/films/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"films",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-29029902",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"API = class {\r",
+					"    constructor(postman, verbose = false, baseUrl = \"http://localhost:8080\") {\r",
+					"        this.baseUrl = baseUrl;\r",
+					"        this.pm = postman;\r",
+					"        this._verbose = verbose;\r",
+					"    }\r",
+					"\r",
+					"    async addUser(user, verbose=null) {\r",
+					"        return this.post(\"/users\", user, \"Ошибка при добавлении нового пользователя: \", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async removeUser(userId, verbose=null) {\r",
+					"        return this.delete(\"/users/\" + userId, \"Ошибка при удалении нового пользователя: \", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async addFilm(film, verbose=null) {\r",
+					"        return this.post(\"/films\", film, \"Ошибка при добавлении нового фильма: \", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async addReview(review, verbose=null) {\r",
+					"        return this.post(\"/reviews\", review, \"Ошибка при добавлении нового отзыва: \", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async updateReview(review, verbose=null) {\r",
+					"        return this.put(\"/reviews\", review, \"Ошибка при обновлении отзыва: \", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async removeReview(reviewId, verbose=null) {\r",
+					"        return this.delete(\"/reviews/\" + reviewId, null, \"Ошибка при удалении отзыва: \", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async removeFilm(filmId, verbose=null) {\r",
+					"        return this.delete(\"/films/\" + filmId, null, \"Ошибка при удалении фильма: \", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async addFriend(userId, friendId, verbose=null) {\r",
+					"        return this.put(\"/users/\" + userId + '/friends/' + friendId, null, \"Ошибка при добавлении нового друга: \", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async addLike(filmId, userId, verbose=null) {\r",
+					"        return this.put(\"/films/\" + filmId + '/like/' + userId, null, \"Ошибка при добавлении лайка на фильм: \", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async addLikeToReview(reviewId, userId, verbose=null) {\r",
+					"        return this.put(\"/reviews/\" + reviewId + '/like/' + userId, null, \"Ошибка при добавлении лайка на отзыв: \", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async removeLike(filmId, userId, verbose=null) {\r",
+					"        return this.delete(\"/films/\" + filmId + '/like/' + userId, null, \"Ошибка при удалении лайка на фильм: \", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async removeReview(reviewId, verbose=null) {\r",
+					"        return this.delete(\"/reviews/\" + reviewId, null, \"Ошибка при удалении отзыва на фильм: \", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async removeFriend(userId, friendId, verbose=null) {\r",
+					"        return this.delete(\"/users/\" + userId + '/friends/' + friendId, null, \"Ошибка при удалении друга: \", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async getFriends(userId, verbose=null) {\r",
+					"        return this.get('/users/' + userId + '/friends', null, \"Ошибка при поиске друзей по id пользователя\", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async getPopular(verbose=null) {\r",
+					"        return this.get('/films/popular?count=1000', null, \"Ошибка при поиске популярных фильмов\", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async getReview(filmId=null, verbose=null) {\r",
+					"        var requestString = '/reviews?count=1000';\r",
+					"        requestString += filmId == null ? \"\" : \"&filmId=\" + filmId;\r",
+					"        return this.get(requestString, null, \"Ошибка при поиске отзывов\", verbose);\r",
+					"    }\r",
+					"\r",
+					"    async post(path, body, errorText = \"Ошибка при выполнении post-запроса: \", verbose=null) {\r",
+					"        return this.sendRequest(\"POST\", path, body, errorText, verbose);\r",
+					"    }\r",
+					"\r",
+					"    async patch(path, body = null, errorText = \"Ошибка при выполнении patch-запроса: \", verbose=null) {\r",
+					"        return this.sendRequest(\"PATCH\", path, body, errorText, verbose);\r",
+					"    }\r",
+					"\r",
+					"    async get(path, body = null, errorText = \"Ошибка при выполнении get-запроса: \", verbose=null) {\r",
+					"        return this.sendRequest(\"GET\", path, body, errorText, verbose);\r",
+					"    }\r",
+					"\r",
+					"    async put(path, body = null, errorText = \"Ошибка при выполнении put-запроса: \", verbose=null) {\r",
+					"        return this.sendRequest(\"PUT\", path, body, errorText, verbose);\r",
+					"    }\r",
+					"\r",
+					"    async delete(path, body = null, errorText = \"Ошибка при выполнении delte-запроса: \", verbose=null) {\r",
+					"        return this.sendRequest(\"DELETE\", path, body, errorText, verbose);\r",
+					"    }\r",
+					"\r",
+					"    async sendRequest(method, path, body=null, errorText = \"Ошибка при выполнении запроса: \", verbose=null) {\r",
+					"        return new Promise((resolve, reject) => {\r",
+					"            verbose = verbose == null ? this._verbose : verbose;\r",
+					"            const request = {\r",
+					"                url: this.baseUrl + path,\r",
+					"                method: method,\r",
+					"                body: body == null ? \"\" : JSON.stringify(body),\r",
+					"                header: { \"Content-Type\": \"application/json\" },\r",
+					"            };\r",
+					"            if(verbose) {\r",
+					"                console.log(\"Отправляю запрос: \", request);\r",
+					"            }\r",
+					"\r",
+					"            try {\r",
+					"                this.pm.sendRequest(request, (error, response) => {\r",
+					"                    if(error || (response.code >= 400 && response.code <= 599)) {\r",
+					"                        let err = error ? error : JSON.stringify(response.json());\r",
+					"                        console.error(\"При выполнении запроса к серверу возникла ошика.\\n\", err,\r",
+					"                             \"\\nДля отладки проблемы повторите такой же запрос к вашей программе \" + \r",
+					"                             \"на локальном компьютере. Данные запроса:\\n\", JSON.stringify(request));\r",
+					"\r",
+					"                        reject(new Error(errorText + err));\r",
+					"                    }\r",
+					"                    if(verbose) {\r",
+					"                        console.log(\"Результат обработки запроса: код состояния - \", response.code, \", тело: \", response.json());\r",
+					"                    }\r",
+					"                    if (response.stream.length === 0){\r",
+					"                        resolve(null);\r",
+					"                    }else{\r",
+					"                        resolve(response.json());\r",
+					"                    }\r",
+					"                });\r",
+					"                \r",
+					"            } catch(err) {\r",
+					"                if(verbose) {\r",
+					"                    console.error(errorText, err);\r",
+					"                }\r",
+					"                return Promise.reject(err);\r",
+					"            }\r",
+					"        });\r",
+					"    }\r",
+					"};\r",
+					"\r",
+					"RandomUtils = class {\r",
+					"    constructor() {}\r",
+					"\r",
+					"    getUser() {\r",
+					"        let date = new Date(new Date(1960, 0, 1).getTime() + Math.random() * (new Date(2010, 0, 1).getTime() - new Date(1960, 0, 1).getTime()));\r",
+					"        return {\r",
+					"            name: pm.variables.replaceIn('{{$randomFullName}}'),\r",
+					"            login: this.getWord(10),\r",
+					"            email: pm.variables.replaceIn('{{$randomEmail}}'),\r",
+					"            birthday: date.toISOString().slice(0,10)\r",
+					"        };\r",
+					"    }\r",
+					"\r",
+					"    getFilm() {\r",
+					"        let date = new Date(new Date(1960, 0, 1).getTime() + Math.random() * (new Date(2010, 0, 1).getTime() - new Date(1960, 0, 1).getTime()));\r",
+					"        return {\r",
+					"            name: this.getWord(15),\r",
+					"            description: this.getWord(50),\r",
+					"            releaseDate: date.toISOString().slice(0,10),\r",
+					"            duration: Math.floor(Math.random() * (180 - 60 + 1) + 60),\r",
+					"            mpa: { id: Math.floor(Math.random() * (5 - 1 + 1) + 1)},\r",
+					"            genres: [{ id: Math.floor(Math.random() * (6 - 1 + 1) + 1)}]\r",
+					"        };\r",
+					"    }\r",
+					"\r",
+					"    getWord(length = 1) {\r",
+					"        let result = '';\r",
+					"        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+					"        const charactersLength = characters.length;\r",
+					"        let counter = 0;\r",
+					"        while (counter < length) {\r",
+					"            result += characters.charAt(Math.floor(Math.random() * charactersLength));\r",
+					"            counter += 1;\r",
+					"        }\r",
+					"        return result;\r",
+					"    }\r",
+					"\r",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "userid",
+			"value": ""
+		},
+		{
+			"key": "friendid",
+			"value": ""
+		},
+		{
+			"key": "reviewid",
+			"value": ""
+		},
+		{
+			"key": "filmid",
+			"value": ""
+		}
+	]
+}
