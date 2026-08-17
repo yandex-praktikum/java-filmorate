@@ -1,25 +1,24 @@
 package ru.yandex.practicum.filmorate.model;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.time.Duration;
-import java.time.Instant;
+import java.time.LocalDate;
 
-/**
- * Film.
- */
 @Data
-public class Film {
+public class User {
     private Long id;
+
+    @Email
+    @NotBlank
+    @NotNull
+    private String email;
 
     @NotBlank
     @NotNull
+    private String login;
     private String name;
-    private String description;
-    private Instant releaseDate;
-    private Duration duration;
+    private LocalDate birthday;
 }
